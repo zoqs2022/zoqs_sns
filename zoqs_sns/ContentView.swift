@@ -9,14 +9,25 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("snsを作ろう！")
-            Text("なんでやねん")
+        TabView{
+            SNS().tabItem{
+                Image(systemName: "message")
+                Text("閲覧")
+            }
+            NIKKI().tabItem{
+                Image(systemName: "pencil")
+                Text("投稿")
+            }
+            DAYS().tabItem{
+                Image(systemName: "30.square.fill")
+                Text("カレンダー")
+            }
+            PHOTO().tabItem{
+                Image(systemName: "photo.fill")
+                Text("アルバム")
+            }
+            
         }
-        .padding()
     }
 }
 
