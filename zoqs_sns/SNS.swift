@@ -6,16 +6,42 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 
 struct SNS: View {
+    @State var testArr:[String] = []
+    
     var body: some View {
+        let users = ["user1","user2","user3"]
         
-        VStack{
-            Text("twitterのホーム画面のイメージ").padding()
-            Text("他の人の投稿が見れる").padding()
-            Text("ストーリーみたいな感じで他の人の投稿は24時間で見れなくなる").padding()
-            Text("自分がその日の日記を書かないとこのページは見れない").padding()
-        }.padding()
+        
+        List{
+            ForEach(0..<testArr.count, id:\.self) { index in
+                Text(testArr[index])
+            }
+            
+        }.onAppear {
+            let db = Firestore.firestore()
+           
+            for i in 0..<users.count {
+                var temp = ""
+                db.collection(users[i]).getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        for document in querySnapshot!.documents {
+                            print(document.data())
+                            temp = "\(document.data())"
+                            testArr.append(temp)
+                            print(testArr)
+                        }
+                    }
+                }
+            } //for文
+        
+        }
+        
+        
         
         
     }
