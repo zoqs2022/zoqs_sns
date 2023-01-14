@@ -22,6 +22,7 @@
 		21526D00294DB3EB00F41B2E /* zoqs_snsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21526CFF294DB3EB00F41B2E /* zoqs_snsUITestsLaunchTests.swift */; };
 		21AF04192952015400B8E556 /* DateExtensionFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21AF04182952015400B8E556 /* DateExtensionFile.swift */; };
 		21AF041A2952029800B8E556 /* DAYS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14C2991294DCFC9000DCBB7 /* DAYS.swift */; };
+		21B32CBB29730A470077CC58 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B32CBA29730A470077CC58 /* ImagePicker.swift */; };
 		E1121820295289DE004192EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E112181F295289DD004192EE /* GoogleService-Info.plist */; };
 		E112182329528B69004192EE /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = E112182229528B69004192EE /* FirebaseAnalytics */; };
 		E112182529528B69004192EE /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E112182429528B69004192EE /* FirebaseAuth */; };
@@ -69,6 +70,7 @@
 		21526CFD294DB3EB00F41B2E /* zoqs_snsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = zoqs_snsUITests.swift; sourceTree = "<group>"; };
 		21526CFF294DB3EB00F41B2E /* zoqs_snsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = zoqs_snsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		21AF04182952015400B8E556 /* DateExtensionFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensionFile.swift; sourceTree = "<group>"; };
+		21B32CBA29730A470077CC58 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		E112181F295289DD004192EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E14C298F294DCF63000DCBB7 /* NIKKI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NIKKI.swift; sourceTree = "<group>"; };
 		E14C2991294DCFC9000DCBB7 /* DAYS.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = DAYS.swift; sourceTree = "<group>"; usesTabs = 0; wrapsLines = 0; };
@@ -156,6 +158,7 @@
 				2110E70A29726BB600D55754 /* DatabaseHelper.swift */,
 				2110E71129726E6700D55754 /* LoginView.swift */,
 				2110E7152972935300D55754 /* CreateAccountView.swift */,
+				21B32CBA29730A470077CC58 /* ImagePicker.swift */,
 			);
 			path = zoqs_sns;
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 				21526CE5294DB3EA00F41B2E /* ContentView.swift in Sources */,
 				2110E70929726B8500D55754 /* AuthHelper.swift in Sources */,
 				E14C2994294DD1C5000DCBB7 /* PHOTO.swift in Sources */,
+				21B32CBB29730A470077CC58 /* ImagePicker.swift in Sources */,
 				2110E71229726E6700D55754 /* LoginView.swift in Sources */,
 				21526CE3294DB3EA00F41B2E /* zoqs_snsApp.swift in Sources */,
 			);

@@ -11,7 +11,7 @@ import Firebase
 import FirebaseFirestore
 import FirebaseStorage
 
-class DatabaseHelper {
+struct DatabaseHelper {
     
     let uid = AuthHelper().uid()
 //    var imageData:Data!
