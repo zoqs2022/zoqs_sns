@@ -9,7 +9,7 @@ import Foundation
 import Firebase
 import FirebaseAuth
 
-class AuthHelper {
+struct AuthHelper {
     
     func createAccount(email:String,password:String,result:@escaping(Bool) -> Void){
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in

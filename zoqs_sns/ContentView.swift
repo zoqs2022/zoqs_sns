@@ -50,7 +50,6 @@ struct ContentView: View {
             LoginView()
         }
         .onAppear {
-            print("ContentView 表示された！")
             let uid = AuthHelper().uid()
             print("USER_ID: "+uid)
             if uid == "" {
