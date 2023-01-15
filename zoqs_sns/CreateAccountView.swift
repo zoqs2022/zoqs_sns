@@ -26,13 +26,13 @@ struct CreateAccountView: View {
                 if let uiImage = image {
                     Image(uiImage: uiImage)
                         .resizable()
-                        .frame(width: 200, height: 200)
+                        .frame(width: 100, height: 100)
                         .clipShape(Circle())
                 } else {
                     Image(systemName: "person.fill")
 //                        .font(.system(size: 200))
                         .resizable()
-                        .frame(width: 200, height: 200)
+                        .frame(width: 100, height: 100)
                         .clipShape(Circle())
                 }
                 Spacer().frame(height: 32)
@@ -42,10 +42,10 @@ struct CreateAccountView: View {
                     Text("フォトライブラリから選択")
                 }
             }
-            .frame(height: 300)
             .sheet(isPresented: $showingImagePicker) {
                 ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
             }
+            Spacer().frame(height: 32)
             
             Form{
                 Section(){
@@ -72,8 +72,8 @@ struct CreateAccountView: View {
                     AuthHelper().createAccount(email: emailFeild, password: passwordFeild, result: {
                         success in
                         if success {
-                            DatabaseHelper().resisterUserInfo(name: self.nameFeild, image: self.image,result: {result in
-                                print(result)
+                            DatabaseHelper().resisterUserInfo(name: self.nameFeild, image: self.image,result: {error in
+                                print(error)
                                 errorMessage = "画像登録に失敗しました"
                                 isAlert = true
                             })

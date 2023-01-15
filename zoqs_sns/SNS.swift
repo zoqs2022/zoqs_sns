@@ -30,10 +30,10 @@ struct SNS: View {
                         print("Error getting documents: \(err)")
                     } else {
                         for document in querySnapshot!.documents {
-                            print(document.data())
+//                            print(document.data())
                             temp = "\(document.data())"
                             testArr.append(temp)
-                            print(testArr)
+//                            print(testArr)
                         }
                     }
                 }
