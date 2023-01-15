@@ -1,6 +1,6 @@
 //
-//  DatabaseHelper.swift
-//  zoqs_sns
+// 主にfirestore,storageのAPIを叩く場所
+//
 //
 //  Created by 島田将太郎 on 2023/01/14.
 //

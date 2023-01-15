@@ -1,6 +1,6 @@
 //
-//  ContentView.swift
-//  zoqs_sns
+//　一番最初に出てくる画面
+//
 //
 //  Created by 島田将太郎 on 2022/12/17.
 //

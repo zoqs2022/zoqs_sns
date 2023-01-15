@@ -1,6 +1,6 @@
 //
-//  zoqs_snsApp.swift
-//  zoqs_sns
+//  初期設定などを書いてる
+//
 //
 //  Created by 島田将太郎 on 2022/12/17.
 //
