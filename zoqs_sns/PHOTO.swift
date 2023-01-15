@@ -13,7 +13,7 @@ struct PHOTO: View {
     @State var showingImagePicker = false
     @State private var toEditProfile = false
     
-    @ObservedObject var userData = UserData()
+    @ObservedObject var userData: UserData
 //    @State private var uid = AuthHelper().uid()
     
     var body: some View {
@@ -45,10 +45,6 @@ struct PHOTO: View {
                                     .foregroundColor(.black)
                                     .padding(4)
                                     .bold()
-                                //                                Text("編集").fontWeight(.bold).foregroundColor(Color.black)
-                                //                                Image(systemName: "square.and.pencil.circle.fill")
-                                //                                    .font(.system(size: 20))
-                                //                                    .foregroundColor(.black)
                             })
                         }
                         .background(Color(.tertiaryLabel))
@@ -96,22 +92,11 @@ struct PHOTO: View {
         .sheet(isPresented: $toEditProfile) {
             EditProfileView(userData: userData)
         }
-        .onAppear{
-            let uid = AuthHelper().uid()
-            DatabaseHelper().getUserData(userID: uid, result: { data in
-                if let data = data {
-                    print(data)
-                    userData.name = data["name"] as? String ?? "..."
-                } else {
-                    print("error")
-                }
-            })
-        }
     }
 }
 
 struct PHOTO_Previews: PreviewProvider {
     static var previews: some View {
-        PHOTO()
+        PHOTO(userData: UserData())
     }
 }

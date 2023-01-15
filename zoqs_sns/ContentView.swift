@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @ObservedObject var userData = UserData()
+    
     @State var dataHelper:DatabaseHelper!
     @State private var isNotUserActive = false
     
@@ -38,7 +40,7 @@ struct ContentView: View {
                     Image(systemName: "30.square.fill")
                     Text("カレンダー")
                 }
-                PHOTO().tabItem{
+                PHOTO(userData: userData).tabItem{
                     Image(systemName: "photo.fill")
                     Text("アルバム")
                 }
@@ -48,6 +50,25 @@ struct ContentView: View {
         }
         .fullScreenCover(isPresented: $isNotUserActive) {
             LoginView()
+                .onDisappear {
+                    let uid = AuthHelper().uid()
+                    print("USER_ID: "+uid)
+                    if uid == "" {
+                        isNotUserActive = true
+                        return
+                    } else {
+                        print("OK")
+                        userData.uid = uid
+                        DatabaseHelper().getUserData(userID: uid, result: { data in
+                            if let data = data {
+                                print(data)
+                                userData.name = data["name"] as? String ?? "..."
+                            } else {
+                                print("error")
+                            }
+                        })
+                    }
+                }
         }
         .onAppear {
             let uid = AuthHelper().uid()
@@ -57,6 +78,15 @@ struct ContentView: View {
                 return
             } else {
                 print("OK")
+                userData.uid = uid
+                DatabaseHelper().getUserData(userID: uid, result: { data in
+                    if let data = data {
+                        print(data)
+                        userData.name = data["name"] as? String ?? "..."
+                    } else {
+                        print("error")
+                    }
+                })
             }
         }
         .onDisappear {

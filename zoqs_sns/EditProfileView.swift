@@ -86,6 +86,10 @@ struct EditProfileView: View {
         }
         .onAppear{
             nameFeild = userData.name
+            print(userData.uid)
+        }
+        .alert(isPresented: $isAlert){
+            Alert(title: Text("エラー"),message: Text(errorMessage))
         }
     }
 }
