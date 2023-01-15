@@ -66,8 +66,19 @@ struct DatabaseHelper {
             }
         })
     }
+    
+    func getUserData(userID:String,result:@escaping([String : Any]?) -> Void) {
+        db.collection("user").document(userID).getDocument(completion: { (doc, error) in
+            if let data = doc?.data() {
+                result(data)
+            } else {
+                result(nil)
+            }
+        })
+    }
 
-    func resisterUserInfo(name:String,image:UIImage?,result:@escaping(Any) -> Void){
+
+    func resisterUserInfo(name:String,image:UIImage?,result:@escaping(Any?) -> Void){
         db.collection("user").document(uid).setData(["name":name])
 //        let resized = image.resize(toWidth: 300)
         guard let imageData = image?.jpegData(compressionQuality:1) else { return }
@@ -76,6 +87,23 @@ struct DatabaseHelper {
                 print("画像登録に失敗した！！！")
                 result(error)
                 return
+            }
+        }
+    }
+    
+    func editUserInfo(name:String,image:UIImage?,result:@escaping(String?) -> Void){
+        db.collection("user").document(uid).setData(["name":name])
+//        let resized = image.resize(toWidth: 300)
+        guard let imageData = image?.jpegData(compressionQuality:1) else {
+            result("画像が設定されていません")
+            return
+        }
+        storage.child("image/\(uid).jpeg").putData(imageData, metadata: nil){ (metadata, error) in
+            if error != nil {
+                print("画像登録に失敗した！！！")
+                result(nil)
+            } else{
+                result("成功")
             }
         }
     }

@@ -19,6 +19,8 @@ struct EditProfileView: View {
     @State private var image: UIImage?
     @State var showingImagePicker = false
     
+    @ObservedObject var userData: UserData
+    
     var body: some View {
         VStack{
             VStack {
@@ -47,8 +49,7 @@ struct EditProfileView: View {
             
             VStack(alignment: .leading, spacing: 16){
                 TextField("ユーザーネーム", text: $nameFeild).autocapitalization(.none)
-                TextField("e-mail", text: $emailFeild).autocapitalization(.none)
-                TextField("password", text: $passwordFeild).autocapitalization(.none)
+
             }.padding(.horizontal,40).padding(.vertical, 24)
             
             Spacer().frame(height: 16)
@@ -60,21 +61,20 @@ struct EditProfileView: View {
                             isAlert = true
                             return
                         }
-                        AuthHelper().createAccount(email: emailFeild, password: passwordFeild, result: {
-                            success in
-                            if success {
-                                DatabaseHelper().resisterUserInfo(name: self.nameFeild, image: self.image,result: {result in
-                                    print(result)
-                                    errorMessage = "画像登録に失敗しました"
-                                    isAlert = true
-                                })
-                                presentationMode.wrappedValue.dismiss()
-                            } else {
-                                errorMessage = "有効なメールアドレス、6文字以上のパスワードを設定してください。"
+                        print("実行")
+                        DatabaseHelper().editUserInfo(name: nameFeild, image: image, result: { result in
+                            if result == nil {
+                                errorMessage = "画像登録に失敗しました"
                                 isAlert = true
+                            }else {
+                                userData.name = nameFeild
                             }
+                            presentationMode.wrappedValue.dismiss()
                         })
-                    }.padding(10).font(.system(size: 20)).foregroundColor(.black)
+                    }
+                    .padding(10)
+                    .font(.system(size: 20))
+                    .foregroundColor(.black)
                 }
                 .background(Color(.tertiaryLabel))
                 .cornerRadius(8)
@@ -84,11 +84,14 @@ struct EditProfileView: View {
                 }.padding(10).foregroundColor(.black)
             }
         }
+        .onAppear{
+            nameFeild = userData.name
+        }
     }
 }
 
 struct EditProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        EditProfileView()
+        EditProfileView(userData: UserData())
     }
 }
