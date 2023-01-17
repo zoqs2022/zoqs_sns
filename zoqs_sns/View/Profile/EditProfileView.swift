@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EditProfileView: View {
+    @ObservedObject var userData: UserDataViewModel
     
     @Environment(\.presentationMode) var presentationMode
     @State private var nameFeild = ""
@@ -18,8 +19,6 @@ struct EditProfileView: View {
     
     @State private var image: UIImage?
     @State var showingImagePicker = false
-    
-    @ObservedObject var userData: UserData
     
     var body: some View {
         VStack{
@@ -86,7 +85,6 @@ struct EditProfileView: View {
         }
         .onAppear{
             nameFeild = userData.name
-            print(userData.uid)
         }
         .alert(isPresented: $isAlert){
             Alert(title: Text("エラー"),message: Text(errorMessage))
@@ -96,6 +94,6 @@ struct EditProfileView: View {
 
 struct EditProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        EditProfileView(userData: UserData())
+        EditProfileView(userData: UserDataViewModel(model: UserDataModel()))
     }
 }

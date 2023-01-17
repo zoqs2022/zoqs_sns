@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct PHOTO: View {
+    @ObservedObject var userData: UserDataViewModel
     
     @State private var image: UIImage?
     @State var showingImagePicker = false
     @State private var toEditProfile = false
     
-    @ObservedObject var userData: UserData
-//    @State private var uid = AuthHelper().uid()
     
     var body: some View {
         VStack{
@@ -97,6 +96,6 @@ struct PHOTO: View {
 
 struct PHOTO_Previews: PreviewProvider {
     static var previews: some View {
-        PHOTO(userData: UserData())
+        PHOTO(userData: UserDataViewModel(model: UserDataModel()))
     }
 }

@@ -8,25 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    @ObservedObject var userData = UserData()
+    @ObservedObject var userData = UserDataViewModel(model: UserDataModel())
     
     @State var dataHelper:DatabaseHelper!
     @State private var isNotUserActive = false
     
     var body: some View {
-//        if isNotUserActive {
-//            LoginView()
-//        } else
         VStack
         {
-//            NavigationLink(
-//                destination: LoginView(),
-//                isActive: $isActive,
-//                label: {
-//                    EmptyView()
-//                }
-//            )
             TabView{
                 SNS().tabItem{
                     Image(systemName: "message")
@@ -51,48 +40,27 @@ struct ContentView: View {
         .fullScreenCover(isPresented: $isNotUserActive) {
             LoginView()
                 .onDisappear {
-                    let uid = AuthHelper().uid()
-                    print("USER_ID: "+uid)
-                    if uid == "" {
+                    if userData.uid == "" {
                         isNotUserActive = true
                         return
                     } else {
-                        print("OK")
-                        userData.uid = uid
-                        DatabaseHelper().getUserData(userID: uid, result: { data in
-                            if let data = data {
-                                print(data)
-                                userData.name = data["name"] as? String ?? "..."
-                            } else {
-                                print("error")
-                            }
-                        })
+                        print("USER_ID: "+userData.uid)
+                        userData.getUserName()
                     }
                 }
         }
         .onAppear {
-            let uid = AuthHelper().uid()
-            print("USER_ID: "+uid)
-            if uid == "" {
+            if userData.uid == "" {
                 isNotUserActive = true
                 return
             } else {
-                print("OK")
-                userData.uid = uid
-                DatabaseHelper().getUserData(userID: uid, result: { data in
-                    if let data = data {
-                        print(data)
-                        userData.name = data["name"] as? String ?? "..."
-                    } else {
-                        print("error")
-                    }
-                })
+                print("USER_ID: "+userData.uid)
+                userData.getUserName()
             }
         }
         .onDisappear {
             print("ContentView 消えた！")
         }
-        
         .toolbar{
             ToolbarItem(placement: .navigationBarTrailing, content: {
                 Button("ログアウト"){

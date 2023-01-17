@@ -7,7 +7,8 @@
 
 import Foundation
 
-final class UserData: ObservableObject {
-    @Published var uid = ""
-    @Published var name = ""
+
+struct UserDataModel {
+    var name: String = ""
+    
 }
