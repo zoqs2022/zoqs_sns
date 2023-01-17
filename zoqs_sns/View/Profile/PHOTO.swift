@@ -19,7 +19,7 @@ struct PHOTO: View {
         VStack{
             HStack(){
                 VStack() {
-                    if let uiImage = image {
+                    if let uiImage = userData.uiImageData {
                         Image(uiImage: uiImage)
                             .resizable()
                             .frame(width: 80, height: 80, alignment: .center)

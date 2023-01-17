@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import SwiftUI
 
 
 struct UserDataModel {
     var name: String = ""
+    var imageData: UIImage?
     
 }

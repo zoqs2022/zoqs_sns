@@ -26,13 +26,12 @@ struct EditProfileView: View {
                 if let uiImage = image {
                     Image(uiImage: uiImage)
                         .resizable()
-                        .frame(width: 100, height: 100)
+                        .frame(width: 120, height: 120)
                         .clipShape(Circle())
                 } else {
                     Image(systemName: "person.fill")
-//                        .font(.system(size: 200))
                         .resizable()
-                        .frame(width: 100, height: 100)
+                        .frame(width: 120, height: 120)
                         .clipShape(Circle())
                 }
                 Spacer().frame(height: 16)
@@ -52,6 +51,7 @@ struct EditProfileView: View {
             }.padding(.horizontal,40).padding(.vertical, 24)
             
             Spacer().frame(height: 16)
+            
             VStack{
                 HStack(alignment: .center, spacing: 0){
                     Button("変更"){
@@ -60,13 +60,10 @@ struct EditProfileView: View {
                             isAlert = true
                             return
                         }
-                        print("実行")
-                        DatabaseHelper().editUserInfo(name: nameFeild, image: image, result: { result in
-                            if result == nil {
+                        userData.updataUserData(nameFeild, image, errorResult: { error in
+                            if error != nil {
                                 errorMessage = "画像登録に失敗しました"
                                 isAlert = true
-                            }else {
-                                userData.name = nameFeild
                             }
                             presentationMode.wrappedValue.dismiss()
                         })
@@ -85,6 +82,7 @@ struct EditProfileView: View {
         }
         .onAppear{
             nameFeild = userData.name
+            image = userData.uiImageData
         }
         .alert(isPresented: $isAlert){
             Alert(title: Text("エラー"),message: Text(errorMessage))

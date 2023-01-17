@@ -103,14 +103,14 @@ struct DatabaseHelper {
                 print("画像登録に失敗した！！！")
                 result(nil)
             } else{
-                result("成功")
+                result("画層の更新に成功！！")
             }
         }
     }
 
     func getImage(userID:String,imageView:UIImageView){
         let imageRef = storage.child("image/"+userID+".jpeg")
-        imageRef.getData(maxSize: 2 * 1024 * 1024) { data, error in
+        imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
             if let error = error {
                 print(error)
             } else {
@@ -128,7 +128,7 @@ struct DatabaseHelper {
     
     func getImageData(userID:String, result:@escaping(Data?) -> Void){
         let imageRef = storage.child("image/"+userID+".jpeg")
-        imageRef.getData(maxSize: 2 * 1024 * 1024) { data, error in
+        imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
             if let error = error {
                 print(error)
             }

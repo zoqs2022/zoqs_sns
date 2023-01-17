@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var userData = UserDataViewModel(model: UserDataModel())
-    
-    @State var dataHelper:DatabaseHelper!
+    @ObservedObject var userData: UserDataViewModel
     @State private var isNotUserActive = false
     
+    init() {
+        self.userData = UserDataViewModel(model: UserDataModel())
+    }
+    
     var body: some View {
-        VStack
-        {
+        let _ = Self._printChanges()
+        VStack{
             TabView{
                 SNS().tabItem{
                     Image(systemName: "message")
@@ -38,15 +40,15 @@ struct ContentView: View {
             
         }
         .fullScreenCover(isPresented: $isNotUserActive) {
-            LoginView()
+            LoginView(isNotUserActive: $isNotUserActive)
                 .onDisappear {
-                    if userData.uid == "" {
-                        isNotUserActive = true
-                        return
-                    } else {
-                        print("USER_ID: "+userData.uid)
-                        userData.getUserName()
-                    }
+//                    if userData.uid == "" {
+//                        isNotUserActive = true
+//                        return
+//                    } else {
+//                        print("USER_ID: "+userData.uid)
+//                        userData.getUserName()
+//                    }
                 }
         }
         .onAppear {
@@ -56,6 +58,7 @@ struct ContentView: View {
             } else {
                 print("USER_ID: "+userData.uid)
                 userData.getUserName()
+                userData.getUserImageData()
             }
         }
         .onDisappear {
