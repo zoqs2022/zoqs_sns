@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct LoginView: View {
-    @Binding var isNotUserActive: Bool
+//    @Binding var isNotUserActive: Bool
+    @Binding var isActive: Bool
     
     @Environment(\.presentationMode) var presentationMode
     @State private var emailFeild = ""
@@ -35,8 +36,7 @@ struct LoginView: View {
                         success in
                         if success {
                             print("ログイン成功")
-//                            presentationMode.wrappedValue.dismiss()
-                            self.isNotUserActive = false
+                            self.isActive = true
                         } else {
                             errorMessage = "メールアドレス、またはパスワードが間違っています。"
                             isAlert = true
@@ -51,19 +51,14 @@ struct LoginView: View {
         }
         .onAppear{
             if AuthHelper().uid() != "" {
-                presentationMode.wrappedValue.dismiss()
+                self.isActive = true
             }
         }
         .alert(isPresented: $isAlert){
             Alert(title: Text("エラー"),message: Text(errorMessage))
         }
         .fullScreenCover(isPresented: $toCreateAccount) {
-            CreateAccountView()
-            .onDisappear {
-                if AuthHelper().uid() != "" {
-                    presentationMode.wrappedValue.dismiss()
-                }
-            }
+            CreateAccountView(isActive: $isActive)
         }
     }
     

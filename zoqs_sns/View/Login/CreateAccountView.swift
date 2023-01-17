@@ -9,6 +9,7 @@ import UIKit
 import SwiftUI
 
 struct CreateAccountView: View {
+    @Binding var isActive: Bool
     
     @Environment(\.presentationMode) var presentationMode
     @State private var nameFeild = ""
@@ -30,7 +31,6 @@ struct CreateAccountView: View {
                         .clipShape(Circle())
                 } else {
                     Image(systemName: "person.fill")
-//                        .font(.system(size: 200))
                         .resizable()
                         .frame(width: 100, height: 100)
                         .clipShape(Circle())
@@ -73,11 +73,11 @@ struct CreateAccountView: View {
                         success in
                         if success {
                             DatabaseHelper().resisterUserInfo(name: self.nameFeild, image: self.image,result: {error in
-                                print(error)
+                                print(error!)
                                 errorMessage = "画像登録に失敗しました"
                                 isAlert = true
                             })
-                            presentationMode.wrappedValue.dismiss()
+                            self.isActive = true
                         } else {
                             errorMessage = "有効なメールアドレス、6文字以上のパスワードを設定してください。"
                             isAlert = true
@@ -97,8 +97,8 @@ struct CreateAccountView: View {
 }
 
 
-struct CreateAccountView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateAccountView()
-    }
-}
+//struct CreateAccountView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CreateAccountView()
+//    }
+//}

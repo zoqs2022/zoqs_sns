@@ -25,11 +25,21 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct zoqs_snsApp: App {
     // register app delegate for Firebase setup  firebase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
+    @State private var isActive = false
 
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                ContentView()
+                
+                if isActive {
+                    ContentView(isActive: $isActive)
+                } else {
+                    LoginView(isActive: $isActive)
+                }
+                
+            }.onAppear{
+                isActive = (AuthHelper().uid() != "")
             }
         }
     }

@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var userData: UserDataViewModel
-    @State private var isNotUserActive = false
+    @ObservedObject var userData = UserDataViewModel(model: UserDataModel())
+    @Binding var isActive: Bool
     
-    init() {
-        self.userData = UserDataViewModel(model: UserDataModel())
-    }
+//    init() {
+//        self.userData = UserDataViewModel(model: UserDataModel())
+//    }
     
     var body: some View {
-        let _ = Self._printChanges()
         VStack{
             TabView{
                 SNS().tabItem{
@@ -35,48 +34,27 @@ struct ContentView: View {
                     Image(systemName: "photo.fill")
                     Text("アルバム")
                 }
-                
             }
             
         }
-        .fullScreenCover(isPresented: $isNotUserActive) {
-            LoginView(isNotUserActive: $isNotUserActive)
-                .onDisappear {
-//                    if userData.uid == "" {
-//                        isNotUserActive = true
-//                        return
-//                    } else {
-//                        print("USER_ID: "+userData.uid)
-//                        userData.getUserName()
-//                    }
-                }
-        }
         .onAppear {
-            if userData.uid == "" {
-                isNotUserActive = true
-                return
-            } else {
-                print("USER_ID: "+userData.uid)
-                userData.getUserName()
-                userData.getUserImageData()
-            }
-        }
-        .onDisappear {
-            print("ContentView 消えた！")
+            print("USER_ID: "+userData.uid)
+            userData.getUserName()
+            userData.getUserImageData()
         }
         .toolbar{
             ToolbarItem(placement: .navigationBarTrailing, content: {
                 Button("ログアウト"){
                     AuthHelper().signout()
-                    isNotUserActive = true
+                    isActive = false
                 }
             })
         }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}
