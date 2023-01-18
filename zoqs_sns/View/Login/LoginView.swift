@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct LoginView: View {
-//    @Binding var isNotUserActive: Bool
     @Binding var isActive: Bool
-    
     @Environment(\.presentationMode) var presentationMode
+    
+    let auth = AuthViewModel()
     @State private var emailFeild = ""
     @State private var passwordFeild = ""
     @State private var isAlert = false
@@ -32,10 +32,8 @@ struct LoginView: View {
             }
             VStack{
                 Button("ログイン"){
-                    AuthHelper().login(email: emailFeild, password: passwordFeild, result: {
-                        success in
+                    auth.login(emailFeild, passwordFeild, result: { success in
                         if success {
-                            print("ログイン成功")
                             self.isActive = true
                         } else {
                             errorMessage = "メールアドレス、またはパスワードが間違っています。"

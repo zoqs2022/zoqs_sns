@@ -26,6 +26,7 @@
 		21B32CBD2973DCB20077CC58 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B32CBC2973DCB20077CC58 /* EditProfileView.swift */; };
 		21C18C6229744A34008D4AC2 /* UserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C18C6129744A34008D4AC2 /* UserDataModel.swift */; };
 		21C18C6E297472BF008D4AC2 /* UserDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C18C6D297472BF008D4AC2 /* UserDataViewModel.swift */; };
+		21C18C7029770C80008D4AC2 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C18C6F29770C80008D4AC2 /* AuthViewModel.swift */; };
 		E1121820295289DE004192EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E112181F295289DD004192EE /* GoogleService-Info.plist */; };
 		E112182329528B69004192EE /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = E112182229528B69004192EE /* FirebaseAnalytics */; };
 		E112182529528B69004192EE /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E112182429528B69004192EE /* FirebaseAuth */; };
@@ -77,6 +78,7 @@
 		21B32CBC2973DCB20077CC58 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		21C18C6129744A34008D4AC2 /* UserDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataModel.swift; sourceTree = "<group>"; };
 		21C18C6D297472BF008D4AC2 /* UserDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataViewModel.swift; sourceTree = "<group>"; };
+		21C18C6F29770C80008D4AC2 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		E112181F295289DD004192EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E14C298F294DCF63000DCBB7 /* NIKKI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NIKKI.swift; sourceTree = "<group>"; };
 		E14C2991294DCFC9000DCBB7 /* DAYS.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = DAYS.swift; sourceTree = "<group>"; usesTabs = 0; wrapsLines = 0; };
@@ -255,6 +257,7 @@
 			isa = PBXGroup;
 			children = (
 				21C18C6D297472BF008D4AC2 /* UserDataViewModel.swift */,
+				21C18C6F29770C80008D4AC2 /* AuthViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 				21B32CBB29730A470077CC58 /* ImagePicker.swift in Sources */,
 				21C18C6E297472BF008D4AC2 /* UserDataViewModel.swift in Sources */,
 				2110E71229726E6700D55754 /* LoginView.swift in Sources */,
+				21C18C7029770C80008D4AC2 /* AuthViewModel.swift in Sources */,
 				21C18C6229744A34008D4AC2 /* UserDataModel.swift in Sources */,
 				21B32CBD2973DCB20077CC58 /* EditProfileView.swift in Sources */,
 				21526CE3294DB3EA00F41B2E /* zoqs_snsApp.swift in Sources */,

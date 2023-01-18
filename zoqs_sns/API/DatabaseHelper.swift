@@ -78,15 +78,20 @@ struct DatabaseHelper {
     }
 
 
-    func resisterUserInfo(name:String,image:UIImage?,result:@escaping(Any?) -> Void){
+    func resisterUserInfo(name:String,image:UIImage?,result:@escaping(Bool) -> Void){
         db.collection("user").document(uid).setData(["name":name])
 //        let resized = image.resize(toWidth: 300)
-        guard let imageData = image?.jpegData(compressionQuality:1) else { return }
+        guard let imageData = image?.jpegData(compressionQuality:1) else {
+            result(true)
+            return
+        }
         storage.child("image/\(uid).jpeg").putData(imageData, metadata: nil){ (metadata, error) in
-            if let error = error {
-                print("画像登録に失敗した！！！")
-                result(error)
-                return
+            if error != nil {
+                print("画像登録に失敗した！！！", error!)
+                result(false)
+            } else {
+                print("画像登録に成功！")
+                result(true)
             }
         }
     }

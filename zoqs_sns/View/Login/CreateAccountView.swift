@@ -10,8 +10,9 @@ import SwiftUI
 
 struct CreateAccountView: View {
     @Binding var isActive: Bool
-    
     @Environment(\.presentationMode) var presentationMode
+    
+    let auth = AuthViewModel()
     @State private var nameFeild = ""
     @State private var emailFeild = ""
     @State private var passwordFeild = ""
@@ -69,17 +70,11 @@ struct CreateAccountView: View {
                         isAlert = true
                         return
                     }
-                    AuthHelper().createAccount(email: emailFeild, password: passwordFeild, result: {
-                        success in
-                        if success {
-                            DatabaseHelper().resisterUserInfo(name: self.nameFeild, image: self.image,result: {error in
-                                print(error!)
-                                errorMessage = "画像登録に失敗しました"
-                                isAlert = true
-                            })
+                    auth.createAccount(emailFeild, passwordFeild, nameFeild, image, errorResult: { error in
+                        if error == nil {
                             self.isActive = true
                         } else {
-                            errorMessage = "有効なメールアドレス、6文字以上のパスワードを設定してください。"
+                            errorMessage = error!
                             isAlert = true
                         }
                     })
