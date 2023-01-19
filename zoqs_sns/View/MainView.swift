@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
-    @ObservedObject var userData = UserDataViewModel(model: UserDataModel())
+    @ObservedObject var userData: UserDataViewModel
     @Binding var isActive: Bool
     
     @Binding var xOffset: CGFloat
@@ -106,11 +106,6 @@ struct MainView: View {
             }
             .accentColor(.blue)
             
-        }
-        .onAppear {
-            print("USER_ID: "+userData.uid)
-            userData.getUserName()
-            userData.getUserImageData()
         }
     }
 }

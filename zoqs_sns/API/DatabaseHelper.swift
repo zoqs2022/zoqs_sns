@@ -108,7 +108,7 @@ struct DatabaseHelper {
                 print("画像登録に失敗した！！！")
                 result(nil)
             } else{
-                result("画層の更新に成功！！")
+                result("画像の更新に成功！！")
             }
         }
     }

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var userData = UserDataViewModel(model: UserDataModel())
+    
     @Binding var isActive: Bool
     // xOffset変数で画面の横のオフセットを保持します
     @State private var xOffset = CGFloat.zero
@@ -44,18 +46,9 @@ struct ContentView: View {
                         // 横幅は画面サイズの70%にします
                         .frame(width: geometry.size.width * 0.7)
                     Divider()
-                    MainView(isActive: $isActive, xOffset: $xOffset.animation(), defaultOffset: $defaultOffset.animation())
+                    MainView( userData: userData, isActive: $isActive, xOffset: $xOffset.animation(), defaultOffset: $defaultOffset.animation())
                         // 横幅は画面サイズの100%にします
                         .frame(width: geometry.size.width)
-//                        .onTapGesture {
-//                            withAnimation() {
-//                                if self.xOffset == .zero {
-//                                    self.xOffset = self.defaultOffset
-//                                } else {
-//                                    self.xOffset = self.defaultOffset
-//                                }
-//                            }
-//                        }
                 }
                 // 最初に画面のオフセットの値をスライドメニュー分マイナスします。
                 .onAppear(perform: {
@@ -68,6 +61,11 @@ struct ContentView: View {
                 .gesture(
                     self.dragGesture
                 )
+                .onAppear {
+                    print("USER_ID: "+userData.uid)
+                    userData.getUserName()
+                    userData.getUserImageData()
+                }
         }
     }
 }

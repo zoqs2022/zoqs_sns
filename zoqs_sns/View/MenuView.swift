@@ -11,7 +11,7 @@ struct MenuView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Image("animal_kuma")
+            Image("flower")
                 .resizable()
                 .overlay(
                     Circle().stroke(Color.gray, lineWidth: 1))
