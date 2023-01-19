@@ -8,43 +8,57 @@
 import SwiftUI
 import FirebaseFirestore
 
+struct Timeline {
+    let id: Int
+    let name: String
+    let image: String
+    let post: String
+    let post_image: String
+}
+
+let timelines: [Timeline] = [
+    Timeline(id: 0, name: "Arupaka", image: "flower", post: "This is post content", post_image: "flower"),
+    Timeline(id: 1, name: "Buta", image: "flower", post: "This is post content", post_image: "flower"),
+    Timeline(id: 2, name: "Hamster", image: "flower", post: "This is post content", post_image: "flower"),
+    Timeline(id: 3, name: "Hiyoko", image: "flower", post: "This is post content", post_image: "flower"),
+    Timeline(id: 4, name: "Inu", image: "flower", post: "This is post content", post_image: "flower")
+]
+
 struct SNS: View {
     @State var testArr:[String] = []
     
     var body: some View {
-        let users = ["user1","user2","user3"]
-        
-        
-        List{
-            ForEach(0..<testArr.count, id:\.self) { index in
-                Text(testArr[index])
-            }
-            
-        }.onAppear {
-            let db = Firestore.firestore()
-           
-            for i in 0..<users.count {
-                var temp = ""
-                db.collection(users[i]).getDocuments() { (querySnapshot, err) in
-                    if let err = err {
-                        print("Error getting documents: \(err)")
-                    } else {
-                        for document in querySnapshot!.documents {
-//                            print(document.data())
-                            temp = "\(document.data())"
-                            testArr.append(temp)
-//                            print(testArr)
+            VStack() {
+                ForEach(timelines, id: \.id) { (timeline) in
+                    VStack(spacing: 5) {
+                        HStack(alignment: .top) {
+                            Image(timeline.image)
+                                .resizable()
+                                .clipShape(Circle())
+                                .overlay(
+                                    Circle().stroke(Color.white, lineWidth: 4))
+                                .frame(width: 60, height: 60)
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text(timeline.name)
+                                        .fontWeight(.bold)
+                                    Text("@\(timeline.name)")
+                                        .foregroundColor(.gray)
+                                }
+                                Text(timeline.post)
+                                Image(timeline.post_image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(height: 200)
+                                    .cornerRadius(20)
+                            }
                         }
+                        .padding(.horizontal, 10)
+                        Divider()
                     }
                 }
-            } //for文
-        
+            }
         }
-        
-        
-        
-        
-    }
 }
 
 struct SNS_Previews: PreviewProvider {

@@ -1,60 +1,81 @@
 //
-//　一番最初に出てくる画面
+//  ContentView.swift
+//  zoqs_sns
 //
-//
-//  Created by 島田将太郎 on 2022/12/17.
+//  Created by 島田将太郎 on 2023/01/19.
 //
 
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var userData = UserDataViewModel(model: UserDataModel())
     @Binding var isActive: Bool
+    // xOffset変数で画面の横のオフセットを保持します
+    @State private var xOffset = CGFloat.zero
+    @State private var defaultOffset = CGFloat.zero
     
-//    init() {
-//        self.userData = UserDataViewModel(model: UserDataModel())
-//    }
-    
-    var body: some View {
-        VStack{
-            TabView{
-                SNS().tabItem{
-                    Image(systemName: "message")
-                    Text("閲覧")
-                }
-                NIKKI().tabItem{
-                    Image(systemName: "pencil")
-                    Text("投稿")
-                }
-                DAYS().tabItem{
-                    Image(systemName: "30.square.fill")
-                    Text("カレンダー")
-                }
-                PHOTO(userData: userData).tabItem{
-                    Image(systemName: "photo.fill")
-                    Text("アルバム")
+    private var dragGesture: some Gesture {
+        DragGesture(minimumDistance: 10,coordinateSpace: .local)
+            // スワイプが検知されたときの動きを実装します
+//            .onChanged{ value in
+//
+//            }
+        
+            // スワイプが終了したときの動きを実装します
+            .onEnded { value in
+                withAnimation() {
+                    // もし、右方向にスワイプした距離が5以上ならオフセットを0にします
+                    // すなわち、メニューを表示します
+                    // それ以外はオフセットをスライドメニュー分設定します
+                    // すなわちスライドメニューを隠します
+                    if (value.translation.width > 5) {
+                        self.xOffset = .zero
+                    } else {
+                        self.xOffset = self.defaultOffset
+                    }
                 }
             }
-            
-        }
-        .onAppear {
-            print("USER_ID: "+userData.uid)
-            userData.getUserName()
-            userData.getUserImageData()
-        }
-        .toolbar{
-            ToolbarItem(placement: .navigationBarTrailing, content: {
-                Button("ログアウト"){
-                    AuthHelper().signout()
-                    isActive = false
+    }
+    
+    var body: some View {
+        // 画面サイズの取得にGeometoryReaderを利用します
+        GeometryReader { geometry in
+                HStack(spacing: 0) {
+                    MenuView()
+                        // 横幅は画面サイズの70%にします
+                        .frame(width: geometry.size.width * 0.7)
+                    Divider()
+                    MainView(isActive: $isActive, xOffset: $xOffset.animation(), defaultOffset: $defaultOffset.animation())
+                        // 横幅は画面サイズの100%にします
+                        .frame(width: geometry.size.width)
+//                        .onTapGesture {
+//                            withAnimation() {
+//                                if self.xOffset == .zero {
+//                                    self.xOffset = self.defaultOffset
+//                                } else {
+//                                    self.xOffset = self.defaultOffset
+//                                }
+//                            }
+//                        }
                 }
-            })
+                // 最初に画面のオフセットの値をスライドメニュー分マイナスします。
+                .onAppear(perform: {
+                    self.xOffset = geometry.size.width * -0.7
+                    self.defaultOffset = self.xOffset
+                })
+                .offset(x: self.xOffset)
+                // 画面サイズを明示します
+                .frame(width: geometry.size.width, alignment: .leading)
+                .gesture(
+                    self.dragGesture
+                )
         }
     }
 }
 
 //struct ContentView_Previews: PreviewProvider {
+//    @State private var isActive = true
+//    
 //    static var previews: some View {
-//        ContentView()
+//        ContentView(isActive: $isActive)
 //    }
 //}
