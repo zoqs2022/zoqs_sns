@@ -37,7 +37,7 @@ struct SNS: View {
                                 .clipShape(Circle())
                                 .overlay(
                                     Circle().stroke(Color.white, lineWidth: 4))
-                                .frame(width: 60, height: 60)
+                                .frame(width: 40, height: 40)
                             VStack(alignment: .leading) {
                                 HStack {
                                     Text(timeline.name)

@@ -42,7 +42,7 @@ struct ContentView: View {
         // 画面サイズの取得にGeometoryReaderを利用します
         GeometryReader { geometry in
                 HStack(spacing: 0) {
-                    MenuView()
+                    MenuView(userData: userData)
                         // 横幅は画面サイズの70%にします
                         .frame(width: geometry.size.width * 0.7)
                     Divider()

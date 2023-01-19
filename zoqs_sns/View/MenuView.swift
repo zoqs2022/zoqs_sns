@@ -8,15 +8,25 @@
 import SwiftUI
 
 struct MenuView: View {
+    @ObservedObject var userData: UserDataViewModel
 
     var body: some View {
         VStack(alignment: .leading) {
-            Image("flower")
-                .resizable()
-                .overlay(
-                    Circle().stroke(Color.gray, lineWidth: 1))
-                .frame(width: 60, height: 60)
-                .clipShape(Circle())
+            if let uiImage = userData.uiImageData {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .overlay(
+                        Circle().stroke(Color.gray, lineWidth: 1))
+                    .frame(width: 60, height: 60)
+                    .clipShape(Circle())
+            } else {
+                Image(systemName: "person.fill")
+                    .resizable()
+                    .overlay(
+                        Circle().stroke(Color.gray, lineWidth: 1))
+                    .frame(width: 30, height: 30)
+                    .clipShape(Circle())
+            }
             Text("SwiftUIへの道")
                 .font(.largeTitle)
             Text("@road2swiftui")
@@ -44,8 +54,8 @@ struct MenuView: View {
 }
 
 
-struct MenuView_Previews: PreviewProvider {
-    static var previews: some View {
-        MenuView()
-    }
-}
+//struct MenuView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MenuView()
+//    }
+//}
