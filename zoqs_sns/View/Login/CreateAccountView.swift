@@ -9,8 +9,10 @@ import UIKit
 import SwiftUI
 
 struct CreateAccountView: View {
-    
+    @Binding var isActive: Bool
     @Environment(\.presentationMode) var presentationMode
+    
+    let auth = AuthViewModel()
     @State private var nameFeild = ""
     @State private var emailFeild = ""
     @State private var passwordFeild = ""
@@ -26,13 +28,12 @@ struct CreateAccountView: View {
                 if let uiImage = image {
                     Image(uiImage: uiImage)
                         .resizable()
-                        .frame(width: 200, height: 200)
+                        .frame(width: 100, height: 100)
                         .clipShape(Circle())
                 } else {
                     Image(systemName: "person.fill")
-//                        .font(.system(size: 200))
                         .resizable()
-                        .frame(width: 200, height: 200)
+                        .frame(width: 100, height: 100)
                         .clipShape(Circle())
                 }
                 Spacer().frame(height: 32)
@@ -42,10 +43,10 @@ struct CreateAccountView: View {
                     Text("フォトライブラリから選択")
                 }
             }
-            .frame(height: 300)
             .sheet(isPresented: $showingImagePicker) {
                 ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
             }
+            Spacer().frame(height: 32)
             
             Form{
                 Section(){
@@ -69,17 +70,11 @@ struct CreateAccountView: View {
                         isAlert = true
                         return
                     }
-                    AuthHelper().createAccount(email: emailFeild, password: passwordFeild, result: {
-                        success in
-                        if success {
-                            DatabaseHelper().resisterUserInfo(name: self.nameFeild, image: self.image,result: {result in
-                                print(result)
-                                errorMessage = "画像登録に失敗しました"
-                                isAlert = true
-                            })
-                            presentationMode.wrappedValue.dismiss()
+                    auth.createAccount(emailFeild, passwordFeild, nameFeild, image, errorResult: { error in
+                        if error == nil {
+                            self.isActive = true
                         } else {
-                            errorMessage = "有効なメールアドレス、6文字以上のパスワードを設定してください。"
+                            errorMessage = error!
                             isAlert = true
                         }
                     })
@@ -97,8 +92,8 @@ struct CreateAccountView: View {
 }
 
 
-struct CreateAccountView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateAccountView()
-    }
-}
+//struct CreateAccountView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CreateAccountView()
+//    }
+//}

@@ -1,6 +1,6 @@
 //
-//  DatabaseHelper.swift
-//  zoqs_sns
+// 主にfirestore,storageのAPIを叩く場所
+//
 //
 //  Created by 島田将太郎 on 2023/01/14.
 //
@@ -66,23 +66,56 @@ struct DatabaseHelper {
             }
         })
     }
+    
+    func getUserData(userID:String,result:@escaping([String : Any]?) -> Void) {
+        db.collection("user").document(userID).getDocument(completion: { (doc, error) in
+            if let data = doc?.data() {
+                result(data)
+            } else {
+                result(nil)
+            }
+        })
+    }
 
-    func resisterUserInfo(name:String,image:UIImage?,result:@escaping(Any) -> Void){
+
+    func resisterUserInfo(name:String,image:UIImage?,result:@escaping(Bool) -> Void){
         db.collection("user").document(uid).setData(["name":name])
 //        let resized = image.resize(toWidth: 300)
-        guard let imageData = image?.jpegData(compressionQuality:1) else { return }
+        guard let imageData = image?.jpegData(compressionQuality:1) else {
+            result(true)
+            return
+        }
         storage.child("image/\(uid).jpeg").putData(imageData, metadata: nil){ (metadata, error) in
-            if let error = error {
+            if error != nil {
+                print("画像登録に失敗した！！！", error!)
+                result(false)
+            } else {
+                print("画像登録に成功！")
+                result(true)
+            }
+        }
+    }
+    
+    func editUserInfo(name:String,image:UIImage?,result:@escaping(String?) -> Void){
+        db.collection("user").document(uid).setData(["name":name])
+//        let resized = image.resize(toWidth: 300)
+        guard let imageData = image?.jpegData(compressionQuality:1) else {
+            result("画像が設定されていません")
+            return
+        }
+        storage.child("image/\(uid).jpeg").putData(imageData, metadata: nil){ (metadata, error) in
+            if error != nil {
                 print("画像登録に失敗した！！！")
-                result(error)
-                return
+                result(nil)
+            } else{
+                result("画像の更新に成功！！")
             }
         }
     }
 
     func getImage(userID:String,imageView:UIImageView){
         let imageRef = storage.child("image/"+userID+".jpeg")
-        imageRef.getData(maxSize: 2 * 1024 * 1024) { data, error in
+        imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
             if let error = error {
                 print(error)
             } else {
@@ -100,7 +133,7 @@ struct DatabaseHelper {
     
     func getImageData(userID:String, result:@escaping(Data?) -> Void){
         let imageRef = storage.child("image/"+userID+".jpeg")
-        imageRef.getData(maxSize: 2 * 1024 * 1024) { data, error in
+        imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
             if let error = error {
                 print(error)
             }

@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct LoginView: View {
-    
+    @Binding var isActive: Bool
     @Environment(\.presentationMode) var presentationMode
+    
+    let auth = AuthViewModel()
     @State private var emailFeild = ""
     @State private var passwordFeild = ""
     @State private var isAlert = false
@@ -30,11 +32,9 @@ struct LoginView: View {
             }
             VStack{
                 Button("ログイン"){
-                    AuthHelper().login(email: emailFeild, password: passwordFeild, result: {
-                        success in
+                    auth.login(emailFeild, passwordFeild, result: { success in
                         if success {
-                            print("ログイン成功")
-                            presentationMode.wrappedValue.dismiss()
+                            self.isActive = true
                         } else {
                             errorMessage = "メールアドレス、またはパスワードが間違っています。"
                             isAlert = true
@@ -49,26 +49,21 @@ struct LoginView: View {
         }
         .onAppear{
             if AuthHelper().uid() != "" {
-                presentationMode.wrappedValue.dismiss()
+                self.isActive = true
             }
         }
         .alert(isPresented: $isAlert){
             Alert(title: Text("エラー"),message: Text(errorMessage))
         }
         .fullScreenCover(isPresented: $toCreateAccount) {
-            CreateAccountView()
-            .onDisappear {
-                if AuthHelper().uid() != "" {
-                    presentationMode.wrappedValue.dismiss()
-                }
-            }
+            CreateAccountView(isActive: $isActive)
         }
     }
     
 }
 
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
-    }
-}
+//struct LoginView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        LoginView()
+//    }
+//}

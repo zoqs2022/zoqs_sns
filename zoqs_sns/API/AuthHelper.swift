@@ -1,6 +1,6 @@
 //
-//  AuthHelper.swift
-//  zoqs_sns
+//  主にfirebase_authenticationのAPIを叩く場所
+//
 //
 //  Created by 島田将太郎 on 2023/01/14.
 //

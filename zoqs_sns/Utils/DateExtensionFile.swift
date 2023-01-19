@@ -1,6 +1,6 @@
 //
-//  DateExtensionFile.swift
-//  zoqs_sns
+//　Date型の拡張を行なってる
+//
 //
 //  Created by 島田将太郎 on 2022/12/20.
 //

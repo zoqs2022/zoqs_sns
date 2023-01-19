@@ -14,7 +14,7 @@
 		2110E71229726E6700D55754 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2110E71129726E6700D55754 /* LoginView.swift */; };
 		2110E7162972935300D55754 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2110E7152972935300D55754 /* CreateAccountView.swift */; };
 		21526CE3294DB3EA00F41B2E /* zoqs_snsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21526CE2294DB3EA00F41B2E /* zoqs_snsApp.swift */; };
-		21526CE5294DB3EA00F41B2E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21526CE4294DB3EA00F41B2E /* ContentView.swift */; };
+		21526CE5294DB3EA00F41B2E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21526CE4294DB3EA00F41B2E /* MainView.swift */; };
 		21526CE7294DB3EB00F41B2E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21526CE6294DB3EB00F41B2E /* Assets.xcassets */; };
 		21526CEA294DB3EB00F41B2E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21526CE9294DB3EB00F41B2E /* Preview Assets.xcassets */; };
 		21526CF4294DB3EB00F41B2E /* zoqs_snsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21526CF3294DB3EB00F41B2E /* zoqs_snsTests.swift */; };
@@ -23,6 +23,12 @@
 		21AF04192952015400B8E556 /* DateExtensionFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21AF04182952015400B8E556 /* DateExtensionFile.swift */; };
 		21AF041A2952029800B8E556 /* DAYS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14C2991294DCFC9000DCBB7 /* DAYS.swift */; };
 		21B32CBB29730A470077CC58 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B32CBA29730A470077CC58 /* ImagePicker.swift */; };
+		21B32CBD2973DCB20077CC58 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B32CBC2973DCB20077CC58 /* EditProfileView.swift */; };
+		21C18C6229744A34008D4AC2 /* UserDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C18C6129744A34008D4AC2 /* UserDataModel.swift */; };
+		21C18C6E297472BF008D4AC2 /* UserDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C18C6D297472BF008D4AC2 /* UserDataViewModel.swift */; };
+		21C18C7029770C80008D4AC2 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C18C6F29770C80008D4AC2 /* AuthViewModel.swift */; };
+		21C6C7462979252500F31D23 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C6C7452979252500F31D23 /* MenuView.swift */; };
+		21C6C74829792C4C00F31D23 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C6C74729792C4C00F31D23 /* ContentView.swift */; };
 		E1121820295289DE004192EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E112181F295289DD004192EE /* GoogleService-Info.plist */; };
 		E112182329528B69004192EE /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = E112182229528B69004192EE /* FirebaseAnalytics */; };
 		E112182529528B69004192EE /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E112182429528B69004192EE /* FirebaseAuth */; };
@@ -61,7 +67,7 @@
 		2110E7152972935300D55754 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		21526CDF294DB3EA00F41B2E /* zoqs_sns.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zoqs_sns.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21526CE2294DB3EA00F41B2E /* zoqs_snsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = zoqs_snsApp.swift; sourceTree = "<group>"; };
-		21526CE4294DB3EA00F41B2E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		21526CE4294DB3EA00F41B2E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		21526CE6294DB3EB00F41B2E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		21526CE9294DB3EB00F41B2E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		21526CEF294DB3EB00F41B2E /* zoqs_snsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = zoqs_snsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +77,12 @@
 		21526CFF294DB3EB00F41B2E /* zoqs_snsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = zoqs_snsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		21AF04182952015400B8E556 /* DateExtensionFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensionFile.swift; sourceTree = "<group>"; };
 		21B32CBA29730A470077CC58 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		21B32CBC2973DCB20077CC58 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		21C18C6129744A34008D4AC2 /* UserDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataModel.swift; sourceTree = "<group>"; };
+		21C18C6D297472BF008D4AC2 /* UserDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataViewModel.swift; sourceTree = "<group>"; };
+		21C18C6F29770C80008D4AC2 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		21C6C7452979252500F31D23 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		21C6C74729792C4C00F31D23 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E112181F295289DD004192EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E14C298F294DCF63000DCBB7 /* NIKKI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NIKKI.swift; sourceTree = "<group>"; };
 		E14C2991294DCFC9000DCBB7 /* DAYS.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = DAYS.swift; sourceTree = "<group>"; usesTabs = 0; wrapsLines = 0; };
@@ -144,21 +156,15 @@
 		21526CE1294DB3EA00F41B2E /* zoqs_sns */ = {
 			isa = PBXGroup;
 			children = (
-				E112181F295289DD004192EE /* GoogleService-Info.plist */,
-				21526CE2294DB3EA00F41B2E /* zoqs_snsApp.swift */,
-				21526CE4294DB3EA00F41B2E /* ContentView.swift */,
+				21C18C6C29746DD6008D4AC2 /* Utils */,
+				21C18C6B29746DC1008D4AC2 /* API */,
+				21C18C6A29746D9F008D4AC2 /* ViewModel */,
+				21C18C6929746C6B008D4AC2 /* Model */,
+				21C18C6329746963008D4AC2 /* View */,
 				21526CE6294DB3EB00F41B2E /* Assets.xcassets */,
+				21526CE2294DB3EA00F41B2E /* zoqs_snsApp.swift */,
+				E112181F295289DD004192EE /* GoogleService-Info.plist */,
 				21526CE8294DB3EB00F41B2E /* Preview Content */,
-				E1756D1C294DC96600C1D624 /* SNS.swift */,
-				E14C298F294DCF63000DCBB7 /* NIKKI.swift */,
-				E14C2991294DCFC9000DCBB7 /* DAYS.swift */,
-				E14C2993294DD1C5000DCBB7 /* PHOTO.swift */,
-				21AF04182952015400B8E556 /* DateExtensionFile.swift */,
-				2110E70829726B8500D55754 /* AuthHelper.swift */,
-				2110E70A29726BB600D55754 /* DatabaseHelper.swift */,
-				2110E71129726E6700D55754 /* LoginView.swift */,
-				2110E7152972935300D55754 /* CreateAccountView.swift */,
-				21B32CBA29730A470077CC58 /* ImagePicker.swift */,
 			);
 			path = zoqs_sns;
 			sourceTree = "<group>";
@@ -186,6 +192,98 @@
 				21526CFF294DB3EB00F41B2E /* zoqs_snsUITestsLaunchTests.swift */,
 			);
 			path = zoqs_snsUITests;
+			sourceTree = "<group>";
+		};
+		21C18C6329746963008D4AC2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				21C6C74729792C4C00F31D23 /* ContentView.swift */,
+				21526CE4294DB3EA00F41B2E /* MainView.swift */,
+				21C6C7452979252500F31D23 /* MenuView.swift */,
+				21C18C6829746BDF008D4AC2 /* Login */,
+				21C18C6729746B5B008D4AC2 /* SNS */,
+				21C18C6629746B0B008D4AC2 /* Nikki */,
+				21C18C6529746AAF008D4AC2 /* Calendar */,
+				21C18C64297469EA008D4AC2 /* Profile */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		21C18C64297469EA008D4AC2 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				E14C2993294DD1C5000DCBB7 /* PHOTO.swift */,
+				21B32CBC2973DCB20077CC58 /* EditProfileView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		21C18C6529746AAF008D4AC2 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				E14C2991294DCFC9000DCBB7 /* DAYS.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		21C18C6629746B0B008D4AC2 /* Nikki */ = {
+			isa = PBXGroup;
+			children = (
+				E14C298F294DCF63000DCBB7 /* NIKKI.swift */,
+			);
+			path = Nikki;
+			sourceTree = "<group>";
+		};
+		21C18C6729746B5B008D4AC2 /* SNS */ = {
+			isa = PBXGroup;
+			children = (
+				E1756D1C294DC96600C1D624 /* SNS.swift */,
+			);
+			path = SNS;
+			sourceTree = "<group>";
+		};
+		21C18C6829746BDF008D4AC2 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				2110E71129726E6700D55754 /* LoginView.swift */,
+				2110E7152972935300D55754 /* CreateAccountView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		21C18C6929746C6B008D4AC2 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				21C18C6129744A34008D4AC2 /* UserDataModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		21C18C6A29746D9F008D4AC2 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				21C18C6D297472BF008D4AC2 /* UserDataViewModel.swift */,
+				21C18C6F29770C80008D4AC2 /* AuthViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		21C18C6B29746DC1008D4AC2 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				2110E70829726B8500D55754 /* AuthHelper.swift */,
+				2110E70A29726BB600D55754 /* DatabaseHelper.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		21C18C6C29746DD6008D4AC2 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				21B32CBA29730A470077CC58 /* ImagePicker.swift */,
+				21AF04182952015400B8E556 /* DateExtensionFile.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -340,11 +438,17 @@
 				E14C2990294DCF63000DCBB7 /* NIKKI.swift in Sources */,
 				E1756D1D294DC96600C1D624 /* SNS.swift in Sources */,
 				21AF04192952015400B8E556 /* DateExtensionFile.swift in Sources */,
-				21526CE5294DB3EA00F41B2E /* ContentView.swift in Sources */,
+				21526CE5294DB3EA00F41B2E /* MainView.swift in Sources */,
+				21C6C7462979252500F31D23 /* MenuView.swift in Sources */,
 				2110E70929726B8500D55754 /* AuthHelper.swift in Sources */,
 				E14C2994294DD1C5000DCBB7 /* PHOTO.swift in Sources */,
 				21B32CBB29730A470077CC58 /* ImagePicker.swift in Sources */,
+				21C18C6E297472BF008D4AC2 /* UserDataViewModel.swift in Sources */,
 				2110E71229726E6700D55754 /* LoginView.swift in Sources */,
+				21C18C7029770C80008D4AC2 /* AuthViewModel.swift in Sources */,
+				21C6C74829792C4C00F31D23 /* ContentView.swift in Sources */,
+				21C18C6229744A34008D4AC2 /* UserDataModel.swift in Sources */,
+				21B32CBD2973DCB20077CC58 /* EditProfileView.swift in Sources */,
 				21526CE3294DB3EA00F41B2E /* zoqs_snsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -504,6 +608,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"zoqs_sns/Preview Content\"";
+				DEVELOPMENT_TEAM = 672A8YKW9G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -532,6 +637,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"zoqs_sns/Preview Content\"";
+				DEVELOPMENT_TEAM = 672A8YKW9G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

@@ -1,6 +1,6 @@
 //
-//  zoqs_snsApp.swift
-//  zoqs_sns
+//  初期設定などを書いてる
+//
 //
 //  Created by 島田将太郎 on 2022/12/17.
 //
@@ -25,11 +25,21 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct zoqs_snsApp: App {
     // register app delegate for Firebase setup  firebase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
+    @State private var isActive = false
 
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                ContentView()
+                
+                if isActive {
+                    ContentView(isActive: $isActive)
+                } else {
+                    LoginView(isActive: $isActive)
+                }
+                
+            }.onAppear{
+                isActive = (AuthHelper().uid() != "")
             }
         }
     }
