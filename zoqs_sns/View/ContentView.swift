@@ -14,13 +14,18 @@ struct ContentView: View {
     // xOffset変数で画面の横のオフセットを保持します
     @State private var xOffset = CGFloat.zero
     @State private var defaultOffset = CGFloat.zero
+    @State private var variableOffset = CGFloat.zero
     
     private var dragGesture: some Gesture {
-        DragGesture(minimumDistance: 10,coordinateSpace: .local)
+        DragGesture(minimumDistance: 10, coordinateSpace: .local)
             // スワイプが検知されたときの動きを実装します
-//            .onChanged{ value in
-//
-//            }
+            .onChanged{ value in
+                if (self.xOffset != .zero && value.translation.width > 0 && self.xOffset <= 0) {
+                    self.xOffset = self.variableOffset + value.translation.width
+                } else if (self.xOffset != self.defaultOffset && value.translation.width < 0 && self.xOffset >= self.defaultOffset) {
+                    self.xOffset = self.variableOffset + value.translation.width
+                }
+            }
         
             // スワイプが終了したときの動きを実装します
             .onEnded { value in
@@ -31,9 +36,12 @@ struct ContentView: View {
                     // すなわちスライドメニューを隠します
                     if (value.translation.width > 5) {
                         self.xOffset = .zero
+                        self.variableOffset = .zero
                     } else {
                         self.xOffset = self.defaultOffset
+                        self.variableOffset = self.defaultOffset
                     }
+
                 }
             }
     }
@@ -54,6 +62,7 @@ struct ContentView: View {
                 .onAppear(perform: {
                     self.xOffset = geometry.size.width * -0.7
                     self.defaultOffset = self.xOffset
+                    self.variableOffset = self.xOffset
                 })
                 .offset(x: self.xOffset)
                 // 画面サイズを明示します
