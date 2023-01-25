@@ -114,12 +114,13 @@ struct DAYS: View {
                 }.padding(.horizontal, 10)//月の前後ボタンとカレンダーのvstack
                 
                 
+           
                 
                 //思い出表示部分
                 ZStack{
                     Rectangle()
-                        .fill(Color.mint.opacity(0.2))
-                    VStack(alignment: .leading){
+                        .fill(Color.cyan.opacity(0.5))
+                    VStack(){
                         VStack{//日付と日記
                             Text("Memory in   \(textMonth).\(textDay).\(textYear)").font(.title2).fontWeight(.bold).padding()
                             
@@ -136,13 +137,12 @@ struct DAYS: View {
                         
                         HStack(alignment: .top){//メタ情報
                             VStack(alignment: .leading){
-                                Text("feeling").font(.headline)
-                                Text("with").font(.headline)
-                                Text("at").font(.headline)
-                                Text("play music").font(.headline)
-                                Text("contact").font(.headline)
-                                Text("sns").font(.headline)
-                                
+                                Text("feeling").font(.headline).foregroundColor(.cyan)
+                                Text("with").font(.headline).foregroundColor(.cyan)
+                                Text("at").font(.headline).foregroundColor(.cyan)
+                                Text("play music").font(.headline).foregroundColor(.cyan)
+                                Text("contact").font(.headline).foregroundColor(.cyan)
+                                Text("sns").font(.headline).foregroundColor(.cyan)
                             }
                             VStack(alignment: .leading){
                                 Text("😀")
@@ -153,7 +153,7 @@ struct DAYS: View {
                                 Text("他のsnsの投稿を見れる")
                                 
                             }
-                        }.padding()
+                        }.padding().background(Color.white).padding()
                     }//.padding().background(Color.mint.opacity(0.2)).padding()//日記表示全体のvstack,textとif
                 }//zstack、背景と日記
                 

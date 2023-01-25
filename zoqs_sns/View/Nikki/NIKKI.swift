@@ -11,19 +11,44 @@ struct NIKKI: View {
     
     @State var text: String = ""
     
+    
+    @State private var image: UIImage?
+    @State var showingImagePicker = false
+    
+    
     var body: some View {
         
         VStack {
             // 入力
             TextEditor(text: $text)
-            // 表示
-            Text(text)
-                .foregroundColor(.red)
-                .lineLimit(nil)
-                .padding(5)
-        }
+                
+            
+            HStack{
+                Button(action: {
+                    showingImagePicker = true
+                }) {
+                    Image(systemName: "photo")
+                }
+            }
+            .sheet(isPresented: $showingImagePicker) {
+                ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
+            }
+        }.background(Color.cyan)
+        
+        
+        
+        
+        
     }
 }
+
+
+
+
+
+
+
+
 
 struct NIKKI_Previews: PreviewProvider {
     static var previews: some View {

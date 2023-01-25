@@ -6,6 +6,34 @@
 //
 
 import SwiftUI
+import Charts
+
+
+
+
+//グラフのサンプルデータ
+struct SampleData: Identifiable {
+    var id: String { name }    //
+    let name: String    //横軸
+    let amount: Double    //縦軸
+    let from: String    //グラフ名
+}
+let sampleData: [SampleData] = [
+    .init(name: "2月", amount: 50, from: "feeling"),
+    .init(name: "4月", amount: 60, from: "feeling"),
+    .init(name: "6月", amount: 65, from: "feeling"),
+    .init(name: "8月", amount: 58, from: "feeling"),
+    .init(name: "10月", amount: 52,from: "feeling"),
+    .init(name: "12月", amount: 46,from: "feeling"),
+    .init(name: "2月", amount: 54, from: "体重"),
+    .init(name: "4月", amount: 55, from: "体重"),
+    .init(name: "6月", amount: 58, from: "体重"),
+    .init(name: "8月", amount: 60, from: "体重"),
+    .init(name: "10月", amount: 54, from: "体重"),
+    .init(name: "12月", amount: 53, from: "体重")
+]
+
+
 
 
 
@@ -17,7 +45,7 @@ struct PHOTO: View {
     @State private var toEditProfile = false
     
     
-    @State var focusDate: Int = 0
+    @State var focusDate: Int = 1
     
     
     var body: some View {
@@ -81,21 +109,16 @@ struct PHOTO: View {
                 
                 
                 
-                
+                //インスタのストーリーみたいなやつ
                 ScrollView(.horizontal){
                     HStack{
                         ForEach(1..<10){ index in
                             Image("flower")
                                 .resizable()//.scaledToFit()
                                 .overlay(
-                                    // Instagramらしいグラデーション色に!!
                                     Circle().stroke(LinearGradient(gradient: Gradient(colors: [.cyan, .purple, .blue]), startPoint: .bottomLeading, endPoint: .topTrailing), lineWidth: 5))
                                 .frame(width: 100, height: 100)
                                 .clipShape(Circle())
-//                                .frame(width: 100, height: 100)
-//                                .clipShape(Circle())
-//                                .overlay(RoundedRectangle(cornerRadius: 50)//写真の縁取り、枠を円にする
-//                                    .stroke(Color.cyan,lineWidth: 2))
                                 .onTapGesture {
                                     focusDate = index
                                 }
@@ -104,24 +127,12 @@ struct PHOTO: View {
                 }
                 
                 
-                
-                ZStack{
-                    Rectangle()
-                        .fill(Color.gray)
-                        .frame(height:150)
-                    VStack{
-                        Text("地図表示").frame(alignment:.topLeading)
-                        Text("〇〇年○月○日")
-                    }
-                }
-               
-                
-                
+              
                 
                 //思い出表示部分
                 ZStack{
                     Rectangle()
-                        .fill(Color.mint.opacity(0.2))
+                        .fill(Color.cyan.opacity(0.3))
                     VStack(alignment: .leading){
                         VStack{//日付と日記
                             //Text("Memory in   \(textMonth).\(textDay).\(textYear)").font(.title2).fontWeight(.bold).padding(.bottom,10)
@@ -154,12 +165,77 @@ struct PHOTO: View {
                                 Text("他のsnsの投稿を見れる")
                                 
                             }
-                        }
+                        }.padding()
                     }//日記表示全体のvstack,textとif
                 }//背景色と日記のzstak
                 
                 
-                Spacer()
+                
+                
+                //グラフ
+                VStack{
+                    Text("My推移").font(.headline)
+    
+                    Chart(sampleData) { data in
+                        LineMark(
+                            x: .value("Name", data.name),
+                            y: .value("Amount", data.amount)
+                        )
+                        .foregroundStyle(by: .value("Form", data.from))
+                        .lineStyle(StrokeStyle(lineWidth: 1))
+                    }
+                    .frame(height: 250)
+                    .padding()
+                    .background(Color.white)
+                    
+                }
+               
+                
+                //〇〇ランキング
+                ZStack{
+                    Rectangle()
+                        .fill(Color.cyan.opacity(0.5))
+                    VStack{
+                        Text("Myタグ使用ランキング").font(.headline)
+                        VStack{
+                            ForEach(0..<5, id:\.self) { index in
+                                HStack{
+                                    ZStack{
+                                        Circle().fill(Color.white).frame(width:20,height: 20)
+                                        Text(String(index+1)).foregroundColor(.cyan)
+                                    }
+                                    Text("#ラーメン")
+                                    Text("35回")
+                                }
+                            }//foreach
+                        }//vstack
+                    }.padding()//vstack
+                }//zstack
+                
+                
+                //〇〇ランキング
+                ZStack{
+                    Rectangle()
+                        .fill(Color.cyan.opacity(0.5))
+                    VStack{
+                        Text("Myスポットランキング").font(.headline)
+                        VStack{
+                            ForEach(0..<5, id:\.self) { index in
+                                HStack{
+                                    ZStack{
+                                        Circle().fill(Color.white).frame(width:20,height: 20)
+                                        Text(String(index+1)).foregroundColor(.cyan)
+                                    }
+                                    Text("#大学")
+                                    Text("154回")
+                                }
+                            }//foreach
+                        }//vstack
+                    }.padding()//vstack
+                }//zstack
+                
+                
+           
             }
             .sheet(isPresented: $toEditProfile) {
                 EditProfileView(userData: userData)
