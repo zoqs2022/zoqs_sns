@@ -8,10 +8,19 @@
 import SwiftUI
 
 struct NIKKI: View {
+    
+    @State var text: String = ""
+    
     var body: some View {
-        VStack{
-            Text("日記投稿画面")
-            Text("書きやすさ続けやすさメイン")
+        
+        VStack {
+            // 入力
+            TextEditor(text: $text)
+            // 表示
+            Text(text)
+                .foregroundColor(.red)
+                .lineLimit(nil)
+                .padding(5)
         }
     }
 }

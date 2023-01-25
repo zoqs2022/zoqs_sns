@@ -197,7 +197,6 @@
 		21C18C6329746963008D4AC2 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				21C6C74729792C4C00F31D23 /* ContentView.swift */,
 				21526CE4294DB3EA00F41B2E /* MainView.swift */,
 				21C6C7452979252500F31D23 /* MenuView.swift */,
 				21C18C6829746BDF008D4AC2 /* Login */,
@@ -237,6 +236,7 @@
 		21C18C6729746B5B008D4AC2 /* SNS */ = {
 			isa = PBXGroup;
 			children = (
+				21C6C74729792C4C00F31D23 /* ContentView.swift */,
 				E1756D1C294DC96600C1D624 /* SNS.swift */,
 			);
 			path = SNS;
