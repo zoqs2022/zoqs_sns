@@ -17,23 +17,39 @@ struct NIKKI: View {
     
     
     var body: some View {
-        
-        VStack {
-            // 入力
-            TextEditor(text: $text)
-                
+        ZStack{
             
-            HStack{
-                Button(action: {
-                    showingImagePicker = true
-                }) {
-                    Image(systemName: "photo")
+            //backgroundcolor
+            LinearGradient(gradient: Gradient(colors: [.mint, .cyan, .blue]), startPoint: .top, endPoint: .bottom)
+                .ignoresSafeArea()
+            
+            
+            //メイン
+            VStack {
+                Text("Write today's memory")
+                    .font(.system(size:30,weight: .heavy))
+                    .foregroundColor(.white)
+                // 入力
+                TextEditor(text: $text)
+                    .frame(height: 400)
+                    .padding()
+                
+                
+                HStack{
+                    Button(action: {
+                        showingImagePicker = true
+                    }) {
+                        Image(systemName: "photo")
+                            .resizable()
+                            .scaledToFit()//縦横比維持
+                            .frame(width: 100)
+                    }
+                }
+                .sheet(isPresented: $showingImagePicker) {
+                    ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
                 }
             }
-            .sheet(isPresented: $showingImagePicker) {
-                ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
-            }
-        }.background(Color.cyan)
+        }
         
         
         

@@ -131,8 +131,7 @@ struct PHOTO: View {
                 
                 //思い出表示部分
                 ZStack{
-                    Rectangle()
-                        .fill(Color.cyan.opacity(0.3))
+                    LinearGradient(gradient: Gradient(colors: [.cyan.opacity(0.3), .cyan]), startPoint: .top, endPoint: .bottom)
                     VStack(alignment: .leading){
                         VStack{//日付と日記
                             //Text("Memory in   \(textMonth).\(textDay).\(textYear)").font(.title2).fontWeight(.bold).padding(.bottom,10)
