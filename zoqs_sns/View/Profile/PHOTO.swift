@@ -110,131 +110,18 @@ struct PHOTO: View {
                 
                 
                 //インスタのストーリーみたいなやつ
-                ScrollView(.horizontal){
-                    HStack{
-                        ForEach(1..<10){ index in
-                            Image("flower")
-                                .resizable()//.scaledToFit()
-                                .overlay(
-                                    Circle().stroke(LinearGradient(gradient: Gradient(colors: [.cyan, .purple, .blue]), startPoint: .bottomLeading, endPoint: .topTrailing), lineWidth: 5))
-                                .frame(width: 100, height: 100)
-                                .clipShape(Circle())
-                                .onTapGesture {
-                                    focusDate = index
-                                }
-                        }
-                    }
-                }
-                
-                
-              
+                Story(focusDate: $focusDate)
                 
                 //思い出表示部分
-                ZStack{
-                    LinearGradient(gradient: Gradient(colors: [.cyan.opacity(0.3), .cyan]), startPoint: .top, endPoint: .bottom)
-                    VStack(alignment: .leading){
-                        VStack{//日付と日記
-                            //Text("Memory in   \(textMonth).\(textDay).\(textYear)").font(.title2).fontWeight(.bold).padding(.bottom,10)
-                            Text("Memory in   \(focusDate)番目の写真の日付").font(.title2).fontWeight(.bold).padding()
-                            
-                            VStack{
-                                Text("日記の表示")
-                                Image("flower")
-                                    .resizable()
-                                    .scaledToFit()//縦横比維持
-                                    .frame(width: 200)
-                            }
-                            
-                        }
-                        
-                        HStack(alignment: .top){//メタ情報
-                            VStack(alignment: .leading){
-                                Text("with").font(.headline)
-                                Text("at").font(.headline)
-                                Text("play music").font(.headline)
-                                Text("contact").font(.headline)
-                                Text("sns").font(.headline)
-                                
-                            }
-                            VStack(alignment: .leading){
-                                Text("alone")
-                                Text("ドイツ")
-                                Text("Norwegian Wood")
-                                Text("連絡を取った人のリスト")
-                                Text("他のsnsの投稿を見れる")
-                                
-                            }
-                        }.padding()
-                    }//日記表示全体のvstack,textとif
-                }//背景色と日記のzstak
-                
-                
-                
+                Memory(focusDate: $focusDate)
                 
                 //グラフ
-                VStack{
-                    Text("My推移").font(.headline)
-    
-                    Chart(sampleData) { data in
-                        LineMark(
-                            x: .value("Name", data.name),
-                            y: .value("Amount", data.amount)
-                        )
-                        .foregroundStyle(by: .value("Form", data.from))
-                        .lineStyle(StrokeStyle(lineWidth: 1))
-                    }
-                    .frame(height: 250)
-                    .padding()
-                    .background(Color.white)
-                    
-                }
-               
+                graph()
                 
                 //〇〇ランキング
-                ZStack{
-                    Rectangle()
-                        .fill(Color.cyan.opacity(0.5))
-                    VStack{
-                        Text("Myタグ使用ランキング").font(.headline)
-                        VStack{
-                            ForEach(0..<5, id:\.self) { index in
-                                HStack{
-                                    ZStack{
-                                        Circle().fill(Color.white).frame(width:20,height: 20)
-                                        Text(String(index+1)).foregroundColor(.cyan)
-                                    }
-                                    Text("#ラーメン")
-                                    Text("35回")
-                                }
-                            }//foreach
-                        }//vstack
-                    }.padding()//vstack
-                }//zstack
+                Ranking()
                 
                 
-                //〇〇ランキング
-                ZStack{
-                    Rectangle()
-                        .fill(Color.cyan.opacity(0.5))
-                    VStack{
-                        Text("Myスポットランキング").font(.headline)
-                        VStack{
-                            ForEach(0..<5, id:\.self) { index in
-                                HStack{
-                                    ZStack{
-                                        Circle().fill(Color.white).frame(width:20,height: 20)
-                                        Text(String(index+1)).foregroundColor(.cyan)
-                                    }
-                                    Text("#大学")
-                                    Text("154回")
-                                }
-                            }//foreach
-                        }//vstack
-                    }.padding()//vstack
-                }//zstack
-                
-                
-           
             }
             .sheet(isPresented: $toEditProfile) {
                 EditProfileView(userData: userData)
@@ -247,12 +134,149 @@ struct PHOTO: View {
 
 
 
+struct Story : View {
+    
+    @Binding var focusDate:Int
+    
+    var body: some View {
+        //インスタのストーリーみたいなやつ
+        ScrollView(.horizontal){
+            HStack{
+                ForEach(1..<10){ index in
+                    Image("flower")
+                        .resizable()//.scaledToFit()
+                        .overlay(
+                            Circle().stroke(LinearGradient(gradient: Gradient(colors: [.cyan, .purple, .blue]), startPoint: .bottomLeading, endPoint: .topTrailing), lineWidth: 5))
+                        .frame(width: 100, height: 100)
+                        .clipShape(Circle())
+                        .onTapGesture {
+                            focusDate = index
+                        }
+                }
+            }
+        }
+    }
+}
+
+
+struct graph :View {
+    var body: some View {
+        //グラフ
+        VStack{
+            Text("My推移").font(.headline)
+            
+            Chart(sampleData) { data in
+                LineMark(
+                    x: .value("Name", data.name),
+                    y: .value("Amount", data.amount)
+                )
+                .foregroundStyle(by: .value("Form", data.from))
+                .lineStyle(StrokeStyle(lineWidth: 1))
+            }
+            .frame(height: 250)
+            .padding()
+            .background(Color.white)
+            
+        }
+        
+    }
+}
 
 
 
 
-struct PHOTO_Previews: PreviewProvider {
-    static var previews: some View {
-        PHOTO(userData: UserDataViewModel(model: UserDataModel()))
+struct Memory : View {
+    
+    @Binding var focusDate:Int
+    
+    var body: some View {
+        //思い出表示部分
+        ZStack{
+            LinearGradient(gradient: Gradient(colors: [.cyan.opacity(0.3), .cyan]), startPoint: .top, endPoint: .bottom)
+            VStack(){
+                VStack{//日付と日記
+                    Text("Memory in   \(focusDate) photo").font(.title2).fontWeight(.bold).padding()
+                    
+                    VStack{
+                        Text("日記の表示")
+                        Image("flower")
+                            .resizable()
+                            .scaledToFit()//縦横比維持
+                            .frame(width: 200)
+                    }
+                    
+                }
+                
+                HStack(alignment: .top){//メタ情報
+                    VStack(alignment: .leading){
+                        Text("with").font(.headline)
+                        Text("at").font(.headline)
+                        Text("play music").font(.headline)
+                        Text("contact").font(.headline)
+                        Text("sns").font(.headline)
+                        
+                    }
+                    VStack(alignment: .leading){
+                        Text("alone")
+                        Text("ドイツ")
+                        Text("Norwegian Wood")
+                        Text("連絡を取った人のリスト")
+                        Text("他のsnsの投稿を見れる")
+                        
+                    }
+                }.padding()
+            }//日記表示全体のvstack,textとif
+        }//背景色と日記のzstak
+    }
+}
+
+
+
+struct Ranking : View {
+    var body: some View {
+        //〇〇ランキング
+        ZStack{
+            Rectangle()
+                .fill(Color.cyan.opacity(0.5))
+            VStack{
+                Text("Myタグ使用ランキング").font(.headline)
+                VStack{
+                    ForEach(0..<5, id:\.self) { index in
+                        HStack{
+                            ZStack{
+                                Circle().fill(Color.white).frame(width:20,height: 20)
+                                Text(String(index+1)).foregroundColor(.cyan)
+                            }
+                            Text("#ラーメン")
+                            Text("35回")
+                        }
+                    }//foreach
+                }//vstack
+            }.padding()//vstack
+        }//zstack
+        
+        
+        //〇〇ランキング
+        ZStack{
+            Rectangle()
+                .fill(Color.cyan.opacity(0.5))
+            VStack{
+                Text("Myスポットランキング").font(.headline)
+                VStack{
+                    ForEach(0..<5, id:\.self) { index in
+                        HStack{
+                            ZStack{
+                                Circle().fill(Color.white).frame(width:20,height: 20)
+                                Text(String(index+1)).foregroundColor(.cyan)
+                            }
+                            Text("#大学")
+                            Text("154回")
+                        }
+                    }//foreach
+                }//vstack
+            }.padding()//vstack
+        }//zstack
+        
+        
     }
 }
