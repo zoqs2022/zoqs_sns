@@ -14,7 +14,7 @@ struct PostModel {
     var text: String = ""
     var userID: String = ""
     var date: String = ""
-    var userName: String = ""
+    var userName: String?
     var userImage: UIImage?
     var postImage: UIImage?
 }

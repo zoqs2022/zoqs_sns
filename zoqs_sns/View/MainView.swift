@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     @ObservedObject var userViewModel: UserViewModel
-//    @StateObject var postViewModel = PostViewModel(model: [PostModel()])
+    @StateObject var postViewModel = PostViewModel(model: [PostModel()])
     
     @Binding var isActive: Bool
     
@@ -31,7 +31,7 @@ struct MainView: View {
             TabView{
                 NavigationView{
                     ScrollView (.vertical, showsIndicators: false) {
-                        SNS()
+                        SNS(postViewModel: postViewModel)
                     }
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(
@@ -104,7 +104,9 @@ struct MainView: View {
                 }
             }
             .accentColor(.blue)
-            
+        }
+        .onAppear() {
+            self.postViewModel.getAllPostList()
         }
     }
 }

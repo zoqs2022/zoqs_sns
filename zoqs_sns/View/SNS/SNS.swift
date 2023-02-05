@@ -10,17 +10,17 @@ import FirebaseFirestore
 
 
 struct SNS: View {
-    @StateObject var viewModel = PostViewModel(model: [PostModel()])
+    @ObservedObject var postViewModel: PostViewModel
     
     var body: some View {
         VStack() {
-            ForEach(self.viewModel.posts, id: \.id) { (post) in
+            ForEach(self.postViewModel.posts, id: \.id) { (post) in
                 VStack(spacing: 5) {
                     HStack(alignment: .top) {
                         PhotoCircleView(image: post.userImage, diameter: 40)
                         VStack(alignment: .leading) {
                             HStack {
-                                Text(post.userName)
+                                Text(post.userName ?? "")
                                     .fontWeight(.bold)
                             }
                             Text(post.text)
@@ -36,14 +36,11 @@ struct SNS: View {
                 }
             }
         }
-        .onAppear() {
-            self.viewModel.getAllPostList()
-        }
     }
 }
 
-struct SNS_Previews: PreviewProvider {
-    static var previews: some View {
-        SNS()
-    }
-}
+//struct SNS_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SNS()
+//    }
+//}
