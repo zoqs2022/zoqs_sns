@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct MenuView: View {
-    @ObservedObject var userData: UserDataViewModel
+    @ObservedObject var userViewModel: UserViewModel
 
     var body: some View {
         VStack(alignment: .leading) {
-            if let uiImage = userData.uiImageData {
+            if let uiImage = userViewModel.uiImageData {
                 Image(uiImage: uiImage)
                     .resizable()
                     .overlay(

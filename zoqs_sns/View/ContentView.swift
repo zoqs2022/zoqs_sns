@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var userDataViewModel = UserDataViewModel(model: UserDataModel())
+    @StateObject var userViewModel = UserViewModel(model: UserModel())
     
     @Binding var isActive: Bool
     // xOffset変数で画面の横のオフセットを保持します
@@ -42,11 +42,11 @@ struct ContentView: View {
         // 画面サイズの取得にGeometoryReaderを利用します
         GeometryReader { geometry in
                 HStack(spacing: 0) {
-                    MenuView(userData: userDataViewModel)
+                    MenuView(userViewModel: userViewModel)
                         // 横幅は画面サイズの70%にします
                         .frame(width: geometry.size.width * 0.7)
                     Divider()
-                    MainView( userDataViewModel: userDataViewModel, isActive: $isActive, xOffset: $xOffset.animation(), defaultOffset: $defaultOffset.animation())
+                    MainView(userViewModel: userViewModel, isActive: $isActive, xOffset: $xOffset.animation(), defaultOffset: $defaultOffset.animation())
                         // 横幅は画面サイズの100%にします
                         .frame(width: geometry.size.width)
                 }
@@ -62,9 +62,9 @@ struct ContentView: View {
                     self.dragGesture
                 )
                 .onAppear {
-                    print("USER_ID: "+userDataViewModel.uid)
-                    userDataViewModel.getUserName()
-                    userDataViewModel.getUserImageData()
+                    print("USER_ID: "+userViewModel.uid)
+                    userViewModel.getUserName()
+                    userViewModel.getUserImageData()
                 }
         }
     }
