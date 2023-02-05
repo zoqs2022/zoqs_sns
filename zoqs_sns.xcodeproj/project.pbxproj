@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		210B9976298F87C60079660E /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210B9975298F87C60079660E /* PostViewModel.swift */; };
+		210B9978298F88190079660E /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210B9977298F88190079660E /* PostModel.swift */; };
 		2110E70929726B8500D55754 /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2110E70829726B8500D55754 /* AuthHelper.swift */; };
 		2110E70B29726BB600D55754 /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2110E70A29726BB600D55754 /* DatabaseHelper.swift */; };
 		2110E70E29726C4600D55754 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 2110E70D29726C4600D55754 /* FirebaseStorage */; };
@@ -61,6 +63,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		210B9975298F87C60079660E /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
+		210B9977298F88190079660E /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
 		2110E70829726B8500D55754 /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
 		2110E70A29726BB600D55754 /* DatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		2110E71129726E6700D55754 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -255,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				21C18C6129744A34008D4AC2 /* UserDataModel.swift */,
+				210B9977298F88190079660E /* PostModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -264,6 +269,7 @@
 			children = (
 				21C18C6D297472BF008D4AC2 /* UserDataViewModel.swift */,
 				21C18C6F29770C80008D4AC2 /* AuthViewModel.swift */,
+				210B9975298F87C60079660E /* PostViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -433,6 +439,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2110E7162972935300D55754 /* CreateAccountView.swift in Sources */,
+				210B9978298F88190079660E /* PostModel.swift in Sources */,
 				21AF041A2952029800B8E556 /* DAYS.swift in Sources */,
 				2110E70B29726BB600D55754 /* DatabaseHelper.swift in Sources */,
 				E14C2990294DCF63000DCBB7 /* NIKKI.swift in Sources */,
@@ -450,6 +457,7 @@
 				21C18C6229744A34008D4AC2 /* UserDataModel.swift in Sources */,
 				21B32CBD2973DCB20077CC58 /* EditProfileView.swift in Sources */,
 				21526CE3294DB3EA00F41B2E /* zoqs_snsApp.swift in Sources */,
+				210B9976298F87C60079660E /* PostViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,23 +16,15 @@ struct Timeline {
     let post_image: String
 }
 
-let timelines: [Timeline] = [
-    Timeline(id: 0, name: "Arupaka", image: "flower", post: "This is post content", post_image: "flower"),
-    Timeline(id: 1, name: "Buta", image: "flower", post: "This is post content", post_image: "flower"),
-    Timeline(id: 2, name: "Hamster", image: "flower", post: "This is post content", post_image: "flower"),
-    Timeline(id: 3, name: "Hiyoko", image: "flower", post: "This is post content", post_image: "flower"),
-    Timeline(id: 4, name: "Inu", image: "flower", post: "This is post content", post_image: "flower")
-]
-
 struct SNS: View {
-    @State var testArr:[String] = []
+    @StateObject var viewModel = PostViewModel(model: [PostModel()])
     
     var body: some View {
             VStack() {
-                ForEach(timelines, id: \.id) { (timeline) in
+                ForEach(self.viewModel.posts, id: \.id) { (post) in
                     VStack(spacing: 5) {
                         HStack(alignment: .top) {
-                            Image(timeline.image)
+                            Image("flower")
                                 .resizable()
                                 .clipShape(Circle())
                                 .overlay(
@@ -40,13 +32,13 @@ struct SNS: View {
                                 .frame(width: 40, height: 40)
                             VStack(alignment: .leading) {
                                 HStack {
-                                    Text(timeline.name)
+                                    Text(post.userID)
                                         .fontWeight(.bold)
-                                    Text("@\(timeline.name)")
-                                        .foregroundColor(.gray)
+//                                    Text("@\(timeline.name)")
+//                                        .foregroundColor(.gray)
                                 }
-                                Text(timeline.post)
-                                Image(timeline.post_image)
+                                Text(post.text)
+                                Image("flower")
                                     .resizable()
                                     .scaledToFill()
                                     .frame(height: 200)
@@ -57,6 +49,9 @@ struct SNS: View {
                         Divider()
                     }
                 }
+            }
+            .onAppear() {
+                self.viewModel.loadPosts()
             }
         }
 }
