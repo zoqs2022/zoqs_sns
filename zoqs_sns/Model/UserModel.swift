@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-struct UserDataModel {
+struct UserModel {
     var name: String = ""
     var imageData: UIImage?
     

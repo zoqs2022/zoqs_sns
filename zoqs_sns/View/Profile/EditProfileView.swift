@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EditProfileView: View {
-    @ObservedObject var userData: UserDataViewModel
+    @ObservedObject var userViewModel: UserViewModel
     
     @Environment(\.presentationMode) var presentationMode
     @State private var nameFeild = ""
@@ -23,17 +23,7 @@ struct EditProfileView: View {
     var body: some View {
         VStack{
             VStack {
-                if let uiImage = image {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .frame(width: 120, height: 120)
-                        .clipShape(Circle())
-                } else {
-                    Image(systemName: "person.fill")
-                        .resizable()
-                        .frame(width: 120, height: 120)
-                        .clipShape(Circle())
-                }
+                PhotoCircleView(image: image, diameter: 120)
                 Spacer().frame(height: 16)
                 Button(action: {
                     showingImagePicker = true
@@ -60,7 +50,7 @@ struct EditProfileView: View {
                             isAlert = true
                             return
                         }
-                        userData.updataUserData(nameFeild, image, errorResult: { error in
+                        userViewModel.updataUserData(nameFeild, image, errorResult: { error in
                             if error != nil {
                                 errorMessage = "画像登録に失敗しました"
                                 isAlert = true
@@ -81,8 +71,8 @@ struct EditProfileView: View {
             }
         }
         .onAppear{
-            nameFeild = userData.name
-            image = userData.uiImageData
+            nameFeild = userViewModel.name
+            image = userViewModel.uiImageData
         }
         .alert(isPresented: $isAlert){
             Alert(title: Text("エラー"),message: Text(errorMessage))
@@ -90,8 +80,8 @@ struct EditProfileView: View {
     }
 }
 
-struct EditProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        EditProfileView(userData: UserDataViewModel(model: UserDataModel()))
-    }
-}
+//struct EditProfileView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        EditProfileView(userViewModel: userViewModel(model: UserDataModel()))
+//    }
+//}
