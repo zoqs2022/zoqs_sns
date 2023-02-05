@@ -177,8 +177,9 @@ struct DatabaseHelper {
                     let data = doc.data()
                     guard let text = data["text"] as! String? else { break }
                     guard let userID = data["userID"] as! String? else { break }
+                    guard let userName = data["userName"] as! String? else { break }
                     guard let date = data["date"] as! String? else { break }
-                    postList.append(PostModel(id: id,text: text, userID: userID, date: date))
+                    postList.append(PostModel(id: id,text: text, userID: userID, date: date, userName: userName))
                 }
             }
             result(postList)

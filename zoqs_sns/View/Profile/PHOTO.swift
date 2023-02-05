@@ -38,7 +38,7 @@ let sampleData: [SampleData] = [
 
 
 struct PHOTO: View {
-    @ObservedObject var userData: UserDataViewModel
+    @ObservedObject var userDataViewModel: UserDataViewModel
     
     @State private var image: UIImage?
     @State var showingImagePicker = false
@@ -52,10 +52,10 @@ struct PHOTO: View {
         ScrollView{
             VStack{
                 HStack(){
-                    PhotoCircleView(image: userData.uiImageData, diameter: 80)
+                    PhotoCircleView(image: userDataViewModel.uiImageData, diameter: 80)
                     VStack(){
                         HStack{
-                            Text(userData.name).bold()
+                            Text(userDataViewModel.name).bold()
                             Spacer()
                             HStack(alignment: .center, spacing: 0){
                                 Button(action: {
@@ -112,7 +112,7 @@ struct PHOTO: View {
                 
             }
             .sheet(isPresented: $toEditProfile) {
-                EditProfileView(userData: userData)
+                EditProfileView(userDataViewModel: userDataViewModel)
             }
         }
     }

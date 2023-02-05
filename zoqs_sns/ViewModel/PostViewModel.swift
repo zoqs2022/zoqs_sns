@@ -27,6 +27,14 @@ class PostViewModel: ObservableObject {
     func getAllPostList() {
         DatabaseHelper().getPostList(result: { posts in
             self.posts = posts
+            posts.enumerated().forEach {
+                let index = $0.0
+                DatabaseHelper().getImageData(userID: $0.1.userID, result: { data in
+                    if let data = data {
+                        self.posts[index].userImage = UIImage(data: data)
+                    }
+                })
+            }
         })
     }
 }

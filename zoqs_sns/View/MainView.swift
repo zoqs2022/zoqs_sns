@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct MainView: View {
-    @ObservedObject var userData: UserDataViewModel
+    @ObservedObject var userDataViewModel: UserDataViewModel
+//    @StateObject var postViewModel = PostViewModel(model: [PostModel()])
+    
     @Binding var isActive: Bool
     
     @Binding var xOffset: CGFloat
@@ -34,7 +36,7 @@ struct MainView: View {
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(
                             leading: VStack{
-                                PhotoCircleView(image: userData.uiImageData, diameter: 30)
+                                PhotoCircleView(image: userDataViewModel.uiImageData, diameter: 30)
                             },
                             trailing: HStack{
                                 Image(systemName: "sparkles")
@@ -81,7 +83,7 @@ struct MainView: View {
                     }
                 
                 NavigationView{
-                    PHOTO(userData: userData)
+                    PHOTO(userDataViewModel: userDataViewModel)
                         .navigationBarItems(
                             leading: Button("ログアウト"){
                                 AuthHelper().signout()

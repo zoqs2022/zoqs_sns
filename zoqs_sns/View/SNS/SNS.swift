@@ -17,10 +17,10 @@ struct SNS: View {
             ForEach(self.viewModel.posts, id: \.id) { (post) in
                 VStack(spacing: 5) {
                     HStack(alignment: .top) {
-                        PhotoCircleView(diameter: 40)
+                        PhotoCircleView(image: post.userImage, diameter: 40)
                         VStack(alignment: .leading) {
                             HStack {
-                                Text(post.date)
+                                Text(post.userName)
                                     .fontWeight(.bold)
                             }
                             Text(post.text)
