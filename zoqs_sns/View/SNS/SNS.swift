@@ -8,13 +8,6 @@
 import SwiftUI
 import FirebaseFirestore
 
-struct Timeline {
-    let id: Int
-    let name: String
-    let image: String
-    let post: String
-    let post_image: String
-}
 
 struct SNS: View {
     @StateObject var viewModel = PostViewModel(model: [PostModel()])
@@ -32,10 +25,8 @@ struct SNS: View {
                                 .frame(width: 40, height: 40)
                             VStack(alignment: .leading) {
                                 HStack {
-                                    Text(post.userID)
+                                    Text(post.date)
                                         .fontWeight(.bold)
-//                                    Text("@\(timeline.name)")
-//                                        .foregroundColor(.gray)
                                 }
                                 Text(post.text)
                                 Image("flower")
@@ -51,7 +42,7 @@ struct SNS: View {
                 }
             }
             .onAppear() {
-                self.viewModel.loadPosts()
+                self.viewModel.getAllPostList()
             }
         }
 }
