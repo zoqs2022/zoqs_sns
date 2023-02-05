@@ -13,38 +13,33 @@ struct SNS: View {
     @StateObject var viewModel = PostViewModel(model: [PostModel()])
     
     var body: some View {
-            VStack() {
-                ForEach(self.viewModel.posts, id: \.id) { (post) in
-                    VStack(spacing: 5) {
-                        HStack(alignment: .top) {
+        VStack() {
+            ForEach(self.viewModel.posts, id: \.id) { (post) in
+                VStack(spacing: 5) {
+                    HStack(alignment: .top) {
+                        PhotoCircleView(diameter: 40)
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text(post.date)
+                                    .fontWeight(.bold)
+                            }
+                            Text(post.text)
                             Image("flower")
                                 .resizable()
-                                .clipShape(Circle())
-                                .overlay(
-                                    Circle().stroke(Color.white, lineWidth: 4))
-                                .frame(width: 40, height: 40)
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Text(post.date)
-                                        .fontWeight(.bold)
-                                }
-                                Text(post.text)
-                                Image("flower")
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(height: 200)
-                                    .cornerRadius(20)
-                            }
+                                .scaledToFill()
+                                .frame(height: 200)
+                                .cornerRadius(20)
                         }
-                        .padding(.horizontal, 10)
-                        Divider()
                     }
+                    .padding(.horizontal, 10)
+                    Divider()
                 }
             }
-            .onAppear() {
-                self.viewModel.getAllPostList()
-            }
         }
+        .onAppear() {
+            self.viewModel.getAllPostList()
+        }
+    }
 }
 
 struct SNS_Previews: PreviewProvider {

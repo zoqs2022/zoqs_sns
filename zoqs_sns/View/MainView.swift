@@ -34,21 +34,7 @@ struct MainView: View {
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(
                             leading: VStack{
-                                if let uiImage = userData.uiImageData {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .overlay(
-                                            Circle().stroke(Color.gray, lineWidth: 1))
-                                        .frame(width: 30, height: 30)
-                                        .clipShape(Circle())
-                                } else {
-                                    Image(systemName: "person.fill")
-                                        .resizable()
-                                        .overlay(
-                                            Circle().stroke(Color.gray, lineWidth: 1))
-                                        .frame(width: 30, height: 30)
-                                        .clipShape(Circle())
-                                }
+                                PhotoCircleView(image: userData.uiImageData, diameter: 30)
                             },
                             trailing: HStack{
                                 Image(systemName: "sparkles")

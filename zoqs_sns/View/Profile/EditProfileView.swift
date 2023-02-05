@@ -23,17 +23,7 @@ struct EditProfileView: View {
     var body: some View {
         VStack{
             VStack {
-                if let uiImage = image {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .frame(width: 120, height: 120)
-                        .clipShape(Circle())
-                } else {
-                    Image(systemName: "person.fill")
-                        .resizable()
-                        .frame(width: 120, height: 120)
-                        .clipShape(Circle())
-                }
+                PhotoCircleView(image: image, diameter: 120)
                 Spacer().frame(height: 16)
                 Button(action: {
                     showingImagePicker = true

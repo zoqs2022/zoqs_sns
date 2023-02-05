@@ -52,19 +52,7 @@ struct PHOTO: View {
         ScrollView{
             VStack{
                 HStack(){
-                    VStack() {
-                        if let uiImage = userData.uiImageData {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .frame(width: 80, height: 80, alignment: .center)
-                                .clipShape(Circle())
-                        } else {
-                            Image(systemName: "person.fill")
-                                .resizable()
-                                .frame(width: 80, height: 80, alignment: .center)
-                                .clipShape(Circle())
-                        }
-                    }
+                    PhotoCircleView(image: userData.uiImageData, diameter: 80)
                     VStack(){
                         HStack{
                             Text(userData.name).bold()

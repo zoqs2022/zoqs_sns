@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		210B9976298F87C60079660E /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210B9975298F87C60079660E /* PostViewModel.swift */; };
 		210B9978298F88190079660E /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210B9977298F88190079660E /* PostModel.swift */; };
+		210B997A299003260079660E /* PhotoCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210B9979299003260079660E /* PhotoCircleView.swift */; };
 		2110E70929726B8500D55754 /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2110E70829726B8500D55754 /* AuthHelper.swift */; };
 		2110E70B29726BB600D55754 /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2110E70A29726BB600D55754 /* DatabaseHelper.swift */; };
 		2110E70E29726C4600D55754 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 2110E70D29726C4600D55754 /* FirebaseStorage */; };
@@ -65,6 +66,7 @@
 /* Begin PBXFileReference section */
 		210B9975298F87C60079660E /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		210B9977298F88190079660E /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
+		210B9979299003260079660E /* PhotoCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCircleView.swift; sourceTree = "<group>"; };
 		2110E70829726B8500D55754 /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
 		2110E70A29726BB600D55754 /* DatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		2110E71129726E6700D55754 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 			children = (
 				21B32CBA29730A470077CC58 /* ImagePicker.swift */,
 				21AF04182952015400B8E556 /* DateExtensionFile.swift */,
+				210B9979299003260079660E /* PhotoCircleView.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -457,6 +460,7 @@
 				21C18C6229744A34008D4AC2 /* UserDataModel.swift in Sources */,
 				21B32CBD2973DCB20077CC58 /* EditProfileView.swift in Sources */,
 				21526CE3294DB3EA00F41B2E /* zoqs_snsApp.swift in Sources */,
+				210B997A299003260079660E /* PhotoCircleView.swift in Sources */,
 				210B9976298F87C60079660E /* PostViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
