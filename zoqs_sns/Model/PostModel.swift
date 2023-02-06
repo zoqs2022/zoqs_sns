@@ -10,8 +10,11 @@ import SwiftUI
 
 
 struct PostModel {
-    var id: Int = 0
+    var id: String = ""
     var text: String = ""
     var userID: String = ""
-    var date: String = ""
+    var date: Any = ""
+    var userName: String?
+    var userImage: UIImage?
+    var postImage: UIImage?
 }

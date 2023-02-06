@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct MainView: View {
-    @ObservedObject var userData: UserDataViewModel
+    @ObservedObject var userViewModel: UserViewModel
+    @StateObject var postViewModel = PostViewModel(model: [PostModel()])
+    
     @Binding var isActive: Bool
     
     @Binding var xOffset: CGFloat
     @Binding var defaultOffset: CGFloat
     
 //    init() {
-//        self.userData = UserDataViewModel(model: UserDataModel())
+//        self.userData = userViewModel(model: UserDataModel())
 //    }
     
 //    init(isActive: Binding<Bool>) {
@@ -29,26 +31,12 @@ struct MainView: View {
             TabView{
                 NavigationView{
                     ScrollView (.vertical, showsIndicators: false) {
-                        SNS()
+                        SNS(postViewModel: postViewModel)
                     }
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(
                             leading: VStack{
-                                if let uiImage = userData.uiImageData {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .overlay(
-                                            Circle().stroke(Color.gray, lineWidth: 1))
-                                        .frame(width: 30, height: 30)
-                                        .clipShape(Circle())
-                                } else {
-                                    Image(systemName: "person.fill")
-                                        .resizable()
-                                        .overlay(
-                                            Circle().stroke(Color.gray, lineWidth: 1))
-                                        .frame(width: 30, height: 30)
-                                        .clipShape(Circle())
-                                }
+                                PhotoCircleView(image: userViewModel.uiImageData, diameter: 30)
                             },
                             trailing: HStack{
                                 Image(systemName: "sparkles")
@@ -95,7 +83,7 @@ struct MainView: View {
                     }
                 
                 NavigationView{
-                    PHOTO(userData: userData)
+                    PHOTO(userViewModel: userViewModel)
                         .navigationBarItems(
                             leading: Button("ログアウト"){
                                 AuthHelper().signout()
@@ -116,7 +104,9 @@ struct MainView: View {
                 }
             }
             .accentColor(.blue)
-            
+        }
+        .onAppear() {
+            self.postViewModel.getAllPostList()
         }
     }
 }

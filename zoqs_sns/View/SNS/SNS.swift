@@ -8,56 +8,40 @@
 import SwiftUI
 import FirebaseFirestore
 
-struct Timeline {
-    let id: Int
-    let name: String
-    let image: String
-    let post: String
-    let post_image: String
-}
 
 struct SNS: View {
-    @StateObject var viewModel = PostViewModel(model: [PostModel()])
+    @ObservedObject var postViewModel: PostViewModel
     
     var body: some View {
-            VStack() {
-                ForEach(self.viewModel.posts, id: \.id) { (post) in
-                    VStack(spacing: 5) {
-                        HStack(alignment: .top) {
+        VStack() {
+            ForEach(self.postViewModel.posts, id: \.id) { (post) in
+                VStack(spacing: 5) {
+                    HStack(alignment: .top) {
+                        PhotoCircleView(image: post.userImage, diameter: 40)
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text(post.userName ?? "")
+                                    .fontWeight(.bold)
+                            }
+//                            Text(String(post.date)).foregroundColor(.gray)
+                            Text(post.text)
                             Image("flower")
                                 .resizable()
-                                .clipShape(Circle())
-                                .overlay(
-                                    Circle().stroke(Color.white, lineWidth: 4))
-                                .frame(width: 40, height: 40)
-                            VStack(alignment: .leading) {
-                                HStack {
-                                    Text(post.userID)
-                                        .fontWeight(.bold)
-//                                    Text("@\(timeline.name)")
-//                                        .foregroundColor(.gray)
-                                }
-                                Text(post.text)
-                                Image("flower")
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(height: 200)
-                                    .cornerRadius(20)
-                            }
+                                .scaledToFill()
+                                .frame(height: 200)
+                                .cornerRadius(20)
                         }
-                        .padding(.horizontal, 10)
-                        Divider()
                     }
+                    .padding(.horizontal, 10)
+                    Divider()
                 }
             }
-            .onAppear() {
-                self.viewModel.loadPosts()
-            }
         }
-}
-
-struct SNS_Previews: PreviewProvider {
-    static var previews: some View {
-        SNS()
     }
 }
+
+//struct SNS_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SNS()
+//    }
+//}

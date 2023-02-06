@@ -8,10 +8,10 @@
 import Foundation
 import SwiftUI
 
-class UserDataViewModel: ObservableObject {
-    @Published var model: UserDataModel
+class UserViewModel: ObservableObject {
+    @Published var model: UserModel
     
-    init(model: UserDataModel) {
+    init(model: UserModel) {
         self.model = model
     }
     

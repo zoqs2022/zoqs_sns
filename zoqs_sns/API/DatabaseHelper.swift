@@ -164,6 +164,26 @@ struct DatabaseHelper {
             }
         })
     }
+    
+    func getPostList(result:@escaping([PostModel]) -> Void) {
+        db.collection("post").getDocuments() { querySnapshot, err in
+            var postList:[PostModel] = []
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for doc in querySnapshot!.documents {
+//                    print("\(document.documentID) => \(document.data())")
+                    let id = doc.documentID
+                    let data = doc.data()
+                    guard let text = data["text"] as! String? else { break }
+                    guard let userID = data["userID"] as! String? else { break }
+                    guard let date = data["date"] else { break }
+                    postList.append(PostModel(id: id,text: text, userID: userID, date: date))
+                }
+            }
+            result(postList)
+        }
+    }
 
 }
 
