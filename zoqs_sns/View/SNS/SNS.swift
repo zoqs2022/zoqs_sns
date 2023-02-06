@@ -23,6 +23,7 @@ struct SNS: View {
                                 Text(post.userName ?? "")
                                     .fontWeight(.bold)
                             }
+//                            Text(String(post.date)).foregroundColor(.gray)
                             Text(post.text)
                             Image("flower")
                                 .resizable()
