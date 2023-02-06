@@ -6,10 +6,40 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 
 struct NIKKI: View {
     
+    
+    
+    //firebase
+    let db = Firestore.firestore()
+    
+    func CreateAddFirebase(text:String,feeling:Int,with:Int) {
+        var ref: DocumentReference? = nil
+        ref = db.collection("post").addDocument(data: [
+            "userID": AuthHelper().uid(),
+            "date": Timestamp(),
+            "feeling":feeling,
+            "text":text,
+            "with":with
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+            }
+        }
+    }
+    
+   
+    let withList = ["友達","恋人","家族","知人","一人"]
+    let tempList = ["楽しい","嬉しい","幸せ","憂鬱","悲しい","不安","怒り","疲れた","爽やか","イライラ"]
+    
+    
     @State var text: String = ""
+    @State var feeling: Int = 0
+    @State var with: Int = 0
     
     @State private var image: UIImage?
     @State var showingImagePicker = false
@@ -43,11 +73,12 @@ struct NIKKI: View {
                                 ForEach(0..<5, id: \.self) { index in
                                     Spacer()
                                     Button(action: {
-                                        print("click")
+                                        feeling = index
                                     }, label: {
                                         Image(systemName: "face.smiling")
                                             .resizable()
                                             .frame(width: 30 ,height: 30)
+                                            .foregroundColor(feeling == index ? .red : .blue)
                                     })
                                 }//foreach
                                 Spacer()
@@ -63,9 +94,10 @@ struct NIKKI: View {
                             .frame(width: ScreenWidth)
                         VStack{
                             Text("今日の気分は？").font(.headline)
-                            ForEach(0..<3, id: \.self){ index in
+                            ForEach(0..<2, id: \.self){ index in
                                 HStack{
-                                    ForEach(0..<5, id: \.self) { index in
+                                    ForEach(0..<5, id: \.self) { i in
+                                        Spacer()
                                         VStack{
                                             Button(action: {
                                                 print("click")
@@ -74,9 +106,10 @@ struct NIKKI: View {
                                                     .resizable()
                                                     .frame(width: 30 ,height: 30)
                                             })
-                                            Text("楽しい")
+                                            Text(tempList[index*5+i])
                                         }//vstack item
                                     }//foreach
+                                    Spacer()
                                 }//hstack
                             }//foreach
                         }.padding()
@@ -95,13 +128,14 @@ struct NIKKI: View {
                                     Spacer()
                                     VStack{
                                         Button(action: {
-                                            print("click")
+                                            with = index
                                         }, label: {
                                             Image(systemName: "face.smiling")
                                                 .resizable()
                                                 .frame(width: 30 ,height: 30)
+                                                .foregroundColor(with == index ? .red : .blue)
                                         })
-                                        Text("友達")
+                                        Text(withList[index])
                                     }
                                 }//foreach
                                 Spacer()
@@ -112,7 +146,7 @@ struct NIKKI: View {
                     
                     // 入力
                     TextEditor(text: $text)
-                        .frame(width: ScreenWidth, height: 200)
+                        .frame(width: ScreenWidth, height: 150)
                         .padding()
                         
                     
@@ -124,14 +158,24 @@ struct NIKKI: View {
                             Image(systemName: "photo")
                                 .resizable()
                                 .scaledToFit()//縦横比維持
-                                .frame(width: 100)
+                                .frame(width: 30)
                                 .background(Color.white)
                         }
                     }
                     .sheet(isPresented: $showingImagePicker) {
                         ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
                     }
-                }
+                    
+                    
+                    Button(action: {
+                        CreateAddFirebase(text: text, feeling: feeling, with: with)
+                    }, label: {
+                        Text("投稿する").font(.title2).padding().background(Color.white).cornerRadius(10).padding()
+                    })
+                    
+                    
+                    
+                }//全体のvstack
             }//scrollview
         }//zstack
         
