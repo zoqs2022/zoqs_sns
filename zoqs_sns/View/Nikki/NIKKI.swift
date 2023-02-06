@@ -40,6 +40,7 @@ struct NIKKI: View {
     @State var text: String = ""
     @State var feeling: Int = 0
     @State var with: Int = 0
+    @State var temp: Int = 0
     
     @State private var image: UIImage?
     @State var showingImagePicker = false
@@ -100,11 +101,12 @@ struct NIKKI: View {
                                         Spacer()
                                         VStack{
                                             Button(action: {
-                                                print("click")
+                                                temp = index*5+i
                                             }, label: {
                                                 Image(systemName: "face.smiling")
                                                     .resizable()
                                                     .frame(width: 30 ,height: 30)
+                                                    .foregroundColor(temp == index*5+i ? .red: .blue)
                                             })
                                             Text(tempList[index*5+i])
                                         }//vstack item
@@ -170,7 +172,7 @@ struct NIKKI: View {
                     Button(action: {
                         CreateAddFirebase(text: text, feeling: feeling, with: with)
                     }, label: {
-                        Text("投稿する").font(.title2).padding().background(Color.white).cornerRadius(10).padding()
+                        Text("投稿する").font(.title2).padding().background(Color.white).cornerRadius(20).padding()
                     })
                     
                     
