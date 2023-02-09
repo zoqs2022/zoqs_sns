@@ -63,8 +63,9 @@ struct ContentView: View {
                 )
                 .onAppear {
                     print("USER_ID: "+userViewModel.uid)
-                    userViewModel.getUserName()
+                    userViewModel.getUserData()
                     userViewModel.getUserImageData()
+//                    userViewModel.getUserList()
                 }
         }
     }

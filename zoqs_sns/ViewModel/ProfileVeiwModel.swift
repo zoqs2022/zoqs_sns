@@ -1,17 +1,17 @@
 //
-//  InitialAction.swift
+//  ProfileVeiwModel.swift
 //  zoqs_sns
 //
-//  Created by 島田将太郎 on 2023/01/16.
+//  Created by 島田将太郎 on 2023/02/08.
 //
 
 import Foundation
 import SwiftUI
 
-class UserViewModel: ObservableObject {
-    @Published var model: UserModel
+class ProfileViewModel: ObservableObject {
+    @Published var model: ProfileModel
     
-    init(model: UserModel) {
+    init(model: ProfileModel) {
         self.model = model
     }
     
@@ -37,33 +37,11 @@ class UserViewModel: ObservableObject {
         }
     }
     
-//    var followIds: [String] {
-//        get {
-//            return model.follows
-//        }
-//        set {
-//            model.follows = newValue
-//        }
-//    }
-//
-//    var followUserList: [UserListData] {
-//        get {
-//            return model.followUserList
-//        }
-//        set {
-//            model.followUserList = newValue
-//        }
-//    }
-    
-    
-    
-    func getUserData(){
+    func getUserName(){
         DatabaseHelper().getUserData(userID: uid, result: { data in
             if let data = data {
                 print(data)
                 self.name = data["name"] as? String ?? "No Name"
-                self.model.follows = data["follows"] as? [String] ?? []
-                self.getUserList()
             } else {
                 print("error")
             }
@@ -89,22 +67,5 @@ class UserViewModel: ObservableObject {
                 errorResult(nil)
             }
         })
-    }
-    
-    func getUserList(){
-        self.model.follows.enumerated().forEach {
-            let index = $0.0 
-            let uid = $0.1
-            print("RRRRRRR",uid,index)
-            self.model.followUserList.append(UserListData(id: uid, name: "", image: nil))
-            DatabaseHelper().getUserName(userID: uid, result: { name in
-                self.model.followUserList[index].name = name
-            })
-            DatabaseHelper().getImageData(userID: uid, result: { data in
-                if let data = data {
-                    self.model.followUserList[index].image = UIImage(data: data)
-                }
-            })
-        }
     }
 }

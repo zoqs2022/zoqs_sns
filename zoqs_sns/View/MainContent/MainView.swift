@@ -32,6 +32,13 @@ struct MainView: View {
                 NavigationView{
                     ScrollView (.vertical, showsIndicators: false) {
                         SNS(postViewModel: postViewModel)
+                            .onTapGesture {
+                                if self.xOffset == .zero {
+                                    self.xOffset = self.defaultOffset
+                                } else {
+                                    self.xOffset = self.defaultOffset
+                                }
+                            }
                     }
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(
@@ -43,13 +50,6 @@ struct MainView: View {
                             }
                             .padding(.bottom, 10)
                         )
-                }
-                .onTapGesture {
-                    if self.xOffset == .zero {
-                        self.xOffset = self.defaultOffset
-                    } else {
-                        self.xOffset = self.defaultOffset
-                    }
                 }
                 .tabItem{
                     Image(systemName: "message")
@@ -84,19 +84,20 @@ struct MainView: View {
                 
                 NavigationView{
                     PHOTO(userViewModel: userViewModel)
+                        .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(
-                            leading: Button("ログアウト"){
+                            trailing: Button("ログアウト"){
                                 AuthHelper().signout()
                                 isActive = false
                             }
                         )
-                }
-                .onTapGesture {
-                    if self.xOffset == .zero {
-                        self.xOffset = self.defaultOffset
-                    } else {
-                        self.xOffset = self.defaultOffset
-                    }
+                        .onTapGesture {
+                            if self.xOffset == .zero {
+                                self.xOffset = self.defaultOffset
+                            } else {
+                                self.xOffset = self.defaultOffset
+                            }
+                        }
                 }
                 .tabItem{
                     Image(systemName: "photo.fill")

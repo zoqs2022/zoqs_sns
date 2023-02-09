@@ -16,6 +16,7 @@
 		2110E71029726C4600D55754 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 2110E70F29726C4600D55754 /* FirebaseStorageCombine-Community */; };
 		2110E71229726E6700D55754 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2110E71129726E6700D55754 /* LoginView.swift */; };
 		2110E7162972935300D55754 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2110E7152972935300D55754 /* CreateAccountView.swift */; };
+		214E857A2993EADA00E97DA1 /* UserListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214E85792993EADA00E97DA1 /* UserListView.swift */; };
 		21526CE3294DB3EA00F41B2E /* zoqs_snsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21526CE2294DB3EA00F41B2E /* zoqs_snsApp.swift */; };
 		21526CE5294DB3EA00F41B2E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21526CE4294DB3EA00F41B2E /* MainView.swift */; };
 		21526CE7294DB3EB00F41B2E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21526CE6294DB3EB00F41B2E /* Assets.xcassets */; };
@@ -32,6 +33,9 @@
 		21C18C7029770C80008D4AC2 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C18C6F29770C80008D4AC2 /* AuthViewModel.swift */; };
 		21C6C7462979252500F31D23 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C6C7452979252500F31D23 /* MenuView.swift */; };
 		21C6C74829792C4C00F31D23 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C6C74729792C4C00F31D23 /* ContentView.swift */; };
+		21D6C82E2993E5A9008941A1 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D6C82D2993E5A9008941A1 /* ProfileView.swift */; };
+		21D6C8302993E7AE008941A1 /* ProfileVeiwModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D6C82F2993E7AE008941A1 /* ProfileVeiwModel.swift */; };
+		21D6C8322993E7C5008941A1 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D6C8312993E7C5008941A1 /* ProfileModel.swift */; };
 		E1121820295289DE004192EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E112181F295289DD004192EE /* GoogleService-Info.plist */; };
 		E112182329528B69004192EE /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = E112182229528B69004192EE /* FirebaseAnalytics */; };
 		E112182529528B69004192EE /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E112182429528B69004192EE /* FirebaseAuth */; };
@@ -71,6 +75,7 @@
 		2110E70A29726BB600D55754 /* DatabaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		2110E71129726E6700D55754 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		2110E7152972935300D55754 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; wrapsLines = 0; };
+		214E85792993EADA00E97DA1 /* UserListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListView.swift; sourceTree = "<group>"; };
 		21526CDF294DB3EA00F41B2E /* zoqs_sns.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zoqs_sns.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21526CE2294DB3EA00F41B2E /* zoqs_snsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = zoqs_snsApp.swift; sourceTree = "<group>"; };
 		21526CE4294DB3EA00F41B2E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -89,6 +94,9 @@
 		21C18C6F29770C80008D4AC2 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		21C6C7452979252500F31D23 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		21C6C74729792C4C00F31D23 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		21D6C82D2993E5A9008941A1 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		21D6C82F2993E7AE008941A1 /* ProfileVeiwModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVeiwModel.swift; sourceTree = "<group>"; };
+		21D6C8312993E7C5008941A1 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		E112181F295289DD004192EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E14C298F294DCF63000DCBB7 /* NIKKI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NIKKI.swift; sourceTree = "<group>"; };
 		E14C2991294DCFC9000DCBB7 /* DAYS.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = DAYS.swift; sourceTree = "<group>"; usesTabs = 0; wrapsLines = 0; };
@@ -237,6 +245,8 @@
 			children = (
 				E14C2993294DD1C5000DCBB7 /* PHOTO.swift */,
 				21B32CBC2973DCB20077CC58 /* EditProfileView.swift */,
+				21D6C82D2993E5A9008941A1 /* ProfileView.swift */,
+				214E85792993EADA00E97DA1 /* UserListView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -279,6 +289,7 @@
 			children = (
 				21C18C6129744A34008D4AC2 /* UserModel.swift */,
 				210B9977298F88190079660E /* PostModel.swift */,
+				21D6C8312993E7C5008941A1 /* ProfileModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -289,6 +300,7 @@
 				21C18C6D297472BF008D4AC2 /* UserViewModel.swift */,
 				21C18C6F29770C80008D4AC2 /* AuthViewModel.swift */,
 				210B9975298F87C60079660E /* PostViewModel.swift */,
+				21D6C82F2993E7AE008941A1 /* ProfileVeiwModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -463,6 +475,7 @@
 				2110E70B29726BB600D55754 /* DatabaseHelper.swift in Sources */,
 				E14C2990294DCF63000DCBB7 /* NIKKI.swift in Sources */,
 				E1756D1D294DC96600C1D624 /* SNS.swift in Sources */,
+				214E857A2993EADA00E97DA1 /* UserListView.swift in Sources */,
 				21AF04192952015400B8E556 /* DateExtensionFile.swift in Sources */,
 				21526CE5294DB3EA00F41B2E /* MainView.swift in Sources */,
 				21C6C7462979252500F31D23 /* MenuView.swift in Sources */,
@@ -472,11 +485,14 @@
 				21C18C6E297472BF008D4AC2 /* UserViewModel.swift in Sources */,
 				2110E71229726E6700D55754 /* LoginView.swift in Sources */,
 				21C18C7029770C80008D4AC2 /* AuthViewModel.swift in Sources */,
+				21D6C8322993E7C5008941A1 /* ProfileModel.swift in Sources */,
 				21C6C74829792C4C00F31D23 /* ContentView.swift in Sources */,
 				21C18C6229744A34008D4AC2 /* UserModel.swift in Sources */,
 				21B32CBD2973DCB20077CC58 /* EditProfileView.swift in Sources */,
+				21D6C8302993E7AE008941A1 /* ProfileVeiwModel.swift in Sources */,
 				21526CE3294DB3EA00F41B2E /* zoqs_snsApp.swift in Sources */,
 				210B997A299003260079660E /* PhotoCircleView.swift in Sources */,
+				21D6C82E2993E5A9008941A1 /* ProfileView.swift in Sources */,
 				210B9976298F87C60079660E /* PostViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -636,7 +652,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"zoqs_sns/Preview Content\"";
-				DEVELOPMENT_TEAM = 768Z3DBWD3;
+				DEVELOPMENT_TEAM = 672A8YKW9G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -666,7 +682,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"zoqs_sns/Preview Content\"";
-				DEVELOPMENT_TEAM = 768Z3DBWD3;
+				DEVELOPMENT_TEAM = 672A8YKW9G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

@@ -52,6 +52,7 @@ struct PHOTO: View {
         ScrollView{
             VStack{
                 HStack(){
+                    // 丸い写真のやつ
                     PhotoCircleView(image: userViewModel.uiImageData, diameter: 80)
                     VStack(){
                         HStack{
@@ -80,14 +81,18 @@ struct PHOTO: View {
                                 Text("投稿").font(.system(size: 12))
                             }
                             Spacer()
-                            VStack{
-                                Text("100").bold()
-                                Text("フォロー中").font(.system(size: 12))
+                            NavigationLink(destination: UserListView() ){
+                                VStack {
+                                    Text("\(userViewModel.model.followUserList.count)").bold()
+                                    Text("フォロー中").font(.system(size: 12))
+                                }
                             }
                             Spacer()
-                            VStack{
-                                Text("100").bold()
-                                Text("フォロワー").font(.system(size: 12))
+                            NavigationLink(destination: UserListView() ){
+                                VStack {
+                                    Text("100").bold()
+                                    Text("フォロワー").font(.system(size: 12))
+                                }
                             }
                         }.padding(.leading, 40)
                     }.frame(height: 80)
