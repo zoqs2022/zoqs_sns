@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct ProfileView: View {
-    var accountId: String
+    var userId: String
+    var userName: String
+    var userImage: UIImage?
     @StateObject var profileViewModel = ProfileViewModel(model: ProfileModel())
     @State private var toUserList = false
     
@@ -17,10 +19,10 @@ struct ProfileView: View {
             VStack{
                 HStack(){
                     // 丸い写真のやつ
-                    PhotoCircleView(image: profileViewModel.uiImageData, diameter: 80)
+                    PhotoCircleView(image: userImage, diameter: 80)
                     VStack(){
                         HStack{
-                            Text(profileViewModel.name).bold()
+                            Text(userName).bold()
                             Spacer()
                             HStack(alignment: .center, spacing: 0){
                             }
@@ -36,22 +38,29 @@ struct ProfileView: View {
                                 Text("投稿").font(.system(size: 12))
                             }
                             Spacer()
-                            VStack{
-                                Text("100").bold()
-                                Text("フォロー中").font(.system(size: 12))
+                            NavigationLink(destination: UserListView(userList: profileViewModel.model.followUserList).onDisappear {
+                                profileViewModel.selfInit()
+                            }){
+                                VStack {
+                                    Text("\(profileViewModel.model.followUserList.count)").bold()
+                                    Text("フォロー中").font(.system(size: 12))
+                                }
                             }
                             Spacer()
-                            VStack{
-                                Text("100").bold()
-                                Text("フォロワー").font(.system(size: 12))
+                            NavigationLink(destination: UserListView(userList: profileViewModel.model.followUserList) ){
+                                VStack {
+                                    Text("100").bold()
+                                    Text("フォロワー").font(.system(size: 12))
+                                }
                             }
                         }.padding(.leading, 40)
                     }.frame(height: 80)
                 }.frame(maxWidth: .infinity, alignment: .leading).padding(24)
                 
             }
-            .sheet(isPresented: $toUserList) {
-//                EditProfileView(userViewModel: userViewModel)
+            .onAppear(){
+                profileViewModel.convertUserId(id: userId)
+                profileViewModel.getUserData()
             }
         }
     }

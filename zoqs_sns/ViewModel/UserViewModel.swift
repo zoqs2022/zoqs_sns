@@ -28,35 +28,6 @@ class UserViewModel: ObservableObject {
         }
     }
     
-    var uiImageData: UIImage? {
-        get {
-            return model.imageData
-        }
-        set {
-            model.imageData = newValue
-        }
-    }
-    
-//    var followIds: [String] {
-//        get {
-//            return model.follows
-//        }
-//        set {
-//            model.follows = newValue
-//        }
-//    }
-//
-//    var followUserList: [UserListData] {
-//        get {
-//            return model.followUserList
-//        }
-//        set {
-//            model.followUserList = newValue
-//        }
-//    }
-    
-    
-    
     func getUserData(){
         DatabaseHelper().getUserData(userID: uid, result: { data in
             if let data = data {
@@ -73,7 +44,7 @@ class UserViewModel: ObservableObject {
     func getUserImageData(){
         DatabaseHelper().getImageData(userID: uid, result: { data in
             if let data = data {
-                self.uiImageData = UIImage(data: data)
+                self.model.image = UIImage(data: data)
             }
         })
     }
@@ -85,7 +56,7 @@ class UserViewModel: ObservableObject {
             } else {
                 print(result!)
                 self.name = name
-                self.uiImageData = image
+                self.model.image = image
                 errorResult(nil)
             }
         })
@@ -95,7 +66,6 @@ class UserViewModel: ObservableObject {
         self.model.follows.enumerated().forEach {
             let index = $0.0 
             let uid = $0.1
-            print("RRRRRRR",uid,index)
             self.model.followUserList.append(UserListData(id: uid, name: "", image: nil))
             DatabaseHelper().getUserName(userID: uid, result: { name in
                 self.model.followUserList[index].name = name

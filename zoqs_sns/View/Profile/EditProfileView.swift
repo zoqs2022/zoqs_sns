@@ -72,7 +72,7 @@ struct EditProfileView: View {
         }
         .onAppear{
             nameFeild = userViewModel.name
-            image = userViewModel.uiImageData
+            image = userViewModel.model.image
         }
         .alert(isPresented: $isAlert){
             Alert(title: Text("エラー"),message: Text(errorMessage))

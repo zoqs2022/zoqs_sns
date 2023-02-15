@@ -116,19 +116,14 @@ struct DatabaseHelper {
     func getImage(userID:String,imageView:UIImageView){
         let imageRef = storage.child("image/"+userID+".jpeg")
         imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-            if let error = error {
-                print(error)
+            if error != nil {
+                print("画像がなかったです")
             } else {
                 // Data for "images/island.jpg" is returned
                 let image = UIImage(data: data!)
                 imageView.image = image
             }
         }
-//        imageRef.downloadURL { url, error in
-//                if let url = url {
-//                    imageView.sd_setImage(with: url)
-//                }
-//            }
     }
     
     func getImageData(userID:String, result:@escaping(Data?) -> Void){

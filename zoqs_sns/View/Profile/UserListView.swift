@@ -7,27 +7,15 @@
 
 import SwiftUI
 
-struct SampleUserData: Identifiable {
-    var id: String
-    var name: String
-    var image: UIImage?
-}
-private let sampleUserData: [SampleUserData] = [
-    .init(id: "1", name: "4rfv"),
-    SampleUserData(id: "2", name: "ssss"),
-    SampleUserData(id: "6", name: "12345"),
-    SampleUserData(id: "9", name: "asdfghj"),
-]
-
-
 struct UserListView: View {
     @Environment(\.dismiss) var dismiss
+    let userList: [UserListData]
     
     var body: some View {
         VStack{
             List {
-                ForEach(sampleUserData, id: \.id) { (user) in
-                    NavigationLink(destination: ProfileView(accountId: user.id) ) {
+                ForEach(userList, id: \.id) { (user) in
+                    NavigationLink(destination: ProfileView(userId: user.id, userName: user.name, userImage: user.image) ) {
                         HStack(alignment: .top) {
                             PhotoCircleView(image: user.image, diameter: 40)
                             VStack(alignment: .leading) {
@@ -50,8 +38,8 @@ struct UserListView: View {
     }
 }
 
-struct UserListView_Previews: PreviewProvider {
-    static var previews: some View {
-        UserListView()
-    }
-}
+//struct UserListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        UserListView()
+//    }
+//}

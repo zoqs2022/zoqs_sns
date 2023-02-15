@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
+    @Environment(\.dismiss) var dismiss
     @ObservedObject var userViewModel: UserViewModel
     @StateObject var postViewModel = PostViewModel(model: [PostModel()])
     
@@ -29,7 +30,7 @@ struct MainView: View {
     var body: some View {
         VStack{
             TabView{
-                NavigationView{
+                NavigationStack{
                     ScrollView (.vertical, showsIndicators: false) {
                         SNS(postViewModel: postViewModel)
                             .onTapGesture {
@@ -43,7 +44,7 @@ struct MainView: View {
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(
                             leading: VStack{
-                                PhotoCircleView(image: userViewModel.uiImageData, diameter: 30)
+                                PhotoCircleView(image: userViewModel.model.image, diameter: 30)
                             },
                             trailing: HStack{
                                 Image(systemName: "sparkles")
@@ -82,7 +83,7 @@ struct MainView: View {
                     Text("カレンダー")
                     }
                 
-                NavigationView{
+                NavigationStack{
                     PHOTO(userViewModel: userViewModel)
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(

@@ -15,33 +15,21 @@ class ProfileViewModel: ObservableObject {
         self.model = model
     }
     
-    var uid: String {
-        return AuthHelper().uid()
+    func convertUserId(id: String) {
+        self.model.id = id
     }
     
-    var name: String {
-        get {
-            return model.name
-        }
-        set {
-            model.name = newValue
-        }
+    func selfInit() {
+        self.model = .init(id: "", name: "", image: nil, follows: [], followUserList: [])
     }
     
-    var uiImageData: UIImage? {
-        get {
-            return model.imageData
-        }
-        set {
-            model.imageData = newValue
-        }
-    }
-    
-    func getUserName(){
-        DatabaseHelper().getUserData(userID: uid, result: { data in
+    func getUserData(){
+        DatabaseHelper().getUserData(userID: self.model.id, result: { data in
             if let data = data {
                 print(data)
-                self.name = data["name"] as? String ?? "No Name"
+                self.model.name = data["name"] as? String ?? "No Name"
+                self.model.follows = data["follows"] as? [String] ?? []
+                self.getUserList()
             } else {
                 print("error")
             }
@@ -49,9 +37,9 @@ class ProfileViewModel: ObservableObject {
     }
     
     func getUserImageData(){
-        DatabaseHelper().getImageData(userID: uid, result: { data in
+        DatabaseHelper().getImageData(userID: self.model.id, result: { data in
             if let data = data {
-                self.uiImageData = UIImage(data: data)
+                self.model.image = UIImage(data: data)
             }
         })
     }
@@ -62,10 +50,27 @@ class ProfileViewModel: ObservableObject {
                 errorResult("画像登録に失敗しました")
             } else {
                 print(result!)
-                self.name = name
-                self.uiImageData = image
+                self.model.name = name
+                self.model.image = image
                 errorResult(nil)
             }
         })
+    }
+    
+    func getUserList(){
+        print("GGGGGGGGG")
+        self.model.follows.enumerated().forEach {
+            let index = $0.0
+            let uid = $0.1
+            self.model.followUserList.append(UserListData(id: uid, name: "", image: nil))
+            DatabaseHelper().getUserName(userID: uid, result: { name in
+                self.model.followUserList[index].name = name
+            })
+            DatabaseHelper().getImageData(userID: uid, result: { data in
+                if let data = data {
+                    self.model.followUserList[index].image = UIImage(data: data)
+                }
+            })
+        }
     }
 }

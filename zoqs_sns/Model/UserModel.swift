@@ -11,7 +11,7 @@ import SwiftUI
 
 struct UserModel {
     var name: String = ""
-    var imageData: UIImage?
+    var image: UIImage?
     var follows: [String] = []
     var followUserList: [UserListData] = []
 }

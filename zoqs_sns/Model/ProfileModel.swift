@@ -9,6 +9,9 @@ import Foundation
 import SwiftUI
 
 struct ProfileModel {
+    var id: String = ""
     var name: String = ""
-    var imageData: UIImage?
+    var image: UIImage?
+    var follows: [String] = []
+    var followUserList: [UserListData] = []
 }

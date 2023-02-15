@@ -34,7 +34,9 @@ let sampleData: [SampleData] = [
 ]
 
 
-
+class EnvironmentData: ObservableObject {
+    @Published var isNavigationActive: Binding<Bool> = Binding<Bool>.constant(false)
+}
 
 
 struct PHOTO: View {
@@ -44,6 +46,8 @@ struct PHOTO: View {
     @State var showingImagePicker = false
     @State private var toEditProfile = false
     
+    @State var isActive = false
+    @EnvironmentObject var envData: EnvironmentData
     
     @State var focusDate: Int = 1
     
@@ -53,7 +57,7 @@ struct PHOTO: View {
             VStack{
                 HStack(){
                     // 丸い写真のやつ
-                    PhotoCircleView(image: userViewModel.uiImageData, diameter: 80)
+                    PhotoCircleView(image: userViewModel.model.image, diameter: 80)
                     VStack(){
                         HStack{
                             Text(userViewModel.name).bold()
@@ -81,14 +85,14 @@ struct PHOTO: View {
                                 Text("投稿").font(.system(size: 12))
                             }
                             Spacer()
-                            NavigationLink(destination: UserListView() ){
+                            NavigationLink(destination: UserListView(userList: userViewModel.model.followUserList) ){
                                 VStack {
                                     Text("\(userViewModel.model.followUserList.count)").bold()
                                     Text("フォロー中").font(.system(size: 12))
                                 }
                             }
                             Spacer()
-                            NavigationLink(destination: UserListView() ){
+                            NavigationLink(destination: UserListView(userList: userViewModel.model.followUserList) ){
                                 VStack {
                                     Text("100").bold()
                                     Text("フォロワー").font(.system(size: 12))

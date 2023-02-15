@@ -12,7 +12,7 @@ struct MenuView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            if let uiImage = userViewModel.uiImageData {
+            if let uiImage = userViewModel.model.image {
                 Image(uiImage: uiImage)
                     .resizable()
                     .overlay(
