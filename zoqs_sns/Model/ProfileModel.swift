@@ -15,3 +15,9 @@ struct ProfileModel {
     var follows: [String] = []
     var followUserList: [UserListData] = []
 }
+
+struct BasicProfile: Hashable {
+    var id: String = ""
+    var name: String = ""
+    var image: UIImage?
+}

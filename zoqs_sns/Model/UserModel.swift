@@ -16,7 +16,7 @@ struct UserModel {
     var followUserList: [UserListData] = []
 }
 
-struct UserListData {
+struct UserListData: Hashable {
     var id: String = ""
     var name: String = ""
     var image: UIImage?

@@ -41,6 +41,7 @@ class EnvironmentData: ObservableObject {
 
 struct PHOTO: View {
     @ObservedObject var userViewModel: UserViewModel
+    @EnvironmentObject var router: RouterNavigationPath
     
     @State private var image: UIImage?
     @State var showingImagePicker = false
@@ -85,7 +86,7 @@ struct PHOTO: View {
                                 Text("投稿").font(.system(size: 12))
                             }
                             Spacer()
-                            NavigationLink(destination: UserListView(userList: userViewModel.model.followUserList) ){
+                            NavigationLink(value: userViewModel.model.followUserList){
                                 VStack {
                                     Text("\(userViewModel.model.followUserList.count)").bold()
                                     Text("フォロー中").font(.system(size: 12))
@@ -101,8 +102,6 @@ struct PHOTO: View {
                         }.padding(.leading, 40)
                     }.frame(height: 80)
                 }.frame(maxWidth: .infinity, alignment: .leading).padding(24)
-                
-                
                 
                 
                 
@@ -122,6 +121,16 @@ struct PHOTO: View {
             }
             .sheet(isPresented: $toEditProfile) {
                 EditProfileView(userViewModel: userViewModel)
+            }
+            
+            
+            .navigationDestination(for: [UserListData].self) { userList in
+                UserListView(userList: userList)
+                    .environmentObject(router)
+            }
+            .navigationDestination(for: BasicProfile.self) { basicProfile in
+                ProfileView(basicProfile: basicProfile)
+                    .environmentObject(router)
             }
         }
     }

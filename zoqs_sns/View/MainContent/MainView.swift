@@ -6,30 +6,31 @@
 //
 
 import SwiftUI
+import Combine
+
+final class RouterNavigationPath: ObservableObject {
+    @Published var path =  NavigationPath()
+    
+    func gotoHomePage() {
+        path.removeLast(path.count)
+    }
+}
 
 struct MainView: View {
-    @Environment(\.dismiss) var dismiss
+    @StateObject var router = RouterNavigationPath()
     @ObservedObject var userViewModel: UserViewModel
     @StateObject var postViewModel = PostViewModel(model: [PostModel()])
     
     @Binding var isActive: Bool
-    
     @Binding var xOffset: CGFloat
     @Binding var defaultOffset: CGFloat
     
-//    init() {
-//        self.userData = userViewModel(model: UserDataModel())
-//    }
-    
-//    init(isActive: Binding<Bool>) {
-//        self._isActive = isActive
-//        // タイトルバーのフォントサイズを変更
-//        UINavigationBar.appearance().titleTextAttributes = [.font: UIFont.systemFont(ofSize: 24)]
-//    }
+    @State var selection = ""
+    @StateObject private var viewModel = ViewModel()
     
     var body: some View {
         VStack{
-            TabView{
+            TabView(selection: $viewModel.selectionType){
                 NavigationStack{
                     ScrollView (.vertical, showsIndicators: false) {
                         SNS(postViewModel: postViewModel)
@@ -56,6 +57,7 @@ struct MainView: View {
                     Image(systemName: "message")
                     Text("閲覧")
                 }
+                .tag("SNS")
                 
                 NIKKI()
                     .onTapGesture {
@@ -66,9 +68,10 @@ struct MainView: View {
                         }
                     }
                     .tabItem{
-                    Image(systemName: "pencil")
-                    Text("投稿")
+                        Image(systemName: "pencil")
+                        Text("投稿")
                     }
+                    .tag("NIKKI")
                 
                 DAYS()
                     .onTapGesture {
@@ -79,12 +82,14 @@ struct MainView: View {
                         }
                     }
                     .tabItem{
-                    Image(systemName: "30.square.fill")
-                    Text("カレンダー")
+                        Image(systemName: "30.square.fill")
+                        Text("カレンダー")
                     }
+                    .tag("DAYS")
                 
-                NavigationStack{
+                NavigationStack(path: $router.path) {
                     PHOTO(userViewModel: userViewModel)
+                        .environmentObject(router)
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(
                             trailing: Button("ログアウト"){
@@ -99,18 +104,31 @@ struct MainView: View {
                                 self.xOffset = self.defaultOffset
                             }
                         }
+                        .onChange(of: router.path) {
+                            print("FFFFFFF",$0)
+                        }
                 }
                 .tabItem{
                     Image(systemName: "photo.fill")
                     Text("アルバム")
                 }
+                .tag("PHOTO")
             }
             .accentColor(.blue)
+            .onReceive(viewModel.$selectionType) { selection in
+                if selection == "PHOTO" {
+                    router.gotoHomePage()
+                }
+            }
         }
         .onAppear() {
             self.postViewModel.getAllPostList()
         }
     }
+}
+
+class ViewModel: ObservableObject {
+    @Published var selectionType = "SNS"
 }
 
 //struct ContentView_Previews: PreviewProvider {

@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ProfileView: View {
-    var userId: String
-    var userName: String
-    var userImage: UIImage?
+    @EnvironmentObject var router: RouterNavigationPath
+    var basicProfile: BasicProfile
+    
     @StateObject var profileViewModel = ProfileViewModel(model: ProfileModel())
     @State private var toUserList = false
     
@@ -19,10 +19,10 @@ struct ProfileView: View {
             VStack{
                 HStack(){
                     // 丸い写真のやつ
-                    PhotoCircleView(image: userImage, diameter: 80)
+                    PhotoCircleView(image: basicProfile.image, diameter: 80)
                     VStack(){
                         HStack{
-                            Text(userName).bold()
+                            Text(basicProfile.name).bold()
                             Spacer()
                             HStack(alignment: .center, spacing: 0){
                             }
@@ -56,10 +56,14 @@ struct ProfileView: View {
                         }.padding(.leading, 40)
                     }.frame(height: 80)
                 }.frame(maxWidth: .infinity, alignment: .leading).padding(24)
-                
+                Button(action: {
+                    router.gotoHomePage()
+                }, label: {
+                    Text("BACK")
+                })
             }
             .onAppear(){
-                profileViewModel.convertUserId(id: userId)
+                profileViewModel.convertUserId(id: basicProfile.id)
                 profileViewModel.getUserData()
             }
         }

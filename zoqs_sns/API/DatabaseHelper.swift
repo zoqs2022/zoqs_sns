@@ -117,7 +117,7 @@ struct DatabaseHelper {
         let imageRef = storage.child("image/"+userID+".jpeg")
         imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
             if error != nil {
-                print("画像がなかったです")
+                print("\(userID) don't have image")
             } else {
                 // Data for "images/island.jpg" is returned
                 let image = UIImage(data: data!)
@@ -129,8 +129,8 @@ struct DatabaseHelper {
     func getImageData(userID:String, result:@escaping(Data?) -> Void){
         let imageRef = storage.child("image/"+userID+".jpeg")
         imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-            if let error = error {
-                print(error)
+            if error != nil {
+                print("\(userID) don't have image")
             }
             result(data)
         }
@@ -163,8 +163,8 @@ struct DatabaseHelper {
     func getPostList(result:@escaping([PostModel]) -> Void) {
         db.collection("post").getDocuments() { querySnapshot, err in
             var postList:[PostModel] = []
-            if let err = err {
-                print("Error getting documents: \(err)")
+            if err != nil {
+                print("Error getting documents")
             } else {
                 for doc in querySnapshot!.documents {
 //                    print("\(document.documentID) => \(document.data())")

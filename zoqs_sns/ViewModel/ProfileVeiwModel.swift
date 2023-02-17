@@ -26,7 +26,6 @@ class ProfileViewModel: ObservableObject {
     func getUserData(){
         DatabaseHelper().getUserData(userID: self.model.id, result: { data in
             if let data = data {
-                print(data)
                 self.model.name = data["name"] as? String ?? "No Name"
                 self.model.follows = data["follows"] as? [String] ?? []
                 self.getUserList()
@@ -58,7 +57,6 @@ class ProfileViewModel: ObservableObject {
     }
     
     func getUserList(){
-        print("GGGGGGGGG")
         self.model.follows.enumerated().forEach {
             let index = $0.0
             let uid = $0.1

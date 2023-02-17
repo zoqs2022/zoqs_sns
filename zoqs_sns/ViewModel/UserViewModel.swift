@@ -31,7 +31,6 @@ class UserViewModel: ObservableObject {
     func getUserData(){
         DatabaseHelper().getUserData(userID: uid, result: { data in
             if let data = data {
-                print(data)
                 self.name = data["name"] as? String ?? "No Name"
                 self.model.follows = data["follows"] as? [String] ?? []
                 self.getUserList()
