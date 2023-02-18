@@ -29,34 +29,53 @@ struct UserListView: View {
         VStack{
             List {
                 ForEach(userList, id: \.id) { (user) in
-                    NavigationLink(value: Route.basicProfile(BasicProfile(id:user.id, name: user.name, image: user.image))) {
+                    if user.id == myDataViewModel.uid {
                         HStack{
                             HStack(alignment: .top) {
                                 PhotoCircleView(image: user.image, diameter: 40)
                                 VStack(alignment: .leading) {
                                     Text("\(user.name)")
                                         .fontWeight(.bold)
+                                    Spacer().frame(height: 4)
+                                    Text("\(user.name)")
+                                        .font(.system(size: 12))
                                 }
                             }
                             .padding(.horizontal, 0)
-                            Text("\(user.name)")
                             Spacer()
-                            VStack{
-                                Text(followSwich(bool: !myDataViewModel.model.follows.contains(user.id)).text())
-                                    .font(.system(size: 12))
-                                    .foregroundColor(.white)
-                                    .padding(4)
-                                    .bold()
-                                    .background(followSwich(bool: !myDataViewModel.model.follows.contains(user.id)).backGroundColor())
-                                    .cornerRadius(8)
-                                    .onTapGesture {
-                                        if !myDataViewModel.model.follows.contains(user.id) {
-                                            print("Hello world!") // これなら反応する!
-                                        } else {
-                                            print("Hello world!") // これなら反応する!
-                                        }
+                        }
+                    } else {
+                        NavigationLink(value: Route.basicProfile(BasicProfile(id:user.id, name: user.name, image: user.image))) {
+                            HStack{
+                                HStack(alignment: .top) {
+                                    PhotoCircleView(image: user.image, diameter: 40)
+                                    VStack(alignment: .leading) {
+                                        Text("\(user.name)")
+                                            .fontWeight(.bold)
+                                        Spacer().frame(height: 4)
+                                        Text("\(user.name)")
+                                            .font(.system(size: 12))
                                     }
-                                
+                                }
+                                .padding(.horizontal, 0)
+                                Spacer()
+                                VStack{
+                                    Text(followSwich(bool: !myDataViewModel.model.follows.contains(user.id)).text())
+                                        .font(.system(size: 12))
+                                        .foregroundColor(.white)
+                                        .padding(4)
+                                        .bold()
+                                        .background(followSwich(bool: !myDataViewModel.model.follows.contains(user.id)).backGroundColor())
+                                        .cornerRadius(8)
+                                        .onTapGesture {
+                                            if !myDataViewModel.model.follows.contains(user.id) {
+                                                print("フォローする") // これなら反応する!
+                                            } else {
+                                                print("外す") // これなら反応する!
+                                            }
+                                        }
+                                    
+                                }
                             }
                         }
                     }

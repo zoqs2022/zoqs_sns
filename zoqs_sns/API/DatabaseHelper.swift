@@ -113,18 +113,18 @@ struct DatabaseHelper {
         }
     }
 
-    func getImage(userID:String,imageView:UIImageView){
-        let imageRef = storage.child("image/"+userID+".jpeg")
-        imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-            if error != nil {
-                print("\(userID) don't have image")
-            } else {
-                // Data for "images/island.jpg" is returned
-                let image = UIImage(data: data!)
-                imageView.image = image
-            }
-        }
-    }
+//    func getImage(userID:String,imageView:UIImageView){
+//        let imageRef = storage.child("image/"+userID+".jpeg")
+//        imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
+//            if error != nil {
+//                print("\(userID) don't have image")
+//            } else {
+//                // Data for "images/island.jpg" is returned
+//                let image = UIImage(data: data!)
+//                imageView.image = image
+//            }
+//        }
+//    }
     
     func getImageData(userID:String, result:@escaping(Data?) -> Void){
         let imageRef = storage.child("image/"+userID+".jpeg")
