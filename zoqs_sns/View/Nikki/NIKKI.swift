@@ -15,12 +15,13 @@ struct NIKKI: View {
     //firebase
     let db = Firestore.firestore()
     
-    func CreateAddFirebase(text:String,feeling:Int,with:Int) {
+    func CreateAddFirebase(text:String,feeling:Int,emotion:Int,with:Int) {
         var ref: DocumentReference? = nil
         ref = db.collection("post").addDocument(data: [
             "userID": AuthHelper().uid(),
             "date": Timestamp(),
             "feeling":feeling,
+            "emotion":emotion,
             "text":text,
             "with":with
         ]) { err in
@@ -40,12 +41,13 @@ struct NIKKI: View {
     @State var text: String = ""
     @State var feeling: Int = 0
     @State var with: Int = 0
-    @State var temp: Int = 0
+    @State var emotion: Int = 0
     
     @State private var image: UIImage?
     @State var showingImagePicker = false
     
     let ScreenWidth = (UIScreen.main.bounds.width)*0.9
+    
     
     
     var body: some View {
@@ -64,86 +66,7 @@ struct NIKKI: View {
                         .foregroundColor(.white)
                     
                     //feeling入力画面
-                    ZStack{
-                        RoundedRectangle(cornerRadius: 20)
-                            .foregroundColor(.white)
-                            .frame(width: ScreenWidth)
-                        VStack{
-                            Text("今日はどんな一日でしたか？").font(.headline)
-                            HStack{
-                                ForEach(0..<5, id: \.self) { index in
-                                    Spacer()
-                                    Button(action: {
-                                        feeling = index
-                                    }, label: {
-                                        Image(systemName: "face.smiling")
-                                            .resizable()
-                                            .frame(width: 30 ,height: 30)
-                                            .foregroundColor(feeling == index ? .red : .blue)
-                                    })
-                                }//foreach
-                                Spacer()
-                            }//hstack
-                        }.padding()
-                    }//zstack
-                    
-                    
-                    //feeling2
-                    ZStack{
-                        RoundedRectangle(cornerRadius: 20)
-                            .foregroundColor(.white)
-                            .frame(width: ScreenWidth)
-                        VStack{
-                            Text("今日の気分は？").font(.headline)
-                            ForEach(0..<2, id: \.self){ index in
-                                HStack{
-                                    ForEach(0..<5, id: \.self) { i in
-                                        Spacer()
-                                        VStack{
-                                            Button(action: {
-                                                temp = index*5+i
-                                            }, label: {
-                                                Image(systemName: "face.smiling")
-                                                    .resizable()
-                                                    .frame(width: 30 ,height: 30)
-                                                    .foregroundColor(temp == index*5+i ? .red: .blue)
-                                            })
-                                            Text(tempList[index*5+i])
-                                        }//vstack item
-                                    }//foreach
-                                    Spacer()
-                                }//hstack
-                            }//foreach
-                        }.padding()
-                    }//zstack
-                    
-                    
-                    //meet
-                    ZStack{
-                        RoundedRectangle(cornerRadius: 20)
-                            .foregroundColor(.white)
-                            .frame(width: ScreenWidth)
-                        VStack{
-                            Text("誰といた？").font(.headline)
-                            HStack{
-                                ForEach(0..<5, id: \.self) { index in
-                                    Spacer()
-                                    VStack{
-                                        Button(action: {
-                                            with = index
-                                        }, label: {
-                                            Image(systemName: "face.smiling")
-                                                .resizable()
-                                                .frame(width: 30 ,height: 30)
-                                                .foregroundColor(with == index ? .red : .blue)
-                                        })
-                                        Text(withList[index])
-                                    }
-                                }//foreach
-                                Spacer()
-                            }//hstack
-                        }.padding()
-                    }//zstack
+                    ButtonIcon(feeling: $feeling, emotion: $emotion, with: $with)
                     
                     
                     // 入力
@@ -170,9 +93,9 @@ struct NIKKI: View {
                     
                     
                     Button(action: {
-                        CreateAddFirebase(text: text, feeling: feeling, with: with)
+                        CreateAddFirebase(text: text, feeling: feeling, emotion:emotion, with: with)
                     }, label: {
-                        Text("投稿する").font(.title2).padding().background(Color.white).cornerRadius(20).padding()
+                        Text("投稿する").font(.title2).padding().background(Color.white).cornerRadius(20).padding().shadow(radius: 20)
                     })
                     
                     
@@ -189,6 +112,103 @@ struct NIKKI: View {
 }
 
 
+
+struct ButtonIcon : View {
+    
+    let ScreenWidth = (UIScreen.main.bounds.width)*0.9
+    
+    @Binding var feeling:Int
+    @Binding var emotion:Int
+    @Binding var with:Int
+    let withList = ["友達","恋人","家族","知人","一人"]
+    let emotionList = ["楽しい","嬉しい","幸せ","憂鬱","悲しい","不安","怒り","疲れた","爽やか","イライラ"]
+    
+    
+    var body: some View {
+        
+        //feeling入力画面
+        ZStack{
+            RoundedRectangle(cornerRadius: 20)
+                .foregroundColor(.white)
+                .frame(width: ScreenWidth)
+            VStack{
+                Text("今日はどんな一日でしたか？").font(.headline)
+                HStack{
+                    ForEach(0..<5, id: \.self) { index in
+                        Spacer()
+                        Button(action: {
+                            feeling = index
+                        }, label: {
+                            Image(systemName: "face.smiling")
+                                .resizable()
+                                .frame(width: 30 ,height: 30)
+                                .foregroundColor(feeling == index ? .red : .blue)
+                        })
+                    }//foreach
+                    Spacer()
+                }//hstack
+            }.padding()
+        }//zstack
+        
+        
+        //feeling2
+        ZStack{
+            RoundedRectangle(cornerRadius: 20)
+                .foregroundColor(.white)
+                .frame(width: ScreenWidth)
+            VStack{
+                Text("今日の気分は？").font(.headline)
+                ForEach(0..<2, id: \.self){ index in
+                    HStack{
+                        ForEach(0..<5, id: \.self) { i in
+                            Spacer()
+                            VStack{
+                                Button(action: {
+                                    emotion = index*5+i
+                                }, label: {
+                                    Image(systemName: "face.smiling")
+                                        .resizable()
+                                        .frame(width: 30 ,height: 30)
+                                        .foregroundColor(emotion == index*5+i ? .red: .blue)
+                                })
+                                Text(emotionList[index*5+i]).font(.caption)
+                            }.frame(width:ScreenWidth/8)//vstack item
+                        }//foreach
+                        Spacer()
+                    }//hstack
+                }//foreach
+            }.padding()
+        }//zstack
+        
+        
+        //meet
+        ZStack{
+            RoundedRectangle(cornerRadius: 20)
+                .foregroundColor(.white)
+                .frame(width: ScreenWidth)
+            VStack{
+                Text("誰といた？").font(.headline)
+                HStack{
+                    ForEach(0..<5, id: \.self) { index in
+                        Spacer()
+                        VStack{
+                            Button(action: {
+                                with = index
+                            }, label: {
+                                Image(systemName: "face.smiling")
+                                    .resizable()
+                                    .frame(width: 30 ,height: 30)
+                                    .foregroundColor(with == index ? .red : .blue)
+                            })
+                            Text(withList[index]).font(.caption)
+                        }
+                    }//foreach
+                    Spacer()
+                }//hstack
+            }.padding()
+        }//zstack
+    }
+}
 
 
 
