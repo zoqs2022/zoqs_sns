@@ -1,0 +1,6 @@
+framework module Pods_zoqs_snsTests {
+  umbrella header "Pods-zoqs_snsTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

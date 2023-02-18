@@ -34,6 +34,7 @@ struct DAYS: View {
         VStack{//広告とスクロールビューのvstack
 //            AdBanner(adUnitId:MyId,widthSize: 320,heightSize: 50).expectedFrame()
             ScrollView{
+                AdBanner(adUnitId:MyId,widthSize: 320,heightSize: 50).expectedFrame()
                 //カレンダー部分
                 CalendarView(textYear: $textYear, textMonth: $textMonth, textDay: $textDay)
                 //思い出表示部分
