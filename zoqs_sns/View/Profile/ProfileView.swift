@@ -11,7 +11,6 @@ struct ProfileView: View {
     var basicProfile: BasicProfile
     
     @StateObject var profileViewModel = ProfileViewModel(model: ProfileModel())
-    @State private var toUserList = false
     
     var body: some View {
         ScrollView{
@@ -37,9 +36,7 @@ struct ProfileView: View {
                                 Text("投稿").font(.system(size: 12))
                             }
                             Spacer()
-                            NavigationLink(destination: UserListView(userList: profileViewModel.model.followUserList).onDisappear {
-                                profileViewModel.selfInit()
-                            }){
+                            NavigationLink(value: Route.userList(profileViewModel.model.followUserList)){
                                 VStack {
                                     Text("\(profileViewModel.model.followUserList.count)").bold()
                                     Text("フォロー中").font(.system(size: 12))
@@ -57,8 +54,10 @@ struct ProfileView: View {
                 }.frame(maxWidth: .infinity, alignment: .leading).padding(24)
             }
             .onAppear(){
-                profileViewModel.convertUserId(id: basicProfile.id)
-                profileViewModel.getUserData()
+                if(!profileViewModel.checkSameId(id: basicProfile.id)){
+                    profileViewModel.convertUserId(id: basicProfile.id)
+                    profileViewModel.getUserData()
+                }
             }
         }
     }

@@ -15,6 +15,14 @@ class ProfileViewModel: ObservableObject {
         self.model = model
     }
     
+    var myId: String {
+        return AuthHelper().uid()
+    }
+    
+    func checkSameId(id: String) -> Bool{
+        return self.model.id == id
+    }
+    
     func convertUserId(id: String) {
         self.model.id = id
     }
@@ -60,6 +68,7 @@ class ProfileViewModel: ObservableObject {
         self.model.follows.enumerated().forEach {
             let index = $0.0
             let uid = $0.1
+            if uid == myId {return}
             self.model.followUserList.append(UserListData(id: uid, name: "", image: nil))
             DatabaseHelper().getUserName(userID: uid, result: { name in
                 self.model.followUserList[index].name = name
