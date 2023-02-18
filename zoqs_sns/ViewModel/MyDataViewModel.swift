@@ -8,10 +8,10 @@
 import Foundation
 import SwiftUI
 
-class UserViewModel: ObservableObject {
-    @Published var model: UserModel
+class MyDataViewModel: ObservableObject {
+    @Published var model: MyDataModel
     
-    init(model: UserModel) {
+    init(model: MyDataModel) {
         self.model = model
     }
     
@@ -28,20 +28,12 @@ class UserViewModel: ObservableObject {
         }
     }
     
-    var uiImageData: UIImage? {
-        get {
-            return model.imageData
-        }
-        set {
-            model.imageData = newValue
-        }
-    }
-    
-    func getUserName(){
+    func getUserData(){
         DatabaseHelper().getUserData(userID: uid, result: { data in
             if let data = data {
-                print(data)
                 self.name = data["name"] as? String ?? "No Name"
+                self.model.follows = data["follows"] as? [String] ?? []
+                self.getUserList()
             } else {
                 print("error")
             }
@@ -51,7 +43,7 @@ class UserViewModel: ObservableObject {
     func getUserImageData(){
         DatabaseHelper().getImageData(userID: uid, result: { data in
             if let data = data {
-                self.uiImageData = UIImage(data: data)
+                self.model.image = UIImage(data: data)
             }
         })
     }
@@ -63,9 +55,25 @@ class UserViewModel: ObservableObject {
             } else {
                 print(result!)
                 self.name = name
-                self.uiImageData = image
+                self.model.image = image
                 errorResult(nil)
             }
         })
+    }
+    
+    func getUserList(){
+        self.model.follows.enumerated().forEach {
+            let index = $0.0 
+            let uid = $0.1
+            self.model.followUserList.append(UserListData(id: uid, name: "", image: nil))
+            DatabaseHelper().getUserName(userID: uid, result: { name in
+                self.model.followUserList[index].name = name
+            })
+            DatabaseHelper().getImageData(userID: uid, result: { data in
+                if let data = data {
+                    self.model.followUserList[index].image = UIImage(data: data)
+                }
+            })
+        }
     }
 }

@@ -30,7 +30,7 @@ struct zoqs_snsApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationView {
+            VStack {
                 
                 if isActive {
                     ContentView(isActive: $isActive)
