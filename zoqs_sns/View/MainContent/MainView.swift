@@ -87,9 +87,9 @@ struct MainView: View {
                         .navigationDestination(for: Route.self) { route in
                             switch route {
                             case let .userList(userList):
-                                UserListView(userList: userList)
+                                UserListView(userList: userList, myDataViewModel: myDataViewModel)
                             case let .basicProfile(basicProfile):
-                                ProfileView(basicProfile: basicProfile)
+                                ProfileView(basicProfile: basicProfile, myDataViewModel: myDataViewModel)
                             }
                         }
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)

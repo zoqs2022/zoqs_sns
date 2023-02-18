@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProfileView: View {
     var basicProfile: BasicProfile
+    @ObservedObject var myDataViewModel: MyDataViewModel
     
     @StateObject var profileViewModel = ProfileViewModel(model: ProfileModel())
     
@@ -43,7 +44,7 @@ struct ProfileView: View {
                                 }
                             }
                             Spacer()
-                            NavigationLink(destination: UserListView(userList: profileViewModel.model.followerUserList) ){
+                            NavigationLink(value: Route.userList(profileViewModel.model.followerUserList)){
                                 VStack {
                                     Text("\(profileViewModel.model.followerUserList.count)").bold()
                                     Text("フォロワー").font(.system(size: 12))
