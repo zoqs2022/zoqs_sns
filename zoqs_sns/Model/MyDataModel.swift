@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-struct UserModel {
+struct MyDataModel {
     var name: String = ""
     var image: UIImage?
     var follows: [String] = []

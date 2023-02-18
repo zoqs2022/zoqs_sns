@@ -9,8 +9,6 @@ import SwiftUI
 import Charts
 
 
-
-
 //グラフのサンプルデータ
 struct SampleData: Identifiable {
     var id: String { name }    //
@@ -34,34 +32,23 @@ let sampleData: [SampleData] = [
 ]
 
 
-class EnvironmentData: ObservableObject {
-    @Published var isNavigationActive: Binding<Bool> = Binding<Bool>.constant(false)
-}
-
-
 struct PHOTO: View {
-    @ObservedObject var userViewModel: UserViewModel
-    @EnvironmentObject var router: RouterNavigationPath
+    @ObservedObject var myDataViewModel: MyDataViewModel
     
     @State private var image: UIImage?
     @State var showingImagePicker = false
     @State private var toEditProfile = false
-    
-    @State var isActive = false
-    @EnvironmentObject var envData: EnvironmentData
-    
     @State var focusDate: Int = 1
-    
     
     var body: some View {
         ScrollView{
             VStack{
                 HStack(){
                     // 丸い写真のやつ
-                    PhotoCircleView(image: userViewModel.model.image, diameter: 80)
+                    PhotoCircleView(image: myDataViewModel.model.image, diameter: 80)
                     VStack(){
                         HStack{
-                            Text(userViewModel.name).bold()
+                            Text(myDataViewModel.name).bold()
                             Spacer()
                             HStack(alignment: .center, spacing: 0){
                                 Button(action: {
@@ -86,14 +73,14 @@ struct PHOTO: View {
                                 Text("投稿").font(.system(size: 12))
                             }
                             Spacer()
-                            NavigationLink(value: userViewModel.model.followUserList){
+                            NavigationLink(value: Route.userList(myDataViewModel.model.followUserList)){
                                 VStack {
-                                    Text("\(userViewModel.model.followUserList.count)").bold()
+                                    Text("\(myDataViewModel.model.followUserList.count)").bold()
                                     Text("フォロー中").font(.system(size: 12))
                                 }
                             }
                             Spacer()
-                            NavigationLink(destination: UserListView(userList: userViewModel.model.followUserList) ){
+                            NavigationLink(value: Route.userList(myDataViewModel.model.followUserList)){
                                 VStack {
                                     Text("100").bold()
                                     Text("フォロワー").font(.system(size: 12))
@@ -120,18 +107,9 @@ struct PHOTO: View {
                 
             }
             .sheet(isPresented: $toEditProfile) {
-                EditProfileView(userViewModel: userViewModel)
+                EditProfileView(myDataViewModel: myDataViewModel)
             }
             
-            
-            .navigationDestination(for: [UserListData].self) { userList in
-                UserListView(userList: userList)
-                    .environmentObject(router)
-            }
-            .navigationDestination(for: BasicProfile.self) { basicProfile in
-                ProfileView(basicProfile: basicProfile)
-                    .environmentObject(router)
-            }
         }
     }
 }

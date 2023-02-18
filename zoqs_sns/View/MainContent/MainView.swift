@@ -6,31 +6,26 @@
 //
 
 import SwiftUI
-import Combine
 
-final class RouterNavigationPath: ObservableObject {
-    @Published var path =  NavigationPath()
-    
-    func gotoHomePage() {
-        path.removeLast(path.count)
-    }
+class TabSelectViewModel: ObservableObject {
+    @Published var selectionType = "SNS"
 }
+
 
 struct MainView: View {
     @StateObject var router = RouterNavigationPath()
-    @ObservedObject var userViewModel: UserViewModel
+    @ObservedObject var myDataViewModel: MyDataViewModel
     @StateObject var postViewModel = PostViewModel(model: [PostModel()])
     
     @Binding var isActive: Bool
     @Binding var xOffset: CGFloat
     @Binding var defaultOffset: CGFloat
     
-    @State var selection = ""
-    @StateObject private var viewModel = ViewModel()
+    @StateObject private var tabSelectViewModel = TabSelectViewModel()
     
     var body: some View {
         VStack{
-            TabView(selection: $viewModel.selectionType){
+            TabView(selection: $tabSelectViewModel.selectionType){
                 NavigationStack{
                     ScrollView (.vertical, showsIndicators: false) {
                         SNS(postViewModel: postViewModel)
@@ -45,7 +40,7 @@ struct MainView: View {
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(
                             leading: VStack{
-                                PhotoCircleView(image: userViewModel.model.image, diameter: 30)
+                                PhotoCircleView(image: myDataViewModel.model.image, diameter: 30)
                             },
                             trailing: HStack{
                                 Image(systemName: "sparkles")
@@ -88,8 +83,15 @@ struct MainView: View {
                     .tag("DAYS")
                 
                 NavigationStack(path: $router.path) {
-                    PHOTO(userViewModel: userViewModel)
-                        .environmentObject(router)
+                    PHOTO(myDataViewModel: myDataViewModel)
+                        .navigationDestination(for: Route.self) { route in
+                            switch route {
+                            case let .userList(userList):
+                                UserListView(userList: userList)
+                            case let .basicProfile(basicProfile):
+                                ProfileView(basicProfile: basicProfile)
+                            }
+                        }
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(
                             trailing: Button("ログアウト"){
@@ -115,7 +117,8 @@ struct MainView: View {
                 .tag("PHOTO")
             }
             .accentColor(.blue)
-            .onReceive(viewModel.$selectionType) { selection in
+            
+            .onReceive(tabSelectViewModel.$selectionType) { selection in
                 if selection == "PHOTO" {
                     router.gotoHomePage()
                 }
@@ -127,12 +130,3 @@ struct MainView: View {
     }
 }
 
-class ViewModel: ObservableObject {
-    @Published var selectionType = "SNS"
-}
-
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
-//}

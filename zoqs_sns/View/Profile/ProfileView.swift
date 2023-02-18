@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @EnvironmentObject var router: RouterNavigationPath
     var basicProfile: BasicProfile
     
     @StateObject var profileViewModel = ProfileViewModel(model: ProfileModel())
@@ -56,11 +55,6 @@ struct ProfileView: View {
                         }.padding(.leading, 40)
                     }.frame(height: 80)
                 }.frame(maxWidth: .infinity, alignment: .leading).padding(24)
-                Button(action: {
-                    router.gotoHomePage()
-                }, label: {
-                    Text("BACK")
-                })
             }
             .onAppear(){
                 profileViewModel.convertUserId(id: basicProfile.id)

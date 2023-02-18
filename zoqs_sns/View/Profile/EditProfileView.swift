@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EditProfileView: View {
-    @ObservedObject var userViewModel: UserViewModel
+    @ObservedObject var myDataViewModel: MyDataViewModel
     
     @Environment(\.presentationMode) var presentationMode
     @State private var nameFeild = ""
@@ -50,7 +50,7 @@ struct EditProfileView: View {
                             isAlert = true
                             return
                         }
-                        userViewModel.updataUserData(nameFeild, image, errorResult: { error in
+                        myDataViewModel.updataUserData(nameFeild, image, errorResult: { error in
                             if error != nil {
                                 errorMessage = "画像登録に失敗しました"
                                 isAlert = true
@@ -71,8 +71,8 @@ struct EditProfileView: View {
             }
         }
         .onAppear{
-            nameFeild = userViewModel.name
-            image = userViewModel.model.image
+            nameFeild = myDataViewModel.name
+            image = myDataViewModel.model.image
         }
         .alert(isPresented: $isAlert){
             Alert(title: Text("エラー"),message: Text(errorMessage))
@@ -82,6 +82,6 @@ struct EditProfileView: View {
 
 //struct EditProfileView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        EditProfileView(userViewModel: userViewModel(model: UserDataModel()))
+//        EditProfileView(myDataViewModel: myDataViewModel(model: UserDataModel()))
 //    }
 //}

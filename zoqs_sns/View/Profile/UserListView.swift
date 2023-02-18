@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct UserListView: View {
-    @EnvironmentObject var router: RouterNavigationPath
     let userList: [UserListData]
     
     var body: some View {
         VStack{
             List {
                 ForEach(userList, id: \.id) { (user) in
-                    NavigationLink(value: BasicProfile(id:user.id, name: user.name, image: user.image)) {
+                    NavigationLink(value: Route.basicProfile(BasicProfile(id:user.id, name: user.name, image: user.image))) {
                         HStack(alignment: .top) {
                             PhotoCircleView(image: user.image, diameter: 40)
                             VStack(alignment: .leading) {
@@ -28,11 +27,6 @@ struct UserListView: View {
                     }
                 }
             }
-            Button(action: {
-                router.gotoHomePage()
-            }, label: {
-                Text("BACK")
-            })
         }
     }
 }
