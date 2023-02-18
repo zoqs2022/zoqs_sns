@@ -33,6 +33,7 @@ class MyDataViewModel: ObservableObject {
             if let data = data {
                 self.name = data["name"] as? String ?? "No Name"
                 self.model.follows = data["follows"] as? [String] ?? []
+                self.model.followers = data["followers"] as? [String] ?? []
                 self.getUserList()
             } else {
                 print("error")
@@ -72,6 +73,19 @@ class MyDataViewModel: ObservableObject {
             DatabaseHelper().getImageData(userID: uid, result: { data in
                 if let data = data {
                     self.model.followUserList[index].image = UIImage(data: data)
+                }
+            })
+        }
+        self.model.followers.enumerated().forEach {
+            let index = $0.0
+            let uid = $0.1
+            self.model.followerUserList.append(UserListData(id: uid, name: "", image: nil))
+            DatabaseHelper().getUserName(userID: uid, result: { name in
+                self.model.followerUserList[index].name = name
+            })
+            DatabaseHelper().getImageData(userID: uid, result: { data in
+                if let data = data {
+                    self.model.followerUserList[index].image = UIImage(data: data)
                 }
             })
         }

@@ -43,9 +43,9 @@ struct ProfileView: View {
                                 }
                             }
                             Spacer()
-                            NavigationLink(destination: UserListView(userList: profileViewModel.model.followUserList) ){
+                            NavigationLink(destination: UserListView(userList: profileViewModel.model.followerUserList) ){
                                 VStack {
-                                    Text("100").bold()
+                                    Text("\(profileViewModel.model.followerUserList.count)").bold()
                                     Text("フォロワー").font(.system(size: 12))
                                 }
                             }

@@ -14,6 +14,8 @@ struct ProfileModel {
     var image: UIImage?
     var follows: [String] = []
     var followUserList: [UserListData] = []
+    var followers: [String] = []
+    var followerUserList: [UserListData] = []
 }
 
 struct BasicProfile: Hashable {
