@@ -97,7 +97,7 @@ struct DatabaseHelper {
     }
     
     func editUserInfo(name:String,image:UIImage?,result:@escaping(String?) -> Void){
-        db.collection("user").document(uid).setData(["name":name])
+        db.collection("user").document(uid).setData(["name":name], merge: true)
 //        let resized = image.resize(toWidth: 300)
         guard let imageData = image?.jpegData(compressionQuality:1) else {
             result("画像が設定されていません")
@@ -112,6 +112,35 @@ struct DatabaseHelper {
             }
         }
     }
+    
+    func addUserInFollows(id: String) async throws {
+        do {
+            try await db.collection("user").document(uid).updateData(["follows": FieldValue.arrayUnion([id])])
+        } catch let error {
+            print("Error writing city to Firestore: \(error)")
+        }
+    }
+    
+    func addUserInFollowers(id: String) async throws {
+        do {
+            try await db.collection("user").document(id).updateData(["followers": FieldValue.arrayUnion([uid])])
+        } catch let error {
+            print("Error writing city to Firestore: \(error)")
+        }
+    }
+    
+    // 本当はトランザクションでかきたい
+    func followUser(id: String) async -> String? {
+        do {
+            try await addUserInFollows(id: id)
+            try await addUserInFollowers(id: id)
+            return nil
+        } catch let error {
+            print("Error writing city to Firestore: \(error)")
+            return "フォローに失敗しました"
+        }
+    }
+    
 
 //    func getImage(userID:String,imageView:UIImageView){
 //        let imageRef = storage.child("image/"+userID+".jpeg")

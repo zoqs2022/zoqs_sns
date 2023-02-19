@@ -25,6 +25,10 @@ struct UserListView: View {
     let userList: [UserListData]
     @ObservedObject var myDataViewModel: MyDataViewModel
     
+    @State private var isAlert = false
+    @State private var errorMessage = ""
+    @State var isLoading : Bool = false
+    
     var body: some View {
         VStack{
             List {
@@ -60,27 +64,46 @@ struct UserListView: View {
                                 .padding(.horizontal, 0)
                                 Spacer()
                                 VStack{
-                                    Text(followSwich(bool: !myDataViewModel.model.follows.contains(user.id)).text())
-                                        .font(.system(size: 12))
-                                        .foregroundColor(.white)
-                                        .padding(4)
-                                        .bold()
-                                        .background(followSwich(bool: !myDataViewModel.model.follows.contains(user.id)).backGroundColor())
-                                        .cornerRadius(8)
-                                        .onTapGesture {
-                                            if !myDataViewModel.model.follows.contains(user.id) {
-                                                print("フォローする") // これなら反応する!
-                                            } else {
-                                                print("外す") // これなら反応する!
-                                            }
+                                    Group{
+                                        if isLoading {
+                                            LoadingView()
+                                                .padding(.horizontal, 16)
+                                        } else {
+                                            Text(followSwich(bool: !myDataViewModel.model.follows.contains(user.id)).text())
+                                                .font(.system(size: 12))
+                                                .foregroundColor(.white)
+                                                .padding(4)
+                                                .bold()
+                                                .background(followSwich(bool: !myDataViewModel.model.follows.contains(user.id)).backGroundColor())
+                                                .cornerRadius(8)
                                         }
-                                    
+                                    }
+                                }
+                                .onTapGesture {
+                                    if !myDataViewModel.model.follows.contains(user.id) {
+                                        Task {
+                                            isLoading = true
+                                            let res = await myDataViewModel.followUser(id: user.id)
+                                            if let error = res {
+                                                errorMessage = error
+                                                isAlert = true
+                                            } else {
+                                                myDataViewModel.addUserDataTofollows(id: user.id, name: user.name, image: user.image)
+                                            }
+                                            isLoading = false
+                                        }
+                                    } else {
+                                        print("外す") // これなら反応する!
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+        .alert(isPresented: $isAlert){
+            Alert(title: Text("エラー"),message: Text(errorMessage))
         }
     }
 }

@@ -28,7 +28,7 @@ class MyDataViewModel: ObservableObject {
         }
     }
     
-    func getUserData(){
+    func getBasicData(){
         DatabaseHelper().getUserData(userID: uid, result: { data in
             if let data = data {
                 self.name = data["name"] as? String ?? "No Name"
@@ -41,7 +41,7 @@ class MyDataViewModel: ObservableObject {
         })
     }
     
-    func getUserImageData(){
+    func getImageData(){
         DatabaseHelper().getImageData(userID: uid, result: { data in
             if let data = data {
                 self.model.image = UIImage(data: data)
@@ -89,5 +89,14 @@ class MyDataViewModel: ObservableObject {
                 }
             })
         }
+    }
+    
+    func followUser(id: String) async -> String? {
+        return await DatabaseHelper().followUser(id: id)
+    }
+    
+    func addUserDataTofollows(id: String, name: String, image: UIImage?) {
+        self.model.follows.append(id)
+        self.model.followUserList.append(UserListData(id: id, name: name, image: image))
     }
 }

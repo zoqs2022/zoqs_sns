@@ -44,32 +44,10 @@ class ProfileViewModel: ObservableObject {
         })
     }
     
-    func getUserImageData(){
-        DatabaseHelper().getImageData(userID: self.model.id, result: { data in
-            if let data = data {
-                self.model.image = UIImage(data: data)
-            }
-        })
-    }
-    
-    func updataUserData(_ name: String,_ image: UIImage?, errorResult:@escaping(String?) -> Void) {
-        DatabaseHelper().editUserInfo(name: name, image: image, result: { result in
-            if result == nil {
-                errorResult("画像登録に失敗しました")
-            } else {
-                print(result!)
-                self.model.name = name
-                self.model.image = image
-                errorResult(nil)
-            }
-        })
-    }
-    
     func getUserList(){
         self.model.follows.enumerated().forEach {
             let index = $0.0
             let uid = $0.1
-//            if uid == myId {return}
             self.model.followUserList.append(UserListData(id: uid, name: "", image: nil))
             DatabaseHelper().getUserName(userID: uid, result: { name in
                 self.model.followUserList[index].name = name
@@ -83,7 +61,6 @@ class ProfileViewModel: ObservableObject {
         self.model.followers.enumerated().forEach {
             let index = $0.0
             let uid = $0.1
-//            if uid == myId {return}
             self.model.followerUserList.append(UserListData(id: uid, name: "", image: nil))
             DatabaseHelper().getUserName(userID: uid, result: { name in
                 self.model.followerUserList[index].name = name
