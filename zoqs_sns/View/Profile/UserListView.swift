@@ -91,21 +91,13 @@ struct UserListView: View {
                                     if !myDataViewModel.model.follows.contains(user.id) {
                                         Task {
                                             loadings[index] = true
-                                            let res = await myDataViewModel.followUser(id: user.id, name: user.name, image: user.image)
-                                            if let error = res {
-                                                errorMessage = error
-                                                isAlert = true
-                                            }
+                                            await myDataViewModel.followUser(id: user.id, name: user.name, image: user.image)
                                             loadings[index] = false
                                         }
                                     } else {
                                         Task {
                                             loadings[index] = true
-                                            let res = await myDataViewModel.unfollowUser(id: user.id)
-                                            if let error = res {
-                                                errorMessage = error
-                                                isAlert = true
-                                            } 
+                                            await myDataViewModel.unfollowUser(id: user.id)
                                             loadings[index] = false
                                         }
                                     }

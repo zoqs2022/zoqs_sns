@@ -97,32 +97,24 @@ class MyDataViewModel: ObservableObject {
         }
     }
     
-    func followUser(id: String, name: String, image: UIImage?) async -> String? {
-//        return await DatabaseHelper().addUserInFollows(id: id)
-        guard let res = await DatabaseHelper().addUserInFollows(id: id) else {
-            self.addUserDataTofollows(id: id, name: name, image: image)
-            return nil
+    func followUser(id: String, name: String, image: UIImage?) async {
+        let res = await DatabaseHelper().addUserInFollows(id: id)
+        if res == nil {
+            DispatchQueue.main.async{ //ここをDispatchQueue.main.asyncで囲わないと警告が出てしまう
+                self.model.follows.append(id)
+                self.model.followUserList.append(UserListData(id: id, name: name, image: image))
+            }
         }
-        return res
     }
     
-    func addUserDataTofollows(id: String, name: String, image: UIImage?) {
-        self.model.follows.append(id)
-        self.model.followUserList.append(UserListData(id: id, name: name, image: image))
-    }
-    
-    func unfollowUser(id: String) async -> String? {
-//        return await DatabaseHelper().removeUserInFollows(id: id)
-        guard let res = await DatabaseHelper().removeUserInFollows(id: id) else {
-            self.removeUserDataTofollows(id: id)
-            return nil
+    func unfollowUser(id: String) async {
+        let res = await DatabaseHelper().removeUserInFollows(id: id)
+        if res == nil {
+            DispatchQueue.main.async{
+                self.model.follows.removeAll(where: {$0 == id})
+                self.model.followUserList.removeAll(where: {$0.id == id})
+            }
         }
-        return res
-    }
-    
-    func removeUserDataTofollows(id: String) {
-        self.model.follows.removeAll(where: {$0 == id})
-        self.model.followUserList.removeAll(where: {$0.id == id})
     }
     
     func addPost(text:String, feeling:Int, emotion:Int, with:Int, result:@escaping(String?) -> Void){

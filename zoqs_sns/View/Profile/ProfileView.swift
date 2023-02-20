@@ -32,21 +32,13 @@ struct ProfileView: View {
                                     if !myDataViewModel.model.follows.contains(basicProfile.id) {
                                         Task {
                                             loading = true
-                                            let res = await myDataViewModel.followUser(id: basicProfile.id, name: basicProfile.name, image: basicProfile.image)
-                                            if let error = res {
-                                                errorMessage = error
-                                                isAlert = true
-                                            }
+                                            await myDataViewModel.followUser(id: basicProfile.id, name: basicProfile.name, image: basicProfile.image)
                                             loading = false
                                         }
                                     } else {
                                         Task {
                                             loading = true
-                                            let res = await myDataViewModel.unfollowUser(id: basicProfile.id)
-                                            if let error = res {
-                                                errorMessage = error
-                                                isAlert = true
-                                            }
+                                            await myDataViewModel.unfollowUser(id: basicProfile.id)
                                             loading = false
                                         }
                                     }
