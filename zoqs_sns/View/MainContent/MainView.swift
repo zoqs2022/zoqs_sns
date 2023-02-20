@@ -29,6 +29,16 @@ struct MainView: View {
                 NavigationStack{
                     ScrollView (.vertical, showsIndicators: false) {
                         SNS(postViewModel: postViewModel)
+                            .navigationBarTitle(Text("SNS"), displayMode: .inline)
+                            .navigationBarItems(
+                                leading: VStack{
+                                    PhotoCircleView(image: myDataViewModel.model.image, diameter: 30)
+                                },
+                                trailing: HStack{
+                                    Image(systemName: "sparkles")
+                                }
+                                .padding(.bottom, 10)
+                            )
                             .onTapGesture {
                                 if self.xOffset == .zero {
                                     self.xOffset = self.defaultOffset
@@ -37,16 +47,6 @@ struct MainView: View {
                                 }
                             }
                     }
-                        .navigationBarTitle(Text("SNS"), displayMode: .inline)
-                        .navigationBarItems(
-                            leading: VStack{
-                                PhotoCircleView(image: myDataViewModel.model.image, diameter: 30)
-                            },
-                            trailing: HStack{
-                                Image(systemName: "sparkles")
-                            }
-                            .padding(.bottom, 10)
-                        )
                 }
                 .tabItem{
                     Image(systemName: "message")
@@ -54,21 +54,24 @@ struct MainView: View {
                 }
                 .tag("SNS")
                 
-                NIKKI()
-                    .onTapGesture {
-                        if self.xOffset == .zero {
-                            self.xOffset = self.defaultOffset
-                        } else {
-                            self.xOffset = self.defaultOffset
+                NavigationStack{
+                    NIKKI(myDataViewModel: myDataViewModel)
+                        .navigationBarTitle(Text("SNS"), displayMode: .inline)
+                        .onTapGesture {
+                            if self.xOffset == .zero {
+                                self.xOffset = self.defaultOffset
+                            } else {
+                                self.xOffset = self.defaultOffset
+                            }
                         }
-                    }
-                    .tabItem{
-                        Image(systemName: "pencil")
-                        Text("投稿")
-                    }
-                    .tag("NIKKI")
+                }
+                .tabItem{
+                    Image(systemName: "pencil")
+                    Text("投稿")
+                }
+                .tag("NIKKI")
                 
-                DAYS()
+                DAYS(myDataViewModel: myDataViewModel)
                     .onTapGesture {
                         if self.xOffset == .zero {
                             self.xOffset = self.defaultOffset
@@ -99,6 +102,10 @@ struct MainView: View {
                                 isActive = false
                             }
                         )
+//                        .onChange(of: router.path) {
+//                            print("FFFFFFF",$0)
+//                        }
+                    // onTapGestureはこの位置でないとnavigationviewが正常に動作しない
                         .onTapGesture {
                             if self.xOffset == .zero {
                                 self.xOffset = self.defaultOffset
@@ -106,9 +113,6 @@ struct MainView: View {
                                 self.xOffset = self.defaultOffset
                             }
                         }
-//                        .onChange(of: router.path) {
-//                            print("FFFFFFF",$0)
-//                        }
                 }
                 .tabItem{
                     Image(systemName: "photo.fill")

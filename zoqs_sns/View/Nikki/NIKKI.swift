@@ -9,34 +9,7 @@ import SwiftUI
 import FirebaseFirestore
 
 struct NIKKI: View {
-    
-    
-    
-    //firebase
-    let db = Firestore.firestore()
-    
-    func CreateAddFirebase(text:String,feeling:Int,emotion:Int,with:Int) {
-        var ref: DocumentReference? = nil
-        ref = db.collection("post").addDocument(data: [
-            "userID": AuthHelper().uid(),
-            "date": Timestamp(),
-            "feeling":feeling,
-            "emotion":emotion,
-            "text":text,
-            "with":with
-        ]) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref!.documentID)")
-            }
-        }
-    }
-    
-   
-    let withList = ["友達","恋人","家族","知人","一人"]
-    let tempList = ["楽しい","嬉しい","幸せ","憂鬱","悲しい","不安","怒り","疲れた","爽やか","イライラ"]
-    
+    @ObservedObject var myDataViewModel: MyDataViewModel
     
     @State var text: String = ""
     @State var feeling: Int = 0
@@ -45,25 +18,30 @@ struct NIKKI: View {
     
     @State private var image: UIImage?
     @State var showingImagePicker = false
+    @State var loading = false
+    @State var isSuccessed = false
+    @State private var isAlert = false
+    @State private var errorMessage = ""
     
+    let withList = ["友達","恋人","家族","知人","一人"]
+    let tempList = ["楽しい","嬉しい","幸せ","憂鬱","悲しい","不安","怒り","疲れた","爽やか","イライラ"]
     let ScreenWidth = (UIScreen.main.bounds.width)*0.9
     
     
     
     var body: some View {
-        ZStack{
+        ZStack(alignment: .top){
             
             //backgroundcolor
             LinearGradient(gradient: Gradient(colors: [.mint, .cyan, .blue]), startPoint: .top, endPoint: .bottom)
-                .ignoresSafeArea()
-            
-            
+//                .ignoresSafeArea()
             //メイン
             ScrollView{
                 VStack {
                     Text("Write today's memory")
                         .font(.system(size:30,weight: .heavy))
                         .foregroundColor(.white)
+                        .padding(.top, 8)
                     
                     //feeling入力画面
                     ButtonIcon(feeling: $feeling, emotion: $emotion, with: $with)
@@ -93,21 +71,50 @@ struct NIKKI: View {
                     
                     
                     Button(action: {
-                        CreateAddFirebase(text: text, feeling: feeling, emotion:emotion, with: with)
+                        if loading {return}
+                        loading = true
+                        myDataViewModel.addPost(text: text, feeling: feeling, emotion: emotion, with: with, result: { err in
+                            if let err = err {
+                                errorMessage = err
+                                isAlert = true
+                            } else {
+                                text = ""
+                                feeling = 0
+                                emotion = 0
+                                with = 0
+                                isSuccessed = true
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                    isSuccessed = false
+                                }
+                            }
+                            loading = false
+                        })
                     }, label: {
-                        Text("投稿する").font(.title2).padding().background(Color.white).cornerRadius(20).padding().shadow(radius: 20)
+                        Group{
+                            if loading {
+                                LoadingView()
+                            } else {
+                                Text("投稿する").font(.title2).padding().background(Color.white).cornerRadius(20).padding().shadow(radius: 20)
+                            }
+                        }
                     })
-                    
-                    
-                    
-                }//全体のvstack
-            }//scrollview
+                }//scrollview
+            }
+            if isSuccessed {
+                VStack(alignment: .center){
+                    Text("投稿しました")
+                        .font(.system(size: 20))
+                        .foregroundColor(.white)
+                        .bold()
+                        .padding(4)
+                }
+                .frame(maxWidth: .infinity)
+                .background(.gray)
+            }
         }//zstack
-        
-        
-        
-        
-        
+        .alert(isPresented: $isAlert){
+            Alert(title: Text("エラー"),message: Text(errorMessage))
+        }
     }
 }
 
@@ -216,8 +223,8 @@ struct ButtonIcon : View {
 
 
 
-struct NIKKI_Previews: PreviewProvider {
-    static var previews: some View {
-        NIKKI()
-    }
-}
+//struct NIKKI_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NIKKI()
+//    }
+//}
