@@ -106,9 +106,9 @@ struct MainView: View {
                                 self.xOffset = self.defaultOffset
                             }
                         }
-                        .onChange(of: router.path) {
-                            print("FFFFFFF",$0)
-                        }
+//                        .onChange(of: router.path) {
+//                            print("FFFFFFF",$0)
+//                        }
                 }
                 .tabItem{
                     Image(systemName: "photo.fill")
