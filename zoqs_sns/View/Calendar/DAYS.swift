@@ -36,9 +36,9 @@ struct DAYS: View {
 //            AdBanner(adUnitId:MyId,widthSize: 320,heightSize: 50).expectedFrame()
             ScrollView{
                 //カレンダー部分
-                CalendarView(textYear: $textYear, textMonth: $textMonth, textDay: $textDay)
+                CalendarView(myDataViewModel: myDataViewModel, textYear: $textYear, textMonth: $textMonth, textDay: $textDay)
                 //思い出表示部分
-                CalendarNikki(textYear: $textYear, textMonth: $textMonth, textDay: $textDay)
+                CalendarNikki(myDataViewModel: myDataViewModel, textYear: $textYear, textMonth: $textMonth, textDay: $textDay)
             }//スクロールビュー、カレンダー部分と試合予定全体をくくる
         }//広告とスクロールビューのvstack
     }
@@ -49,7 +49,7 @@ struct DAYS: View {
 
 
 struct CalendarView : View {
-    
+    @ObservedObject var myDataViewModel: MyDataViewModel
     @State var date = Date()
     let week: [String] = ["日","月","火","水","木","金","土"]
     @State var diff: Int = 0
@@ -141,7 +141,7 @@ struct CalendarView : View {
 
 
 struct CalendarNikki : View {
-    
+    @ObservedObject var myDataViewModel: MyDataViewModel
     @Binding var textYear:String
     @Binding var textMonth:String
     @Binding var textDay:String

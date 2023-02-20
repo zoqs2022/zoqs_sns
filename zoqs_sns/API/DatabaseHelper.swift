@@ -113,27 +113,23 @@ struct DatabaseHelper {
         }
     }
     
-    func addUserInFollows(id: String) async throws {
+    func getFollowers(id:String, result:@escaping([String]) -> Void) {
+        var ids = [String]()
+        db.collection("user").whereField("follows", arrayContains: id).getDocuments(completion: {(querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    ids.append(document.documentID)
+                }
+            }
+            result(ids)
+        })
+    }
+    
+    func addUserInFollows(id: String) async -> String? {
         do {
             try await db.collection("user").document(uid).updateData(["follows": FieldValue.arrayUnion([id])])
-        } catch let error {
-            print("Error writing city to Firestore: \(error)")
-        }
-    }
-    
-    func addUserInFollowers(id: String) async throws {
-        do {
-            try await db.collection("user").document(id).updateData(["followers": FieldValue.arrayUnion([uid])])
-        } catch let error {
-            print("Error writing city to Firestore: \(error)")
-        }
-    }
-    
-    // 本当はトランザクションでかきたい
-    func followUser(id: String) async -> String? {
-        do {
-            try await addUserInFollows(id: id)
-            try await addUserInFollowers(id: id)
             return nil
         } catch let error {
             print("Error writing city to Firestore: \(error)")
@@ -141,27 +137,9 @@ struct DatabaseHelper {
         }
     }
     
-    func removeUserInFollows(id: String) async throws {
+    func removeUserInFollows(id: String) async -> String? {
         do {
             try await db.collection("user").document(uid).updateData(["follows": FieldValue.arrayRemove([id])])
-        } catch let error {
-            print("Error writing city to Firestore: \(error)")
-        }
-    }
-    
-    func removeUserInFollowers(id: String) async throws {
-        do {
-            try await db.collection("user").document(id).updateData(["followers": FieldValue.arrayRemove([uid])])
-        } catch let error {
-            print("Error writing city to Firestore: \(error)")
-        }
-    }
-    
-    // 本当はトランザクションでかきたい
-    func unfollowUser(id: String) async -> String? {
-        do {
-            try await removeUserInFollows(id: id)
-            try await removeUserInFollowers(id: id)
             return nil
         } catch let error {
             print("Error writing city to Firestore: \(error)")

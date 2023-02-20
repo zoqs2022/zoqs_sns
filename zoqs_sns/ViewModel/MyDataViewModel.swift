@@ -33,11 +33,14 @@ class MyDataViewModel: ObservableObject {
             if let data = data {
                 self.name = data["name"] as? String ?? "No Name"
                 self.model.follows = data["follows"] as? [String] ?? []
-                self.model.followers = data["followers"] as? [String] ?? []
-                self.getUserList()
+                self.getFollowList()
             } else {
                 print("error")
             }
+        })
+        DatabaseHelper().getFollowers(id: uid, result: { ids in
+            self.model.followers = ids
+            self.getFollowerList()
         })
     }
     
@@ -62,7 +65,7 @@ class MyDataViewModel: ObservableObject {
         })
     }
     
-    func getUserList(){
+    func getFollowList(){
         self.model.follows.enumerated().forEach {
             let index = $0.0 
             let uid = $0.1
@@ -76,6 +79,9 @@ class MyDataViewModel: ObservableObject {
                 }
             })
         }
+    }
+    
+    func getFollowerList(){
         self.model.followers.enumerated().forEach {
             let index = $0.0
             let uid = $0.1
@@ -92,7 +98,7 @@ class MyDataViewModel: ObservableObject {
     }
     
     func followUser(id: String) async -> String? {
-        return await DatabaseHelper().followUser(id: id)
+        return await DatabaseHelper().addUserInFollows(id: id)
     }
     
     func addUserDataTofollows(id: String, name: String, image: UIImage?) {
@@ -101,7 +107,7 @@ class MyDataViewModel: ObservableObject {
     }
     
     func unfollowUser(id: String) async -> String? {
-        return await DatabaseHelper().unfollowUser(id: id)
+        return await DatabaseHelper().removeUserInFollows(id: id)
     }
     
     func removeUserDataTofollows(id: String, name: String, image: UIImage?) {
