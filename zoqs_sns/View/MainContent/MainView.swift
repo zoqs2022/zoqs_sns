@@ -7,36 +7,40 @@
 
 import SwiftUI
 
+class TabSelectViewModel: ObservableObject {
+    @Published var selectionType = "SNS"
+}
+
+
 struct MainView: View {
-    @ObservedObject var userViewModel: UserViewModel
+    @StateObject var router = RouterNavigationPath()
+    @ObservedObject var myDataViewModel: MyDataViewModel
     @StateObject var postViewModel = PostViewModel(model: [PostModel()])
     
     @Binding var isActive: Bool
-    
     @Binding var xOffset: CGFloat
     @Binding var defaultOffset: CGFloat
     
-//    init() {
-//        self.userData = userViewModel(model: UserDataModel())
-//    }
-    
-//    init(isActive: Binding<Bool>) {
-//        self._isActive = isActive
-//        // タイトルバーのフォントサイズを変更
-//        UINavigationBar.appearance().titleTextAttributes = [.font: UIFont.systemFont(ofSize: 24)]
-//    }
+    @StateObject private var tabSelectViewModel = TabSelectViewModel()
     
     var body: some View {
         VStack{
-            TabView{
-                NavigationView{
+            TabView(selection: $tabSelectViewModel.selectionType){
+                NavigationStack{
                     ScrollView (.vertical, showsIndicators: false) {
                         SNS(postViewModel: postViewModel)
+                            .onTapGesture {
+                                if self.xOffset == .zero {
+                                    self.xOffset = self.defaultOffset
+                                } else {
+                                    self.xOffset = self.defaultOffset
+                                }
+                            }
                     }
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(
                             leading: VStack{
-                                PhotoCircleView(image: userViewModel.uiImageData, diameter: 30)
+                                PhotoCircleView(image: myDataViewModel.model.image, diameter: 30)
                             },
                             trailing: HStack{
                                 Image(systemName: "sparkles")
@@ -44,17 +48,11 @@ struct MainView: View {
                             .padding(.bottom, 10)
                         )
                 }
-                .onTapGesture {
-                    if self.xOffset == .zero {
-                        self.xOffset = self.defaultOffset
-                    } else {
-                        self.xOffset = self.defaultOffset
-                    }
-                }
                 .tabItem{
                     Image(systemName: "message")
                     Text("閲覧")
                 }
+                .tag("SNS")
                 
                 NIKKI()
                     .onTapGesture {
@@ -65,9 +63,10 @@ struct MainView: View {
                         }
                     }
                     .tabItem{
-                    Image(systemName: "pencil")
-                    Text("投稿")
+                        Image(systemName: "pencil")
+                        Text("投稿")
                     }
+                    .tag("NIKKI")
                 
                 DAYS()
                     .onTapGesture {
@@ -78,32 +77,52 @@ struct MainView: View {
                         }
                     }
                     .tabItem{
-                    Image(systemName: "30.square.fill")
-                    Text("カレンダー")
+                        Image(systemName: "30.square.fill")
+                        Text("カレンダー")
                     }
+                    .tag("DAYS")
                 
-                NavigationView{
-                    PHOTO(userViewModel: userViewModel)
+                NavigationStack(path: $router.path) {
+                    PHOTO(myDataViewModel: myDataViewModel)
+                        .navigationDestination(for: Route.self) { route in
+                            switch route {
+                            case let .userList(userList):
+                                UserListView(userList: userList, myDataViewModel: myDataViewModel)
+                            case let .basicProfile(basicProfile):
+                                ProfileView(basicProfile: basicProfile, myDataViewModel: myDataViewModel)
+                            }
+                        }
+                        .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(
-                            leading: Button("ログアウト"){
+                            trailing: Button("ログアウト"){
                                 AuthHelper().signout()
                                 isActive = false
                             }
                         )
-                }
-                .onTapGesture {
-                    if self.xOffset == .zero {
-                        self.xOffset = self.defaultOffset
-                    } else {
-                        self.xOffset = self.defaultOffset
-                    }
+                        .onTapGesture {
+                            if self.xOffset == .zero {
+                                self.xOffset = self.defaultOffset
+                            } else {
+                                self.xOffset = self.defaultOffset
+                            }
+                        }
+//                        .onChange(of: router.path) {
+//                            print("FFFFFFF",$0)
+//                        }
                 }
                 .tabItem{
                     Image(systemName: "photo.fill")
                     Text("アルバム")
                 }
+                .tag("PHOTO")
             }
             .accentColor(.blue)
+            
+            .onReceive(tabSelectViewModel.$selectionType) { selection in
+                if selection == "PHOTO" {
+                    router.gotoHomePage()
+                }
+            }
         }
         .onAppear() {
             self.postViewModel.getAllPostList()
@@ -111,8 +130,3 @@ struct MainView: View {
     }
 }
 
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
-//}

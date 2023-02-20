@@ -97,7 +97,7 @@ struct DatabaseHelper {
     }
     
     func editUserInfo(name:String,image:UIImage?,result:@escaping(String?) -> Void){
-        db.collection("user").document(uid).setData(["name":name])
+        db.collection("user").document(uid).setData(["name":name], merge: true)
 //        let resized = image.resize(toWidth: 300)
         guard let imageData = image?.jpegData(compressionQuality:1) else {
             result("画像が設定されていません")
@@ -112,30 +112,82 @@ struct DatabaseHelper {
             }
         }
     }
-
-    func getImage(userID:String,imageView:UIImageView){
-        let imageRef = storage.child("image/"+userID+".jpeg")
-        imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-            if let error = error {
-                print(error)
-            } else {
-                // Data for "images/island.jpg" is returned
-                let image = UIImage(data: data!)
-                imageView.image = image
-            }
+    
+    func addUserInFollows(id: String) async throws {
+        do {
+            try await db.collection("user").document(uid).updateData(["follows": FieldValue.arrayUnion([id])])
+        } catch let error {
+            print("Error writing city to Firestore: \(error)")
         }
-//        imageRef.downloadURL { url, error in
-//                if let url = url {
-//                    imageView.sd_setImage(with: url)
-//                }
-//            }
     }
+    
+    func addUserInFollowers(id: String) async throws {
+        do {
+            try await db.collection("user").document(id).updateData(["followers": FieldValue.arrayUnion([uid])])
+        } catch let error {
+            print("Error writing city to Firestore: \(error)")
+        }
+    }
+    
+    // 本当はトランザクションでかきたい
+    func followUser(id: String) async -> String? {
+        do {
+            try await addUserInFollows(id: id)
+            try await addUserInFollowers(id: id)
+            return nil
+        } catch let error {
+            print("Error writing city to Firestore: \(error)")
+            return "フォローに失敗しました"
+        }
+    }
+    
+    func removeUserInFollows(id: String) async throws {
+        do {
+            try await db.collection("user").document(uid).updateData(["follows": FieldValue.arrayRemove([id])])
+        } catch let error {
+            print("Error writing city to Firestore: \(error)")
+        }
+    }
+    
+    func removeUserInFollowers(id: String) async throws {
+        do {
+            try await db.collection("user").document(id).updateData(["followers": FieldValue.arrayRemove([uid])])
+        } catch let error {
+            print("Error writing city to Firestore: \(error)")
+        }
+    }
+    
+    // 本当はトランザクションでかきたい
+    func unfollowUser(id: String) async -> String? {
+        do {
+            try await removeUserInFollows(id: id)
+            try await removeUserInFollowers(id: id)
+            return nil
+        } catch let error {
+            print("Error writing city to Firestore: \(error)")
+            return "フォロー解除に失敗しました"
+        }
+    }
+    
+
+//    func getImage(userID:String,imageView:UIImageView){
+//        let imageRef = storage.child("image/"+userID+".jpeg")
+//        imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
+//            if error != nil {
+//                print("\(userID) don't have image")
+//            } else {
+//                // Data for "images/island.jpg" is returned
+//                let image = UIImage(data: data!)
+//                imageView.image = image
+//            }
+//        }
+//    }
     
     func getImageData(userID:String, result:@escaping(Data?) -> Void){
         let imageRef = storage.child("image/"+userID+".jpeg")
         imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-            if let error = error {
-                print(error)
+            if error != nil {
+                print("\(userID) don't have image")
             }
             result(data)
         }
@@ -168,8 +220,8 @@ struct DatabaseHelper {
     func getPostList(result:@escaping([PostModel]) -> Void) {
         db.collection("post").getDocuments() { querySnapshot, err in
             var postList:[PostModel] = []
-            if let err = err {
-                print("Error getting documents: \(err)")
+            if err != nil {
+                print("Error getting documents")
             } else {
                 for doc in querySnapshot!.documents {
 //                    print("\(document.documentID) => \(document.data())")

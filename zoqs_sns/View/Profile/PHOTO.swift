@@ -9,8 +9,6 @@ import SwiftUI
 import Charts
 
 
-
-
 //グラフのサンプルデータ
 struct SampleData: Identifiable {
     var id: String { name }    //
@@ -34,28 +32,23 @@ let sampleData: [SampleData] = [
 ]
 
 
-
-
-
 struct PHOTO: View {
-    @ObservedObject var userViewModel: UserViewModel
+    @ObservedObject var myDataViewModel: MyDataViewModel
     
     @State private var image: UIImage?
     @State var showingImagePicker = false
     @State private var toEditProfile = false
-    
-    
     @State var focusDate: Int = 1
-    
     
     var body: some View {
         ScrollView{
             VStack{
                 HStack(){
-                    PhotoCircleView(image: userViewModel.uiImageData, diameter: 80)
+                    // 丸い写真のやつ
+                    PhotoCircleView(image: myDataViewModel.model.image, diameter: 80)
                     VStack(){
                         HStack{
-                            Text(userViewModel.name).bold()
+                            Text(myDataViewModel.name).bold()
                             Spacer()
                             HStack(alignment: .center, spacing: 0){
                                 Button(action: {
@@ -80,20 +73,22 @@ struct PHOTO: View {
                                 Text("投稿").font(.system(size: 12))
                             }
                             Spacer()
-                            VStack{
-                                Text("100").bold()
-                                Text("フォロー中").font(.system(size: 12))
+                            NavigationLink(value: Route.userList(myDataViewModel.model.followUserList)){
+                                VStack {
+                                    Text("\(myDataViewModel.model.followUserList.count)").bold()
+                                    Text("フォロー中").font(.system(size: 12))
+                                }
                             }
                             Spacer()
-                            VStack{
-                                Text("100").bold()
-                                Text("フォロワー").font(.system(size: 12))
+                            NavigationLink(value: Route.userList(myDataViewModel.model.followerUserList)){
+                                VStack {
+                                    Text("\(myDataViewModel.model.followerUserList.count)").bold()
+                                    Text("フォロワー").font(.system(size: 12))
+                                }
                             }
                         }.padding(.leading, 40)
                     }.frame(height: 80)
                 }.frame(maxWidth: .infinity, alignment: .leading).padding(24)
-                
-                
                 
                 
                 
@@ -112,8 +107,9 @@ struct PHOTO: View {
                 
             }
             .sheet(isPresented: $toEditProfile) {
-                EditProfileView(userViewModel: userViewModel)
+                EditProfileView(myDataViewModel: myDataViewModel)
             }
+            
         }
     }
 }
