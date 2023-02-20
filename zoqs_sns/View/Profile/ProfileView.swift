@@ -12,6 +12,9 @@ struct ProfileView: View {
     @ObservedObject var myDataViewModel: MyDataViewModel
     
     @StateObject var profileViewModel = ProfileViewModel(model: ProfileModel())
+    @State var loading = false
+    @State private var isAlert = false
+    @State private var errorMessage = ""
     
     var body: some View {
         ScrollView{
@@ -24,6 +27,45 @@ struct ProfileView: View {
                             Text(basicProfile.name).bold()
                             Spacer()
                             HStack(alignment: .center, spacing: 0){
+                                Button(action: {
+                                    if loading {return}
+                                    if !myDataViewModel.model.follows.contains(basicProfile.id) {
+                                        Task {
+                                            loading = true
+                                            let res = await myDataViewModel.followUser(id: basicProfile.id, name: basicProfile.name, image: basicProfile.image)
+                                            if let error = res {
+                                                errorMessage = error
+                                                isAlert = true
+                                            }
+                                            loading = false
+                                        }
+                                    } else {
+                                        Task {
+                                            loading = true
+                                            let res = await myDataViewModel.unfollowUser(id: basicProfile.id)
+                                            if let error = res {
+                                                errorMessage = error
+                                                isAlert = true
+                                            }
+                                            loading = false
+                                        }
+                                    }
+                                }, label: {
+                                    Group{
+                                        if loading {
+                                            LoadingView()
+                                                .padding(.horizontal, 8)
+                                        } else {
+                                            Text(followSwich(bool: !myDataViewModel.model.follows.contains(basicProfile.id)).text())
+                                                .font(.system(size: 12))
+                                                .foregroundColor(.white)
+                                                .padding(4)
+                                                .bold()
+                                                .background(followSwich(bool: !myDataViewModel.model.follows.contains(basicProfile.id)).backGroundColor())
+                                                .cornerRadius(8)
+                                        }
+                                    }
+                                })
                             }
                             .background(Color(.tertiaryLabel))
                             .cornerRadius(8)
@@ -60,6 +102,9 @@ struct ProfileView: View {
                     profileViewModel.getUserData()
                 }
             }
+        }
+        .alert(isPresented: $isAlert){
+            Alert(title: Text("エラー"),message: Text(errorMessage))
         }
     }
 }

@@ -97,8 +97,13 @@ class MyDataViewModel: ObservableObject {
         }
     }
     
-    func followUser(id: String) async -> String? {
-        return await DatabaseHelper().addUserInFollows(id: id)
+    func followUser(id: String, name: String, image: UIImage?) async -> String? {
+//        return await DatabaseHelper().addUserInFollows(id: id)
+        guard let res = await DatabaseHelper().addUserInFollows(id: id) else {
+            self.addUserDataTofollows(id: id, name: name, image: image)
+            return nil
+        }
+        return res
     }
     
     func addUserDataTofollows(id: String, name: String, image: UIImage?) {
@@ -107,10 +112,15 @@ class MyDataViewModel: ObservableObject {
     }
     
     func unfollowUser(id: String) async -> String? {
-        return await DatabaseHelper().removeUserInFollows(id: id)
+//        return await DatabaseHelper().removeUserInFollows(id: id)
+        guard let res = await DatabaseHelper().removeUserInFollows(id: id) else {
+            self.removeUserDataTofollows(id: id)
+            return nil
+        }
+        return res
     }
     
-    func removeUserDataTofollows(id: String, name: String, image: UIImage?) {
+    func removeUserDataTofollows(id: String) {
         self.model.follows.removeAll(where: {$0 == id})
         self.model.followUserList.removeAll(where: {$0.id == id})
     }
