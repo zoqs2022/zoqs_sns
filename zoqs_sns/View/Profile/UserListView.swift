@@ -21,18 +21,25 @@ struct followSwich {
     }
 }
 
+
 struct UserListView: View {
     let userList: [UserListData]
     @ObservedObject var myDataViewModel: MyDataViewModel
     
+    @State private var loadings: [Bool]
     @State private var isAlert = false
     @State private var errorMessage = ""
-    @State var isLoading : Bool = false
+    
+    init(userList: [UserListData], myDataViewModel: MyDataViewModel) {
+        self.userList = userList
+        self.myDataViewModel = myDataViewModel
+        self.loadings = Array(repeating : false, count : userList.count)
+    }
     
     var body: some View {
         VStack{
             List {
-                ForEach(userList, id: \.id) { (user) in
+                ForEach(Array(userList.enumerated()), id: \.offset) { (index: Int, user: UserListData) in
                     if user.id == myDataViewModel.uid {
                         HStack{
                             HStack(alignment: .top) {
@@ -65,7 +72,7 @@ struct UserListView: View {
                                 Spacer()
                                 VStack{
                                     Group{
-                                        if isLoading {
+                                        if loadings[index] {
                                             LoadingView()
                                                 .padding(.horizontal, 16)
                                         } else {
@@ -82,7 +89,7 @@ struct UserListView: View {
                                 .onTapGesture {
                                     if !myDataViewModel.model.follows.contains(user.id) {
                                         Task {
-                                            isLoading = true
+                                            loadings[index] = true
                                             let res = await myDataViewModel.followUser(id: user.id)
                                             if let error = res {
                                                 errorMessage = error
@@ -90,7 +97,7 @@ struct UserListView: View {
                                             } else {
                                                 myDataViewModel.addUserDataTofollows(id: user.id, name: user.name, image: user.image)
                                             }
-                                            isLoading = false
+                                            loadings[index] = false
                                         }
                                     } else {
                                         print("外す") // これなら反応する!
