@@ -169,6 +169,26 @@ struct DatabaseHelper {
         }
     }
     
+    func addPost(text:String, feeling:Int, emotion:Int, with:Int, result:@escaping(String?) -> Void) {
+        var ref: DocumentReference? = nil
+        ref = db.collection("post").addDocument(data: [
+            "userID": uid,
+            "date": Timestamp(),
+            "feeling":feeling,
+            "emotion":emotion,
+            "text":text,
+            "with":with
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+                result("投稿に失敗しました")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+                result(nil)
+            }
+        }
+    }
+    
 
 //    func getImage(userID:String,imageView:UIImageView){
 //        let imageRef = storage.child("image/"+userID+".jpeg")

@@ -24,6 +24,7 @@ let nikki:[String:String] = [
 import SwiftUI
 
 struct DAYS: View {
+    @ObservedObject var myDataViewModel: MyDataViewModel
     //画面下部に表示する日付
     @State var textYear:String = Date().DateToString(format: "y")
     @State var textMonth:String = Date().DateToString(format: "M")

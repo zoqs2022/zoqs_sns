@@ -108,4 +108,14 @@ class MyDataViewModel: ObservableObject {
         self.model.follows.removeAll(where: {$0 == id})
         self.model.followUserList.removeAll(where: {$0.id == id})
     }
+    
+    func addPost(text:String, feeling:Int, emotion:Int, with:Int, result:@escaping(String?) -> Void){
+        DatabaseHelper().addPost(text: text, feeling: feeling, emotion: emotion, with: with, result: { err in
+            if let err = err {
+                result(err)
+            } else {
+                result(nil)
+            }
+        })
+    }
 }
