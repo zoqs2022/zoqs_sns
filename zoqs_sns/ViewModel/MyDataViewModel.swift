@@ -99,4 +99,13 @@ class MyDataViewModel: ObservableObject {
         self.model.follows.append(id)
         self.model.followUserList.append(UserListData(id: id, name: name, image: image))
     }
+    
+    func unfollowUser(id: String) async -> String? {
+        return await DatabaseHelper().unfollowUser(id: id)
+    }
+    
+    func removeUserDataTofollows(id: String, name: String, image: UIImage?) {
+        self.model.follows.removeAll(where: {$0 == id})
+        self.model.followUserList.removeAll(where: {$0.id == id})
+    }
 }

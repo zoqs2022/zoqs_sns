@@ -141,6 +141,34 @@ struct DatabaseHelper {
         }
     }
     
+    func removeUserInFollows(id: String) async throws {
+        do {
+            try await db.collection("user").document(uid).updateData(["follows": FieldValue.arrayRemove([id])])
+        } catch let error {
+            print("Error writing city to Firestore: \(error)")
+        }
+    }
+    
+    func removeUserInFollowers(id: String) async throws {
+        do {
+            try await db.collection("user").document(id).updateData(["followers": FieldValue.arrayRemove([uid])])
+        } catch let error {
+            print("Error writing city to Firestore: \(error)")
+        }
+    }
+    
+    // 本当はトランザクションでかきたい
+    func unfollowUser(id: String) async -> String? {
+        do {
+            try await removeUserInFollows(id: id)
+            try await removeUserInFollowers(id: id)
+            return nil
+        } catch let error {
+            print("Error writing city to Firestore: \(error)")
+            return "フォロー解除に失敗しました"
+        }
+    }
+    
 
 //    func getImage(userID:String,imageView:UIImageView){
 //        let imageRef = storage.child("image/"+userID+".jpeg")

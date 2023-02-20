@@ -87,6 +87,7 @@ struct UserListView: View {
                                     }
                                 }
                                 .onTapGesture {
+                                    if loadings[index] {return}
                                     if !myDataViewModel.model.follows.contains(user.id) {
                                         Task {
                                             loadings[index] = true
@@ -100,7 +101,17 @@ struct UserListView: View {
                                             loadings[index] = false
                                         }
                                     } else {
-                                        print("外す") // これなら反応する!
+                                        Task {
+                                            loadings[index] = true
+                                            let res = await myDataViewModel.unfollowUser(id: user.id)
+                                            if let error = res {
+                                                errorMessage = error
+                                                isAlert = true
+                                            } else {
+                                                myDataViewModel.removeUserDataTofollows(id: user.id, name: user.name, image: user.image)
+                                            }
+                                            loadings[index] = false
+                                        }
                                     }
                                 }
                             }
