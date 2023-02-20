@@ -80,9 +80,9 @@ struct PHOTO: View {
                                 }
                             }
                             Spacer()
-                            NavigationLink(value: Route.userList(myDataViewModel.model.followUserList)){
+                            NavigationLink(value: Route.userList(myDataViewModel.model.followerUserList)){
                                 VStack {
-                                    Text("100").bold()
+                                    Text("\(myDataViewModel.model.followerUserList.count)").bold()
                                     Text("フォロワー").font(.system(size: 12))
                                 }
                             }

@@ -28,11 +28,12 @@ class MyDataViewModel: ObservableObject {
         }
     }
     
-    func getUserData(){
+    func getBasicData(){
         DatabaseHelper().getUserData(userID: uid, result: { data in
             if let data = data {
                 self.name = data["name"] as? String ?? "No Name"
                 self.model.follows = data["follows"] as? [String] ?? []
+                self.model.followers = data["followers"] as? [String] ?? []
                 self.getUserList()
             } else {
                 print("error")
@@ -40,7 +41,7 @@ class MyDataViewModel: ObservableObject {
         })
     }
     
-    func getUserImageData(){
+    func getImageData(){
         DatabaseHelper().getImageData(userID: uid, result: { data in
             if let data = data {
                 self.model.image = UIImage(data: data)
@@ -75,5 +76,36 @@ class MyDataViewModel: ObservableObject {
                 }
             })
         }
+        self.model.followers.enumerated().forEach {
+            let index = $0.0
+            let uid = $0.1
+            self.model.followerUserList.append(UserListData(id: uid, name: "", image: nil))
+            DatabaseHelper().getUserName(userID: uid, result: { name in
+                self.model.followerUserList[index].name = name
+            })
+            DatabaseHelper().getImageData(userID: uid, result: { data in
+                if let data = data {
+                    self.model.followerUserList[index].image = UIImage(data: data)
+                }
+            })
+        }
+    }
+    
+    func followUser(id: String) async -> String? {
+        return await DatabaseHelper().followUser(id: id)
+    }
+    
+    func addUserDataTofollows(id: String, name: String, image: UIImage?) {
+        self.model.follows.append(id)
+        self.model.followUserList.append(UserListData(id: id, name: name, image: image))
+    }
+    
+    func unfollowUser(id: String) async -> String? {
+        return await DatabaseHelper().unfollowUser(id: id)
+    }
+    
+    func removeUserDataTofollows(id: String, name: String, image: UIImage?) {
+        self.model.follows.removeAll(where: {$0 == id})
+        self.model.followUserList.removeAll(where: {$0.id == id})
     }
 }
