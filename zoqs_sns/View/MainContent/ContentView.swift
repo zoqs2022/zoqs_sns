@@ -65,6 +65,7 @@ struct ContentView: View {
                     print("USER_ID: "+myDataViewModel.uid)
                     myDataViewModel.getBasicData()
                     myDataViewModel.getImageData()
+                    myDataViewModel.getPosts(id: myDataViewModel.uid)
                 }
         }
     }

@@ -6,29 +6,13 @@
 //
 
 
-//日記仮データ
-let nikki:[String:String] = [
-    "2-1":"僕は三十七歳で、そのときボーイング747のシートに座っていた。その巨大な飛行機はぶ厚い雨雲をくぐり抜けて降下し、ハンブルク空港に着陸しようとしているところだった。十一月の冷ややかな雨が大地を黒く染め、雨合羽を着た整備工たちや、のっぺりとした空港ビルの上に立った旗や、BMWの広告板やそんな何もかもをフランドル派の陰うつな絵の背景のように見せていた。やれやれ、またドイツか、と僕は思った。",
-    "2-14":"「ではみなさんは、そういうふうに川だと云いわれたり、乳の流れたあとだと云われたりしていたこのぼんやりと白いものがほんとうは何かご承知ですか。」先生は、黒板に吊つるした大きな黒い星座の図の、上から下へ白くけぶった銀河帯のようなところを指さしながら、みんなに問といをかけました。",
-    "2-17":"国境の長いトンネルを抜けると雪国であった。夜の底が白くなった。信号所に汽車が止まった。",
-    "2-22":"私は、その男の写真を三葉、見たことがある。一葉は、その男の、幼年時代、と言うべきであろうか、十歳前後かと推定される頃の写真であって、その子供が大勢の女のひとに取りかこまれ、(それは、その子供の姉たち、妹たち、それから、従姉妹たちかと想像される)庭園の池のほとりに、荒い縞の袴をはいて立ち、首を三十度ほど左に傾け、醜く笑っている写真である。",
-    "2-24":"幼時から父は、私によく、金閣のことを語った。私の生れたのは、舞鶴から東北の、日本海へ突き出たうらさびしい岬である。",
-    "2-26":"「完璧な文章などといったものは存在しない。完璧な絶望が存在しないようにね」",
-    "2-10":"さびしさは鳴る。耳が痛くなるほど高く澄んだ鈴の音で鳴り響いて、胸を締めつけるから、せめて周りには聞こえないように、私はプリントを指で千切る。",
-]
-
-
-
-
 
 import SwiftUI
 
 struct DAYS: View {
     @ObservedObject var myDataViewModel: MyDataViewModel
     //画面下部に表示する日付
-    @State var textYear:String = Date().DateToString(format: "y")
-    @State var textMonth:String = Date().DateToString(format: "M")
-    @State var textDay:String = Date().DateToString(format: "d")
+    @State var textDate:String = Date().DateToString(format: "yyyy/MM/dd")
     
     var body: some View {
         
@@ -36,9 +20,9 @@ struct DAYS: View {
 //            AdBanner(adUnitId:MyId,widthSize: 320,heightSize: 50).expectedFrame()
             ScrollView{
                 //カレンダー部分
-                CalendarView(myDataViewModel: myDataViewModel, textYear: $textYear, textMonth: $textMonth, textDay: $textDay)
+                CalendarView(myDataViewModel: myDataViewModel, textDate:$textDate)
                 //思い出表示部分
-                CalendarNikki(myDataViewModel: myDataViewModel, textYear: $textYear, textMonth: $textMonth, textDay: $textDay)
+                CalendarNikki(myDataViewModel: myDataViewModel, textDate:$textDate)
             }//スクロールビュー、カレンダー部分と試合予定全体をくくる
         }//広告とスクロールビューのvstack
     }
@@ -55,9 +39,7 @@ struct CalendarView : View {
     @State var diff: Int = 0
     let today: Int = Int(Date().DateToString(format: "d"))! - 1
     
-    @Binding var textYear: String
-    @Binding var textMonth: String
-    @Binding var textDay: String
+    @Binding var textDate: String
     
     
     var body: some View {
@@ -91,23 +73,19 @@ struct CalendarView : View {
                                         .foregroundColor(.blue)
                                         .opacity(1)
                                         .onTapGesture {
-                                            textDay = days[i].DateToString(format: "d")
-                                            textMonth = Date().changeMonth(diff: diff).DateToString(format: "M")
-                                            textYear = Date().changeMonth(diff: diff).DateToString(format: "y")
+                                            textDate = days[i].DateToString(format: "yyyy/MM/dd")
                                         }
                                     Text(days[i].DateToString(format: "d"))
                                 } else {//今日以外の全ての日
                                     //日記を書いた日は背景色を濃くする
-                                    if(nikki.keys.contains(Date().changeMonth(diff: diff).DateToString(format: "M")+"-"+days[i].DateToString(format: "d"))){
+                                    if(myDataViewModel.model.posts.contains(where: {$0.date.DateToString(format: "yMd") == days[i].DateToString(format: "yMd")})) {
                                         //試合有りの場合
                                         Circle()
                                             .frame(width: 46, height: 46, alignment: .center)
                                             .foregroundColor(.cyan)
                                             .opacity(0.9)
                                             .onTapGesture {
-                                                textDay = days[i].DateToString(format: "d")
-                                                textMonth = Date().changeMonth(diff: diff).DateToString(format: "M")
-                                                textYear = Date().changeMonth(diff: diff).DateToString(format: "y")
+                                                textDate = days[i].DateToString(format: "yyyy/MM/dd")
                                             }
                                         Text(days[i].DateToString(format: "d"))
                                     } else {
@@ -117,9 +95,7 @@ struct CalendarView : View {
                                             .foregroundColor(.mint)
                                             .opacity(0.3)
                                             .onTapGesture {
-                                                textDay = days[i].DateToString(format: "d")
-                                                textMonth = Date().changeMonth(diff: diff).DateToString(format: "M")
-                                                textYear = Date().changeMonth(diff: diff).DateToString(format: "y")
+                                                textDate = days[i].DateToString(format: "yyyy/MM/dd")
                                             }
                                         Text(days[i].DateToString(format: "d"))
                                     }//日記の有無のif
@@ -142,9 +118,14 @@ struct CalendarView : View {
 
 struct CalendarNikki : View {
     @ObservedObject var myDataViewModel: MyDataViewModel
-    @Binding var textYear:String
-    @Binding var textMonth:String
-    @Binding var textDay:String
+    @Binding var textDate: String
+    let posts: [PostData]
+    
+    init(myDataViewModel: MyDataViewModel, textDate: Binding<String>) {
+        self.myDataViewModel = myDataViewModel
+        self._textDate = textDate
+        posts = myDataViewModel.model.posts.filter({ $0.date.DateToString(format: "yyyy/MM/dd") == textDate.wrappedValue })
+    }
     
     var body : some View {
         
@@ -155,15 +136,16 @@ struct CalendarNikki : View {
             
             VStack(){
                 VStack{//日付と日記
-                    Text("Memory in   \(textMonth).\(textDay).\(textYear)").font(.title2).fontWeight(.bold).padding()
-                    
-                    if(nikki.keys.contains(textMonth+"-"+textDay)){//日記がある場合、日記と写真を表示
-                        VStack{
-                            Text(nikki[textMonth+"-"+textDay]!)
-                            Image("flower")
-                                .resizable()
-                                .scaledToFit()//縦横比維持
-                                .frame(width: 200)
+                    Text("Memory in   \(textDate)").font(.title2).fontWeight(.bold).padding()
+                    if(!posts.isEmpty){//日記がある場合、日記と写真を表示
+                        ForEach(posts, id: \.id) { post in
+                            VStack{
+                                Text(post.text)
+                                Image("flower")
+                                    .resizable()
+                                    .scaledToFit()//縦横比維持
+                                    .frame(width: 200)
+                            }
                         }
                     }
                 }

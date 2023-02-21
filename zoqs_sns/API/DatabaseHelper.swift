@@ -14,31 +14,8 @@ import FirebaseStorage
 struct DatabaseHelper {
     
     let uid = AuthHelper().uid()
-//    var imageData:Data!
     let db = Firestore.firestore()
     let storage = Storage.storage().reference()
-    
-    func getMyRoomList(result:@escaping([ChatRoom]) -> Void){
-        db.collection("room").whereField("user", arrayContains: uid).addSnapshotListener({
-            (querySnapshot, error) in
-            var roomList:[ChatRoom] = []
-            if error == nil {
-                for doc in querySnapshot!.documents {
-                    let data = doc.data()
-                    guard let users = data["user"] as? [String] else { return }
-                    if users.count != 2 { return }
-                    var user = ""
-                    if users[0] == self.uid {
-                        user = users[1]
-                    } else {
-                        user = users[0]
-                    }
-                    roomList.append(ChatRoom(roomID:doc.documentID, userID: user))
-                }
-                result(roomList)
-            }
-        })
-    }
     
     func getUserInfo(userID:String,result:@escaping(String) -> Void){
         db.collection("user").document(userID).getDocument(completion: {
@@ -75,6 +52,16 @@ struct DatabaseHelper {
                 result(nil)
             }
         })
+    }
+    
+    func getImageData(userID:String, result:@escaping(Data?) -> Void){
+        let imageRef = storage.child("image/"+userID+".jpeg")
+        imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
+            if error != nil {
+                print("\(userID) don't have image")
+            }
+            result(data)
+        }
     }
 
 
@@ -147,6 +134,39 @@ struct DatabaseHelper {
         }
     }
     
+    func getPostList(result:@escaping([PostModel]) -> Void) {
+        db.collection("post").getDocuments() { querySnapshot, err in
+            var postList:[PostModel] = []
+            if err != nil {
+                print("Error getting documents")
+            } else {
+                for doc in querySnapshot!.documents {
+                    let id = doc.documentID
+                    let data = doc.data()
+                    guard let text = data["text"] as! String? else { break }
+                    guard let userID = data["userID"] as! String? else { break }
+                    guard let date = data["date"] else { break }
+                    postList.append(PostModel(id: id,text: text, userID: userID, date: date))
+                }
+            }
+            result(postList)
+        }
+    }
+    
+    func getSelfPosts(id:String, result:@escaping([String:[String: Any]]) -> Void) {
+        var posts: [String:[String: Any]] = [:]
+        db.collection("post").whereField("userID", isEqualTo: id).getDocuments(completion: {(querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    posts[document.documentID] = document.data()
+                }
+            }
+            result(posts)
+        })
+    }
+    
     func addPost(text:String, feeling:Int, emotion:Int, with:Int, result:@escaping(String?) -> Void) {
         var ref: DocumentReference? = nil
         ref = db.collection("post").addDocument(data: [
@@ -164,30 +184,6 @@ struct DatabaseHelper {
                 print("Document added with ID: \(ref!.documentID)")
                 result(nil)
             }
-        }
-    }
-    
-
-//    func getImage(userID:String,imageView:UIImageView){
-//        let imageRef = storage.child("image/"+userID+".jpeg")
-//        imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-//            if error != nil {
-//                print("\(userID) don't have image")
-//            } else {
-//                // Data for "images/island.jpg" is returned
-//                let image = UIImage(data: data!)
-//                imageView.image = image
-//            }
-//        }
-//    }
-    
-    func getImageData(userID:String, result:@escaping(Data?) -> Void){
-        let imageRef = storage.child("image/"+userID+".jpeg")
-        imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-            if error != nil {
-                print("\(userID) don't have image")
-            }
-            result(data)
         }
     }
     
@@ -215,26 +211,27 @@ struct DatabaseHelper {
         })
     }
     
-    func getPostList(result:@escaping([PostModel]) -> Void) {
-        db.collection("post").getDocuments() { querySnapshot, err in
-            var postList:[PostModel] = []
-            if err != nil {
-                print("Error getting documents")
-            } else {
+    func getMyRoomList(result:@escaping([ChatRoom]) -> Void){
+        db.collection("room").whereField("user", arrayContains: uid).addSnapshotListener({
+            (querySnapshot, error) in
+            var roomList:[ChatRoom] = []
+            if error == nil {
                 for doc in querySnapshot!.documents {
-//                    print("\(document.documentID) => \(document.data())")
-                    let id = doc.documentID
                     let data = doc.data()
-                    guard let text = data["text"] as! String? else { break }
-                    guard let userID = data["userID"] as! String? else { break }
-                    guard let date = data["date"] else { break }
-                    postList.append(PostModel(id: id,text: text, userID: userID, date: date))
+                    guard let users = data["user"] as? [String] else { return }
+                    if users.count != 2 { return }
+                    var user = ""
+                    if users[0] == self.uid {
+                        user = users[1]
+                    } else {
+                        user = users[0]
+                    }
+                    roomList.append(ChatRoom(roomID:doc.documentID, userID: user))
                 }
+                result(roomList)
             }
-            result(postList)
-        }
+        })
     }
-
 }
 
 struct ChatRoom {

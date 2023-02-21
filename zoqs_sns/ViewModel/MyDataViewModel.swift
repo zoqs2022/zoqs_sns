@@ -7,6 +7,8 @@
 
 import Foundation
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 class MyDataViewModel: ObservableObject {
     @Published var model: MyDataModel
@@ -125,5 +127,15 @@ class MyDataViewModel: ObservableObject {
                 result(nil)
             }
         })
+    }
+    
+    func getPosts(id: String) {
+        DatabaseHelper().getSelfPosts(id: id) { posts in
+            var arr: [PostData] = []
+            for (key,value) in posts {
+                arr.append(.init(id: key, date: (value["date"] as! Timestamp).dateValue(), text: value["text"] as! String, feeling: value["feeling"] as! Int, emotion: value["emotion"] as! Int, with: value["with"] as! Int))
+            }
+            self.model.posts = arr
+        }
     }
 }

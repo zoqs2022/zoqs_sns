@@ -22,6 +22,11 @@ struct NIKKI: View {
     @State var isSuccessed = false
     @State private var isAlert = false
     @State private var errorMessage = ""
+    var isActiveButton: Bool {
+        get{
+            return text != ""
+        }
+    }
     
     let withList = ["友達","恋人","家族","知人","一人"]
     let tempList = ["楽しい","嬉しい","幸せ","憂鬱","悲しい","不安","怒り","疲れた","爽やか","イライラ"]
@@ -51,6 +56,7 @@ struct NIKKI: View {
                     TextEditor(text: $text)
                         .frame(width: ScreenWidth, height: 150)
                         .padding()
+                        .autocapitalization(.none)
                         
                     
                     
@@ -98,6 +104,7 @@ struct NIKKI: View {
                             }
                         }
                     })
+                    .disabled(!isActiveButton)
                 }//scrollview
             }
             if isSuccessed {
