@@ -10,11 +10,7 @@ import SwiftUI
 struct ProfileView: View {
     var basicProfile: BasicProfile
     @ObservedObject var myDataViewModel: MyDataViewModel
-    
     @StateObject var profileViewModel = ProfileViewModel(model: ProfileModel())
-    @State var loading = false
-    @State private var isAlert = false
-    @State private var errorMessage = ""
     
     var body: some View {
         ScrollView{
@@ -26,41 +22,9 @@ struct ProfileView: View {
                         HStack{
                             Text(basicProfile.name).bold()
                             Spacer()
-                            HStack(alignment: .center, spacing: 0){
-                                Button(action: {
-                                    if loading {return}
-                                    if !myDataViewModel.model.follows.contains(basicProfile.id) {
-                                        Task {
-                                            loading = true
-                                            await myDataViewModel.followUser(id: basicProfile.id, name: basicProfile.name, image: basicProfile.image)
-                                            loading = false
-                                        }
-                                    } else {
-                                        Task {
-                                            loading = true
-                                            await myDataViewModel.unfollowUser(id: basicProfile.id)
-                                            loading = false
-                                        }
-                                    }
-                                }, label: {
-                                    Group{
-                                        if loading {
-                                            LoadingView()
-                                                .padding(.horizontal, 8)
-                                        } else {
-                                            Text(followSwich(bool: !myDataViewModel.model.follows.contains(basicProfile.id)).text())
-                                                .font(.system(size: 12))
-                                                .foregroundColor(.white)
-                                                .padding(4)
-                                                .bold()
-                                                .background(followSwich(bool: !myDataViewModel.model.follows.contains(basicProfile.id)).backGroundColor())
-                                                .cornerRadius(8)
-                                        }
-                                    }
-                                })
-                            }
-                            .background(Color(.tertiaryLabel))
-                            .cornerRadius(8)
+                            
+                            FollowButtonView(myDataViewModel: myDataViewModel, basicProfile: basicProfile, fontSize: 12)
+                            
                         }.padding(.leading, 24)
                         
                         Spacer()
@@ -94,9 +58,6 @@ struct ProfileView: View {
                     profileViewModel.getUserData()
                 }
             }
-        }
-        .alert(isPresented: $isAlert){
-            Alert(title: Text("エラー"),message: Text(errorMessage))
         }
     }
 }

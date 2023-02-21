@@ -26,16 +26,6 @@ struct UserListView: View {
     let userList: [UserListData]
     @ObservedObject var myDataViewModel: MyDataViewModel
     
-    @State private var loadings: [Bool]
-    @State private var isAlert = false
-    @State private var errorMessage = ""
-    
-    init(userList: [UserListData], myDataViewModel: MyDataViewModel) {
-        self.userList = userList
-        self.myDataViewModel = myDataViewModel
-        self.loadings = Array(repeating : false, count : userList.count)
-    }
-    
     var body: some View {
         VStack{
             List {
@@ -70,52 +60,20 @@ struct UserListView: View {
                                 }
                                 .padding(.horizontal, 0)
                                 Spacer()
-                                VStack{
-                                    Group{
-                                        if loadings[index] {
-                                            LoadingView()
-                                                .padding(.horizontal, 16)
-                                        } else {
-                                            Text(followSwich(bool: !myDataViewModel.model.follows.contains(user.id)).text())
-                                                .font(.system(size: 12))
-                                                .foregroundColor(.white)
-                                                .padding(4)
-                                                .bold()
-                                                .background(followSwich(bool: !myDataViewModel.model.follows.contains(user.id)).backGroundColor())
-                                                .cornerRadius(8)
-                                        }
-                                    }
-                                }
-                                .onTapGesture {
-                                    if loadings[index] {return}
-                                    if !myDataViewModel.model.follows.contains(user.id) {
-                                        Task {
-                                            loadings[index] = true
-                                            await myDataViewModel.followUser(id: user.id, name: user.name, image: user.image)
-                                            loadings[index] = false
-                                        }
-                                    } else {
-                                        Task {
-                                            loadings[index] = true
-                                            await myDataViewModel.unfollowUser(id: user.id)
-                                            loadings[index] = false
-                                        }
-                                    }
-                                }
+                                
+                                FollowButtonView(myDataViewModel: myDataViewModel, basicProfile: .init(id: user.id, name: user.name, image: user.image), fontSize: 12)
+                                
                             }
                         }
                     }
                 }
             }
         }
-        .alert(isPresented: $isAlert){
-            Alert(title: Text("エラー"),message: Text(errorMessage))
-        }
     }
 }
 
-struct UserListView_Previews: PreviewProvider {
-    static var previews: some View {
-        UserListView(userList: [.init(id: "0HRpCbTuBTW2e3UQ0OTqH6sZe1V2", name: "takumi")], myDataViewModel: MyDataViewModel(model: MyDataModel()))
-    }
-}
+//struct UserListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        UserListView(userList: [.init(id: "0HRpCbTuBTW2e3UQ0OTqH6sZe1V2", name: "takumi")], myDataViewModel: MyDataViewModel(model: MyDataModel()))
+//    }
+//}
