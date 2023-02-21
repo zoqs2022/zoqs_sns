@@ -23,7 +23,7 @@ struct ProfileView: View {
                             Text(basicProfile.name).bold()
                             Spacer()
                             
-                            FollowButtonView(myDataViewModel: myDataViewModel, basicProfile: basicProfile, fontSize: 12)
+                            FollowButtonView(myDataViewModel: myDataViewModel, basicProfile: basicProfile, fontSize: 16)
                             
                         }.padding(.leading, 24)
                         

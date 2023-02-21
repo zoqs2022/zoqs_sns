@@ -16,6 +16,7 @@ struct EditProfileView: View {
     @State private var passwordFeild = ""
     @State private var isAlert = false
     @State private var errorMessage = ""
+    @State var loading = false
     
     @State private var image: UIImage?
     @State var showingImagePicker = false
@@ -44,23 +45,37 @@ struct EditProfileView: View {
             
             VStack{
                 HStack(alignment: .center, spacing: 0){
-                    Button("変更"){
+                    Button(action: {
+                        if loading {return}
                         if nameFeild.count < 3 || nameFeild.count > 11 {
                             errorMessage = "名前は3字以上10字以内で設定してください。"
                             isAlert = true
                             return
                         }
+                        loading = true
                         myDataViewModel.updataUserData(nameFeild, image, errorResult: { error in
                             if error != nil {
                                 errorMessage = "画像登録に失敗しました"
                                 isAlert = true
                             }
+                            loading = false
                             presentationMode.wrappedValue.dismiss()
                         })
-                    }
-                    .padding(10)
-                    .font(.system(size: 20))
-                    .foregroundColor(.black)
+                    }, label: {
+                        Group{
+                            if loading {
+                                LoadingView()
+                                    .padding(.horizontal, 8)
+                            } else {
+                                Text("変更")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(.black)
+                                    .bold()
+                            }
+                        }
+                    })
+                    .padding(.vertical,10)
+                    .padding(.horizontal, 20)
                 }
                 .background(Color(.tertiaryLabel))
                 .cornerRadius(8)
