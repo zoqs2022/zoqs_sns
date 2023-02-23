@@ -112,7 +112,60 @@ struct CalendarView : View {
 
 
 
-
+struct editedPostData {
+    let post: PostData
+    
+    func getFeeling() -> String {
+        switch post.emotion{
+        case 0:
+            return  "🌟"
+        case 1:
+            return  "☔️"
+        case 2:
+            return  "⚡️"
+        case 3:
+            return  "❄️"
+        case 4:
+            return  "🔥"
+        default:
+            return  "🌙"
+        }
+    }
+    
+    func getEmotion() -> String {
+        switch post.emotion{
+        case 0:
+            return  "😆"
+        case 1:
+            return  "😁"
+        case 2:
+            return  "😍"
+        case 3:
+            return  "😱"
+        case 4:
+            return  "😭"
+        default:
+            return  "😡"
+        }
+    }
+    
+    func getWith() -> String {
+        switch post.with{
+        case 0:
+            return  "友達"
+        case 1:
+            return  "恋人"
+        case 2:
+            return  "家族"
+        case 3:
+            return  "知人"
+        case 4:
+            return  "一人"
+        default:
+            return  ""
+        }
+    }
+}
 
 
 
@@ -135,40 +188,45 @@ struct CalendarNikki : View {
             LinearGradient(gradient: Gradient(colors: [.cyan.opacity(0.3), .cyan]), startPoint: .top, endPoint: .bottom)
             
             VStack(){
-                VStack{//日付と日記
-                    Text("Memory in   \(textDate)").font(.title2).fontWeight(.bold).padding()
+                Text("Memory in   \(textDate)").font(.title2).fontWeight(.bold).padding()
                     if(!posts.isEmpty){//日記がある場合、日記と写真を表示
                         ForEach(posts, id: \.id) { post in
                             VStack{
-                                Text(post.text)
-                                Image("flower")
-                                    .resizable()
-                                    .scaledToFit()//縦横比維持
-                                    .frame(width: 200)
+                                VStack{
+                                    if let image = post.image {
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .scaledToFit()//縦横比維持
+                                            .frame(width: 120)
+                                            .foregroundColor(.white)
+                                            .cornerRadius(8)
+                                    }
+                                    Text(post.text).bold()
+                                }.padding(.bottom, 8)
+                                HStack(alignment: .top){//メタ情報
+                                    Spacer()
+                                    VStack(alignment: .leading){
+                                        Text("feeling").font(.headline).foregroundColor(.cyan).padding(.bottom, 2)
+                                        Text("emotion").font(.headline).foregroundColor(.cyan).padding(.bottom, 2)
+                                        Text("with").font(.headline).foregroundColor(.cyan)
+                                    }
+                                    Spacer()
+                                    VStack(alignment: .leading){
+                                        Text(editedPostData(post: post).getFeeling()).padding(.bottom, 2)
+                                        Text(editedPostData(post: post).getEmotion()).padding(.bottom, 2)
+                                        Text(editedPostData(post: post).getWith())
+                                        
+                                    }
+                                    Spacer()
+                                }
                             }
+                            .frame(width: 200)
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(10)
+                            .padding()
                         }
                     }
-                }
-                
-                HStack(alignment: .top){//メタ情報
-                    VStack(alignment: .leading){
-                        Text("feeling").font(.headline).foregroundColor(.cyan)
-                        Text("with").font(.headline).foregroundColor(.cyan)
-                        Text("at").font(.headline).foregroundColor(.cyan)
-                        Text("play music").font(.headline).foregroundColor(.cyan)
-                        Text("contact").font(.headline).foregroundColor(.cyan)
-                        Text("sns").font(.headline).foregroundColor(.cyan)
-                    }
-                    VStack(alignment: .leading){
-                        Text("😀")
-                        Text("alone")
-                        Text("ドイツ")
-                        Text("Norwegian Wood")
-                        Text("連絡を取った人のリスト")
-                        Text("他のsnsの投稿を見れる")
-                        
-                    }
-                }.padding().background(Color.white).cornerRadius(10).padding()
             }//.padding().background(Color.mint.opacity(0.2)).padding()//日記表示全体のvstack,textとif
         }//zstack、背景と日記
         

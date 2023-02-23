@@ -57,9 +57,9 @@ struct DatabaseHelper {
     func getImageData(userID:String, result:@escaping(Data?) -> Void){
         let imageRef = storage.child("image/"+userID+".jpeg")
         imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-            if error != nil {
-                print("\(userID) don't have image")
-            }
+//            if error != nil {
+//                print("\(userID) don't have image")
+//            }
             result(data)
         }
     }
@@ -134,22 +134,17 @@ struct DatabaseHelper {
         }
     }
     
-    func getPostList(result:@escaping([PostModel]) -> Void) {
+    func getPostList(result:@escaping([String:[String: Any]]) -> Void) {
+        var posts: [String:[String: Any]] = [:]
         db.collection("post").getDocuments() { querySnapshot, err in
-            var postList:[PostModel] = []
-            if err != nil {
-                print("Error getting documents")
+            if let err = err {
+                print("Error getting documents: \(err)")
             } else {
-                for doc in querySnapshot!.documents {
-                    let id = doc.documentID
-                    let data = doc.data()
-                    guard let text = data["text"] as! String? else { break }
-                    guard let userID = data["userID"] as! String? else { break }
-                    guard let date = data["date"] else { break }
-                    postList.append(PostModel(id: id,text: text, userID: userID, date: date))
+                for document in querySnapshot!.documents {
+                    posts[document.documentID] = document.data()
                 }
             }
-            result(postList)
+            result(posts)
         }
     }
     
@@ -167,22 +162,37 @@ struct DatabaseHelper {
         })
     }
     
-    func addPost(text:String, feeling:Int, emotion:Int, with:Int, result:@escaping(String?) -> Void) {
+    func getPostImage(id: String, result:@escaping(Data?) -> Void){
+        let imageRef = storage.child("image/\(id)/1.jpeg")
+        imageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
+//            if error == nil {
+//                print("\(id) don't have image")
+//            }
+            result(data)
+        }
+    }
+    
+    func createPost(data: [String: Any], image:UIImage?, result:@escaping(String?) -> Void) {
         var ref: DocumentReference? = nil
-        ref = db.collection("post").addDocument(data: [
-            "userID": uid,
-            "date": Timestamp(),
-            "feeling":feeling,
-            "emotion":emotion,
-            "text":text,
-            "with":with
-        ]) { err in
+        ref = db.collection("post").addDocument(data: data) { err in
             if let err = err {
                 print("Error adding document: \(err)")
                 result("投稿に失敗しました")
             } else {
                 print("Document added with ID: \(ref!.documentID)")
-                result(nil)
+                if let image = image {
+                    let imageData = image.jpegData(compressionQuality:1)
+                    storage.child("image/\(ref!.documentID)/1.jpeg").putData(imageData!, metadata: nil){ (metadata, error) in
+                        if error != nil {
+                            result("画像の投稿に失敗しました")
+                        } else {
+                            print("画像登録に成功！")
+                            result(nil)
+                        }
+                    }
+                } else {
+                    result(nil)
+                }
             }
         }
     }

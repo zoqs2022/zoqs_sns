@@ -119,23 +119,39 @@ class MyDataViewModel: ObservableObject {
         }
     }
     
-    func addPost(text:String, feeling:Int, emotion:Int, with:Int, result:@escaping(String?) -> Void){
-        DatabaseHelper().addPost(text: text, feeling: feeling, emotion: emotion, with: with, result: { err in
+    func createPost(text:String, feeling:Int, emotion:Int, with:Int, image:UIImage?, result:@escaping(String?) -> Void){
+        let data: [String: Any] = [
+            "userID": uid,
+            "date": Timestamp(),
+            "feeling":feeling,
+            "emotion":emotion,
+            "text":text,
+            "with":with
+        ]
+        DatabaseHelper().createPost(data: data, image: image, result: { err in
             if let err = err {
                 result(err)
             } else {
                 result(nil)
             }
         })
+        
     }
     
     func getPosts(id: String) {
         DatabaseHelper().getSelfPosts(id: id) { posts in
-            var arr: [PostData] = []
+            self.model.posts = []
+            var i = 0
             for (key,value) in posts {
-                arr.append(.init(id: key, date: (value["date"] as! Timestamp).dateValue(), text: value["text"] as! String, feeling: value["feeling"] as! Int, emotion: value["emotion"] as! Int, with: value["with"] as! Int))
+                let index = i
+                self.model.posts.append(.init(id: key, date: (value["date"] as! Timestamp).dateValue(), text: value["text"] as! String, feeling: value["feeling"] as! Int, emotion: value["emotion"] as! Int, with: value["with"] as! Int, image: nil))
+                DatabaseHelper().getPostImage(id: key, result: { data in
+                    if let data = data {
+                        self.model.posts[index].image = UIImage(data: data)
+                    }
+                })
+                i = i + 1
             }
-            self.model.posts = arr
         }
     }
 }

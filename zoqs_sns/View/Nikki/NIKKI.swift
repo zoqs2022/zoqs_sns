@@ -15,8 +15,8 @@ struct NIKKI: View {
     @State var feeling: Int = 0
     @State var with: Int = 0
     @State var emotion: Int = 0
-    
     @State private var image: UIImage?
+    
     @State var showingImagePicker = false
     @State var loading = false
     @State var isSuccessed = false
@@ -71,6 +71,8 @@ struct NIKKI: View {
                                 .background(Color.white)
                         }
                     }
+                    .padding(4)
+                    .cornerRadius(4)
                     .sheet(isPresented: $showingImagePicker) {
                         ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
                     }
@@ -79,7 +81,7 @@ struct NIKKI: View {
                     Button(action: {
                         if loading {return}
                         loading = true
-                        myDataViewModel.addPost(text: text, feeling: feeling, emotion: emotion, with: with, result: { err in
+                        myDataViewModel.createPost(text: text, feeling: feeling, emotion: emotion, with: with, image: image, result: { err in
                             if let err = err {
                                 errorMessage = err
                                 isAlert = true

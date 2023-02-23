@@ -23,25 +23,42 @@ struct SNS: View {
                                 Text(post.userName ?? "")
                                     .fontWeight(.bold)
                             }
-//                            Text(String(post.date)).foregroundColor(.gray)
+                            Text(String(post.date.DateToString(format: "yyyy/MM/dd hh:mm:ss"))).foregroundColor(.gray)
                             Text(post.text)
-                            Image("flower")
-                                .resizable()
-                                .scaledToFill()
-                                .frame(height: 200)
-                                .cornerRadius(20)
+//                            if let image = post.postImage {
+//                                Image(uiImage: image)
+//                                    .resizable()
+//                                    .scaledToFill()
+//                                    .frame(height: 200)
+//                                    .cornerRadius(20)
+//                            }
+//                            Image("flower")
+//                                .resizable()
+//                                .scaledToFill()
+//                                .frame(height: 200)
+//                                .cornerRadius(20)
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 10)
-                    Divider()
                 }
+                .frame(maxWidth: .infinity, minHeight: 60, alignment: .top)
+                Divider()
             }
         }
     }
 }
 
-//struct SNS_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SNS()
-//    }
-//}
+let postsMock: [PostModel] = [
+    PostModel(id: "0", text: "aaaa", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date(), userName: "aaaa"),
+    PostModel(id: "1", text: "bbbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date(), userName: "aaaa"),
+    PostModel(id: "2", text: "cccc", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date(), userName: "aaaa"),
+    PostModel(id: "3", text: "dddd", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date(), userName: "aaaa"),
+    PostModel(id: "4", text: "eeee", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date(), userName: "aaaa"),
+]
+
+struct SNS_Previews: PreviewProvider {
+    static var previews: some View {
+        SNS(postViewModel: PostViewModel(model: postsMock))
+    }
+}
