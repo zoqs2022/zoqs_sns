@@ -36,6 +36,7 @@ class MyDataViewModel: ObservableObject {
                 self.name = data["name"] as? String ?? "No Name"
                 self.model.follows = data["follows"] as? [String] ?? []
                 self.getFollowList()
+                self.getDisplayPosts(ids: self.model.follows)
             } else {
                 print("error")
             }
@@ -120,19 +121,21 @@ class MyDataViewModel: ObservableObject {
     }
     
     func createPost(text:String, feeling:Int, emotion:Int, with:Int, image:UIImage?, result:@escaping(String?) -> Void){
+        let date = Timestamp()
         let data: [String: Any] = [
             "userID": uid,
-            "date": Timestamp(),
+            "date": date,
             "feeling":feeling,
             "emotion":emotion,
             "text":text,
             "with":with
         ]
-        DatabaseHelper().createPost(data: data, image: image, result: { err in
-            if let err = err {
-                result(err)
-            } else {
+        DatabaseHelper().createPost(data: data, image: image, result: { responseId in
+            if let id = responseId {
+                self.model.myPosts.append(.init(id: id, date: date.dateValue(), text: text, feeling: feeling, emotion: emotion, with: with, image: image))
                 result(nil)
+            } else {
+                result("画像の投稿に失敗しました")
             }
         })
         
@@ -140,18 +143,64 @@ class MyDataViewModel: ObservableObject {
     
     func getPosts(id: String) {
         DatabaseHelper().getSelfPosts(id: id) { posts in
-            self.model.posts = []
+            self.model.myPosts = []
             var i = 0
             for (key,value) in posts {
                 let index = i
-                self.model.posts.append(.init(id: key, date: (value["date"] as! Timestamp).dateValue(), text: value["text"] as! String, feeling: value["feeling"] as! Int, emotion: value["emotion"] as! Int, with: value["with"] as! Int, image: nil))
+                self.model.myPosts.append(.init(id: key, date: (value["date"] as! Timestamp).dateValue(), text: value["text"] as! String, feeling: value["feeling"] as! Int, emotion: value["emotion"] as! Int, with: value["with"] as! Int, image: nil))
                 DatabaseHelper().getPostImage(id: key, result: { data in
                     if let data = data {
-                        self.model.posts[index].image = UIImage(data: data)
+                        self.model.myPosts[index].image = UIImage(data: data)
                     }
                 })
                 i = i + 1
             }
         }
+    }
+    
+    func getDisplayPosts(ids: [String]) {
+        DatabaseHelper().getPostList(ids: ids,result: { posts in
+            self.model.displayPosts = []
+            var userIds: [String] = []
+            for (key,value) in posts {
+                let uid = value["userID"] as! String
+                userIds.append(uid)
+                self.model.displayPosts.append(PostModel(id: key, text: value["text"] as! String, userID: uid, date: (value["date"] as! Timestamp).dateValue(), userName: "", userImage: nil, postImage: nil))
+                DatabaseHelper().getPostImage(id: key, result: { data in
+                    if let data = data {
+                        if let i = self.model.displayPosts.firstIndex(where: { $0.id == key}) {
+                            self.model.displayPosts[i].postImage = UIImage(data: data)
+                        }
+                    }
+                })
+            }
+            // 日付でソートする
+            self.model.displayPosts = self.model.displayPosts.sorted(by: {
+                $0.date.compare($1.date) == .orderedDescending
+            })
+            let uniqueUserIds = Array(Set(userIds))
+            uniqueUserIds.forEach({ uid in
+                DatabaseHelper().getUserName(userID: uid, result: { name in
+                    var i = 0
+                    while i != -1 {
+                        i = self.model.displayPosts.firstIndex(where: { ($0.userID == uid) && ($0.userName == "")}) ?? -1
+                        if i != -1 {
+                            self.model.displayPosts[i].userName = name
+                        }
+                    }
+                })
+                DatabaseHelper().getImageData(userID: uid, result: { data in
+                    if let data = data {
+                        var i = 0
+                        while i != -1 {
+                            i = self.model.displayPosts.firstIndex(where: { ($0.userID == uid) && ($0.userImage == nil)}) ?? -1
+                            if i != -1 {
+                                self.model.displayPosts[i].userImage = UIImage(data: data)
+                            }
+                        }
+                    }
+                })
+            })
+        })
     }
 }

@@ -10,11 +10,11 @@ import FirebaseFirestore
 
 
 struct SNS: View {
-    @ObservedObject var postViewModel: PostViewModel
+    @ObservedObject var myDataViewModel: MyDataViewModel
     
     var body: some View {
         VStack() {
-            ForEach(self.postViewModel.posts, id: \.id) { (post) in
+            ForEach(self.myDataViewModel.model.displayPosts, id: \.id) { (post) in
                 VStack(spacing: 5) {
                     HStack(alignment: .top) {
                         PhotoCircleView(image: post.userImage, diameter: 40)
@@ -23,15 +23,15 @@ struct SNS: View {
                                 Text(post.userName ?? "")
                                     .fontWeight(.bold)
                             }
-                            Text(String(post.date.DateToString(format: "yyyy/MM/dd HH:mm:ss"))).foregroundColor(.gray)
+                            Text(String(post.date.DateToString(format: "yyyy/MM/dd HH:mm"))).foregroundColor(.gray)
                             Text(post.text)
-//                            if let image = post.postImage {
-//                                Image(uiImage: image)
-//                                    .resizable()
-//                                    .scaledToFill()
-//                                    .frame(height: 200)
-//                                    .cornerRadius(20)
-//                            }
+                            if let image = post.postImage {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(height: 200)
+                                    .cornerRadius(20)
+                            }
 //                            Image("flower")
 //                                .resizable()
 //                                .scaledToFill()
@@ -57,8 +57,8 @@ let postsMock: [PostModel] = [
     PostModel(id: "4", text: "eeee", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date(), userName: "aaaa"),
 ]
 
-struct SNS_Previews: PreviewProvider {
-    static var previews: some View {
-        SNS(postViewModel: PostViewModel(model: postsMock))
-    }
-}
+//struct SNS_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SNS(postViewModel: PostViewModel(model: postsMock))
+//    }
+//}

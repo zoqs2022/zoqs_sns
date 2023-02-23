@@ -16,7 +16,8 @@ struct MyDataModel {
     var followUserList: [UserListData] = []
     var followers: [String] = []
     var followerUserList: [UserListData] = []
-    var posts: [PostData] = []
+    var myPosts: [PostData] = []
+    var displayPosts: [PostModel] = []
 }
 
 struct UserListData: Hashable {

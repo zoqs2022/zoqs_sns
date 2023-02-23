@@ -77,36 +77,41 @@ struct NIKKI: View {
                         ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
                     }
                     
-                    
-                    Button(action: {
-                        if loading {return}
-                        loading = true
-                        myDataViewModel.createPost(text: text, feeling: feeling, emotion: emotion, with: with, image: image, result: { err in
-                            if let err = err {
-                                errorMessage = err
-                                isAlert = true
-                            } else {
-                                text = ""
-                                feeling = 0
-                                emotion = 0
-                                with = 0
-                                isSuccessed = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                                    isSuccessed = false
+                    VStack{
+                        Button(action: {
+                            if loading {return}
+                            loading = true
+                            myDataViewModel.createPost(text: text, feeling: feeling, emotion: emotion, with: with, image: image, result: { err in
+                                if let err = err {
+                                    errorMessage = err
+                                    isAlert = true
+                                } else {
+                                    text = ""
+                                    feeling = 0
+                                    emotion = 0
+                                    with = 0
+                                    isSuccessed = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                        isSuccessed = false
+                                    }
+                                }
+                                loading = false
+                            })
+                        }, label: {
+                            Group{
+                                if loading {
+                                    LoadingView()
+                                } else {
+                                    Text("投稿する").font(.title2).padding().padding().shadow(radius: 20)
                                 }
                             }
-                            loading = false
                         })
-                    }, label: {
-                        Group{
-                            if loading {
-                                LoadingView()
-                            } else {
-                                Text("投稿する").font(.title2).padding().background(Color.white).cornerRadius(20).padding().shadow(radius: 20)
-                            }
-                        }
-                    })
-                    .disabled(!isActiveButton)
+    //                    .disabled(!isActiveButton)
+                    }
+                    .frame(width: 160,height: 40)
+                    .background(Color.white)
+                    .cornerRadius(20)
+                    .padding(.bottom, 24)
                 }//scrollview
             }
             if isSuccessed {

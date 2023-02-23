@@ -78,7 +78,7 @@ struct CalendarView : View {
                                     Text(days[i].DateToString(format: "d"))
                                 } else {//今日以外の全ての日
                                     //日記を書いた日は背景色を濃くする
-                                    if(myDataViewModel.model.posts.contains(where: {$0.date.DateToString(format: "yMd") == days[i].DateToString(format: "yMd")})) {
+                                    if(myDataViewModel.model.myPosts.contains(where: {$0.date.DateToString(format: "yMd") == days[i].DateToString(format: "yMd")})) {
                                         //試合有りの場合
                                         Circle()
                                             .frame(width: 46, height: 46, alignment: .center)
@@ -177,7 +177,7 @@ struct CalendarNikki : View {
     init(myDataViewModel: MyDataViewModel, textDate: Binding<String>) {
         self.myDataViewModel = myDataViewModel
         self._textDate = textDate
-        posts = myDataViewModel.model.posts.filter({ $0.date.DateToString(format: "yyyy/MM/dd") == textDate.wrappedValue })
+        posts = myDataViewModel.model.myPosts.filter({ $0.date.DateToString(format: "yyyy/MM/dd") == textDate.wrappedValue })
     }
     
     var body : some View {
@@ -202,7 +202,7 @@ struct CalendarNikki : View {
                                             .cornerRadius(8)
                                     }
                                     Text(post.text).bold()
-                                }.padding(.bottom, 8)
+                                }.padding(.bottom, 4)
                                 HStack(alignment: .top){//メタ情報
                                     Spacer()
                                     VStack(alignment: .leading){

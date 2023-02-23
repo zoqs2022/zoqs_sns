@@ -134,9 +134,9 @@ struct DatabaseHelper {
         }
     }
     
-    func getPostList(result:@escaping([String:[String: Any]]) -> Void) {
+    func getPostList(ids: [String],result:@escaping([String:[String: Any]]) -> Void) {
         var posts: [String:[String: Any]] = [:]
-        db.collection("post").getDocuments() { querySnapshot, err in
+        db.collection("post").whereField("userID", in: ids).getDocuments() { querySnapshot, err in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
@@ -177,21 +177,21 @@ struct DatabaseHelper {
         ref = db.collection("post").addDocument(data: data) { err in
             if let err = err {
                 print("Error adding document: \(err)")
-                result("投稿に失敗しました")
+                result(nil)
             } else {
                 print("Document added with ID: \(ref!.documentID)")
                 if let image = image {
                     let imageData = image.jpegData(compressionQuality:1)
                     storage.child("image/\(ref!.documentID)/1.jpeg").putData(imageData!, metadata: nil){ (metadata, error) in
                         if error != nil {
-                            result("画像の投稿に失敗しました")
+                            result(nil)
                         } else {
                             print("画像登録に成功！")
-                            result(nil)
+                            result(ref!.documentID)
                         }
                     }
                 } else {
-                    result(nil)
+                    result(ref!.documentID)
                 }
             }
         }

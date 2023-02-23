@@ -15,7 +15,7 @@ class TabSelectViewModel: ObservableObject {
 struct MainView: View {
     @StateObject var router = RouterNavigationPath()
     @ObservedObject var myDataViewModel: MyDataViewModel
-    @StateObject var postViewModel = PostViewModel(model: [PostModel()])
+//    @StateObject var postViewModel = PostViewModel(model: [PostModel()])
     
     @Binding var isActive: Bool
     @Binding var xOffset: CGFloat
@@ -28,7 +28,7 @@ struct MainView: View {
             TabView(selection: $tabSelectViewModel.selectionType){
                 NavigationStack{
                     ScrollView (.vertical, showsIndicators: false) {
-                        SNS(postViewModel: postViewModel)
+                        SNS(myDataViewModel: myDataViewModel)
                             .navigationBarTitle(Text("SNS"), displayMode: .inline)
                             .navigationBarItems(
                                 leading: VStack{
@@ -128,9 +128,9 @@ struct MainView: View {
                 }
             }
         }
-        .onAppear() {
-            self.postViewModel.getAllPostList()
-        }
+//        .onAppear() {
+//            self.postViewModel.getAllPostList(ids: myDataViewModel.model.follows)
+//        }
     }
 }
 
