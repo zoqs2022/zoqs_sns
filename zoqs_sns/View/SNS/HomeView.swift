@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseFirestore
 
 
-struct SNS: View {
+struct HomeView: View {
     @ObservedObject var myDataViewModel: MyDataViewModel
     
     var body: some View {

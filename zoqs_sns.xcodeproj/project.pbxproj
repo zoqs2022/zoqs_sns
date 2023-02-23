@@ -28,7 +28,7 @@
 		21526D00294DB3EB00F41B2E /* zoqs_snsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21526CFF294DB3EB00F41B2E /* zoqs_snsUITestsLaunchTests.swift */; };
 		2170DC8F29A098D600AE3631 /* NavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170DC8E29A098D600AE3631 /* NavigationViewModel.swift */; };
 		21AF04192952015400B8E556 /* DateExtensionFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21AF04182952015400B8E556 /* DateExtensionFile.swift */; };
-		21AF041A2952029800B8E556 /* DAYS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14C2991294DCFC9000DCBB7 /* DAYS.swift */; };
+		21AF041A2952029800B8E556 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14C2991294DCFC9000DCBB7 /* CalendarView.swift */; };
 		21B32CBB29730A470077CC58 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B32CBA29730A470077CC58 /* ImagePicker.swift */; };
 		21B32CBD2973DCB20077CC58 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B32CBC2973DCB20077CC58 /* EditProfileView.swift */; };
 		21C18C6229744A34008D4AC2 /* MyDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C18C6129744A34008D4AC2 /* MyDataModel.swift */; };
@@ -48,9 +48,9 @@
 		E112182D29528B69004192EE /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E112182C29528B69004192EE /* FirebaseFirestoreSwift */; };
 		E112182F29528B69004192EE /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = E112182E29528B69004192EE /* FirebaseFunctions */; };
 		E112183129528B69004192EE /* FirebaseFunctionsCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = E112183029528B69004192EE /* FirebaseFunctionsCombine-Community */; };
-		E14C2990294DCF63000DCBB7 /* NIKKI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14C298F294DCF63000DCBB7 /* NIKKI.swift */; };
-		E14C2994294DD1C5000DCBB7 /* PHOTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14C2993294DD1C5000DCBB7 /* PHOTO.swift */; };
-		E1756D1D294DC96600C1D624 /* SNS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1756D1C294DC96600C1D624 /* SNS.swift */; };
+		E14C2990294DCF63000DCBB7 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14C298F294DCF63000DCBB7 /* PostView.swift */; };
+		E14C2994294DD1C5000DCBB7 /* MyDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14C2993294DD1C5000DCBB7 /* MyDataView.swift */; };
+		E1756D1D294DC96600C1D624 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1756D1C294DC96600C1D624 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,10 +104,10 @@
 		21D6C82F2993E7AE008941A1 /* ProfileVeiwModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVeiwModel.swift; sourceTree = "<group>"; };
 		21D6C8312993E7C5008941A1 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		E112181F295289DD004192EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		E14C298F294DCF63000DCBB7 /* NIKKI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NIKKI.swift; sourceTree = "<group>"; };
-		E14C2991294DCFC9000DCBB7 /* DAYS.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = DAYS.swift; sourceTree = "<group>"; usesTabs = 0; wrapsLines = 0; };
-		E14C2993294DD1C5000DCBB7 /* PHOTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHOTO.swift; sourceTree = "<group>"; };
-		E1756D1C294DC96600C1D624 /* SNS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNS.swift; sourceTree = "<group>"; };
+		E14C298F294DCF63000DCBB7 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
+		E14C2991294DCFC9000DCBB7 /* CalendarView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; usesTabs = 0; wrapsLines = 0; };
+		E14C2993294DD1C5000DCBB7 /* MyDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDataView.swift; sourceTree = "<group>"; };
+		E1756D1C294DC96600C1D624 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,7 +241,7 @@
 				210B997B2990A7CE0079660E /* Component */,
 				21C18C6829746BDF008D4AC2 /* Login */,
 				21C18C6729746B5B008D4AC2 /* SNS */,
-				21C18C6629746B0B008D4AC2 /* Nikki */,
+				21C18C6629746B0B008D4AC2 /* Post */,
 				21C18C6529746AAF008D4AC2 /* Calendar */,
 				21C18C64297469EA008D4AC2 /* Profile */,
 			);
@@ -251,7 +251,7 @@
 		21C18C64297469EA008D4AC2 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				E14C2993294DD1C5000DCBB7 /* PHOTO.swift */,
+				E14C2993294DD1C5000DCBB7 /* MyDataView.swift */,
 				21B32CBC2973DCB20077CC58 /* EditProfileView.swift */,
 				21D6C82D2993E5A9008941A1 /* ProfileView.swift */,
 				214E85792993EADA00E97DA1 /* UserListView.swift */,
@@ -262,23 +262,23 @@
 		21C18C6529746AAF008D4AC2 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				E14C2991294DCFC9000DCBB7 /* DAYS.swift */,
+				E14C2991294DCFC9000DCBB7 /* CalendarView.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
 		};
-		21C18C6629746B0B008D4AC2 /* Nikki */ = {
+		21C18C6629746B0B008D4AC2 /* Post */ = {
 			isa = PBXGroup;
 			children = (
-				E14C298F294DCF63000DCBB7 /* NIKKI.swift */,
+				E14C298F294DCF63000DCBB7 /* PostView.swift */,
 			);
-			path = Nikki;
+			path = Post;
 			sourceTree = "<group>";
 		};
 		21C18C6729746B5B008D4AC2 /* SNS */ = {
 			isa = PBXGroup;
 			children = (
-				E1756D1C294DC96600C1D624 /* SNS.swift */,
+				E1756D1C294DC96600C1D624 /* HomeView.swift */,
 			);
 			path = SNS;
 			sourceTree = "<group>";
@@ -481,10 +481,10 @@
 				2110E7162972935300D55754 /* CreateAccountView.swift in Sources */,
 				210B9978298F88190079660E /* PostModel.swift in Sources */,
 				2170DC8F29A098D600AE3631 /* NavigationViewModel.swift in Sources */,
-				21AF041A2952029800B8E556 /* DAYS.swift in Sources */,
+				21AF041A2952029800B8E556 /* CalendarView.swift in Sources */,
 				2110E70B29726BB600D55754 /* DatabaseHelper.swift in Sources */,
-				E14C2990294DCF63000DCBB7 /* NIKKI.swift in Sources */,
-				E1756D1D294DC96600C1D624 /* SNS.swift in Sources */,
+				E14C2990294DCF63000DCBB7 /* PostView.swift in Sources */,
+				E1756D1D294DC96600C1D624 /* HomeView.swift in Sources */,
 				2145DCC029A4C48F00470E0D /* FollowButtonView.swift in Sources */,
 				214E857A2993EADA00E97DA1 /* UserListView.swift in Sources */,
 				2117828B29A1EF8D00545908 /* LoadingView.swift in Sources */,
@@ -492,7 +492,7 @@
 				21526CE5294DB3EA00F41B2E /* MainView.swift in Sources */,
 				21C6C7462979252500F31D23 /* MenuView.swift in Sources */,
 				2110E70929726B8500D55754 /* AuthHelper.swift in Sources */,
-				E14C2994294DD1C5000DCBB7 /* PHOTO.swift in Sources */,
+				E14C2994294DD1C5000DCBB7 /* MyDataView.swift in Sources */,
 				21B32CBB29730A470077CC58 /* ImagePicker.swift in Sources */,
 				21C18C6E297472BF008D4AC2 /* MyDataViewModel.swift in Sources */,
 				2110E71229726E6700D55754 /* LoginView.swift in Sources */,

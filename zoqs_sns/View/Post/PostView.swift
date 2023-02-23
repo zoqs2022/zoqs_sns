@@ -8,7 +8,7 @@
 import SwiftUI
 import FirebaseFirestore
 
-struct NIKKI: View {
+struct PostView: View {
     @ObservedObject var myDataViewModel: MyDataViewModel
     
     @State var text: String = ""

@@ -9,7 +9,7 @@
 
 import SwiftUI
 
-struct DAYS: View {
+struct CalendarView: View {
     @ObservedObject var myDataViewModel: MyDataViewModel
     //画面下部に表示する日付
     @State var textDate:String = Date().DateToString(format: "yyyy/MM/dd")
@@ -20,7 +20,7 @@ struct DAYS: View {
 //            AdBanner(adUnitId:MyId,widthSize: 320,heightSize: 50).expectedFrame()
             ScrollView{
                 //カレンダー部分
-                CalendarView(myDataViewModel: myDataViewModel, textDate:$textDate)
+                BasicCalendarView(myDataViewModel: myDataViewModel, textDate:$textDate)
                 //思い出表示部分
                 CalendarNikki(myDataViewModel: myDataViewModel, textDate:$textDate)
             }//スクロールビュー、カレンダー部分と試合予定全体をくくる
@@ -32,7 +32,7 @@ struct DAYS: View {
 
 
 
-struct CalendarView : View {
+struct BasicCalendarView : View {
     @ObservedObject var myDataViewModel: MyDataViewModel
     @State var date = Date()
     let week: [String] = ["日","月","火","水","木","金","土"]

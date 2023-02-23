@@ -32,7 +32,7 @@ let sampleData: [SampleData] = [
 ]
 
 
-struct PHOTO: View {
+struct MyDataView: View {
     @ObservedObject var myDataViewModel: MyDataViewModel
     
     @State private var image: UIImage?

@@ -27,7 +27,7 @@ struct MainView: View {
         VStack{
             TabView(selection: $tabSelectViewModel.selectionType){
                 NavigationStack{
-                    SNS(myDataViewModel: myDataViewModel)
+                    HomeView(myDataViewModel: myDataViewModel)
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(
                             leading: VStack{
@@ -54,7 +54,7 @@ struct MainView: View {
                 .tag("SNS")
                 
                 NavigationStack{
-                    NIKKI(myDataViewModel: myDataViewModel)
+                    PostView(myDataViewModel: myDataViewModel)
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .onTapGesture {
                             if self.xOffset == .zero {
@@ -70,7 +70,7 @@ struct MainView: View {
                 }
                 .tag("NIKKI")
                 
-                DAYS(myDataViewModel: myDataViewModel)
+                CalendarView(myDataViewModel: myDataViewModel)
                     .onTapGesture {
                         if self.xOffset == .zero {
                             self.xOffset = self.defaultOffset
@@ -85,7 +85,7 @@ struct MainView: View {
                     .tag("DAYS")
                 
                 NavigationStack(path: $router.path) {
-                    PHOTO(myDataViewModel: myDataViewModel)
+                    MyDataView(myDataViewModel: myDataViewModel)
                         .navigationDestination(for: Route.self) { route in
                             switch route {
                             case let .userList(userList):
