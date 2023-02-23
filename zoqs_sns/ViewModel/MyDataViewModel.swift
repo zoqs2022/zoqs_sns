@@ -153,7 +153,7 @@ class MyDataViewModel: ObservableObject {
                         self.model.myPosts[index].image = UIImage(data: data)
                     }
                 })
-                i = i + 1
+                i += 1
             }
         }
     }

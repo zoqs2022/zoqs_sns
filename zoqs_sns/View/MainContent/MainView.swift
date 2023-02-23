@@ -27,26 +27,25 @@ struct MainView: View {
         VStack{
             TabView(selection: $tabSelectViewModel.selectionType){
                 NavigationStack{
-                    ScrollView (.vertical, showsIndicators: false) {
-                        SNS(myDataViewModel: myDataViewModel)
-                            .navigationBarTitle(Text("SNS"), displayMode: .inline)
-                            .navigationBarItems(
-                                leading: VStack{
-                                    PhotoCircleView(image: myDataViewModel.model.image, diameter: 30)
-                                },
-                                trailing: HStack{
-                                    Image(systemName: "sparkles")
-                                }
-                                .padding(.bottom, 10)
-                            )
-                            .onTapGesture {
-                                if self.xOffset == .zero {
-                                    self.xOffset = self.defaultOffset
-                                } else {
-                                    self.xOffset = self.defaultOffset
-                                }
+                    SNS(myDataViewModel: myDataViewModel)
+                        .navigationBarTitle(Text("SNS"), displayMode: .inline)
+                        .navigationBarItems(
+                            leading: VStack{
+                                PhotoCircleView(image: myDataViewModel.model.image, diameter: 30)
+                            },
+                            trailing: HStack{
+                                Image(systemName: "sparkles")
                             }
-                    }
+                            .padding(.bottom, 10)
+                        )
+                        .onTapGesture {
+                            if self.xOffset == .zero {
+                                self.xOffset = self.defaultOffset
+                            } else {
+                                self.xOffset = self.defaultOffset
+                            }
+                        }
+                    
                 }
                 .tabItem{
                     Image(systemName: "message")
