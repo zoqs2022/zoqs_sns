@@ -10,6 +10,7 @@ import SwiftUI
 struct LoginView: View {
     @Binding var isActive: Bool
     @Environment(\.presentationMode) var presentationMode
+    @FocusState private var focusedField: Field?
     
     let auth = AuthViewModel()
     @State private var emailFeild = ""
@@ -17,36 +18,97 @@ struct LoginView: View {
     @State private var isAlert = false
     @State private var errorMessage = ""
     @State private var toCreateAccount = false
+    @State var loading = false
+    
+    enum Field: Hashable {
+        case email
+        case password
+    }
     
     var body: some View {
-        ZStack{
-            Form{
-                Section(){
+        VStack {
+            ZStack(alignment: .center){
+                VStack{
                     TextField("e-mail", text: $emailFeild)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.cyan, lineWidth: 1.0)
+                        )
+                        .padding(.horizontal,20)
+                        .padding(.vertical, 10)
                         .autocapitalization(.none)
-                }
-                Section(){
-                    TextField("password", text: $passwordFeild)
-                        .autocapitalization(.none)
-                }
-            }
-            VStack{
-                Button("ログイン"){
-                    auth.login(emailFeild, passwordFeild, result: { success in
-                        if success {
-                            self.isActive = true
-                        } else {
-                            errorMessage = "メールアドレス、またはパスワードが間違っています。"
-                            isAlert = true
+                        .focused($focusedField, equals: .email)
+                        .onTapGesture {
+                            focusedField = .email
                         }
-                    })
-                }.padding(40)
-                Button("アカウントを新規作成"){
-                    toCreateAccount = true
+                    
+                    TextField("password", text: $passwordFeild)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.cyan, lineWidth: 1.0)
+                        )
+                        .padding(.horizontal,20)
+                        .padding(.vertical, 10)
+                        .autocapitalization(.none)
+                        .focused($focusedField, equals: .password)
+                        .onTapGesture {
+                            focusedField = .password
+                        }
+                    Spacer().frame(height: 240)
                 }
+                .frame(width: UIScreen.main.bounds.width,
+                       height: UIScreen.main.bounds.height)
+                .contentShape(RoundedRectangle(cornerRadius: 10))
+                .onTapGesture {
+                    focusedField = nil
+                }
+                
+                VStack{
+                    Spacer().frame(height: 0)
+                    HStack(alignment: .center, spacing: 0){
+                        Button(action: {
+                            if loading {return}
+                            loading = true
+                            auth.login(emailFeild, passwordFeild, result: { success in
+                                if success {
+                                    self.isActive = true
+                                } else {
+                                    errorMessage = "メールアドレス、またはパスワードが間違っています。"
+                                    isAlert = true
+                                }
+                                loading = false
+                            })
+                        }, label: {
+                            VStack{
+                                if loading {
+                                    LoadingView()
+                                        .padding(.horizontal, 8)
+                                } else {
+                                    Text("ログイン")
+                                        .font(.system(size: 16))
+                                        .foregroundColor(.white)
+                                }
+                            }
+                            .frame(height: 40)
+                            .frame(maxWidth: .infinity)
+                            .background(Color(.cyan))
+                            .cornerRadius(10)
+                        })
+                        .padding(.vertical,10)
+                        .padding(.horizontal, 20)
+                    }
+                    Button("アカウントを新規作成"){
+                        toCreateAccount = true
+                    }
+                    .foregroundColor(.cyan)
+                    .padding(.top, 10)
+                }
+                .frame(alignment: .bottom)
             }
-
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .onAppear{
             if AuthHelper().uid() != "" {
                 self.isActive = true
@@ -62,8 +124,9 @@ struct LoginView: View {
     
 }
 
-//struct LoginView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        LoginView()
-//    }
-//}
+struct LoginView_Previews: PreviewProvider {
+    @State static var dispState = true
+    static var previews: some View {
+        LoginView(isActive: $dispState)
+    }
+}

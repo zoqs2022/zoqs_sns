@@ -152,7 +152,9 @@ struct CreateAccountView: View {
                     }
                     Button("ログイン画面に戻る"){
                         presentationMode.wrappedValue.dismiss()
-                    }.foregroundColor(.cyan)
+                    }
+                    .foregroundColor(.cyan)
+                    .padding(.top, 10)
                 }
                 .frame(alignment: .bottom)
             }
