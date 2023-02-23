@@ -35,8 +35,10 @@ class MyDataViewModel: ObservableObject {
             if let data = data {
                 self.name = data["name"] as? String ?? "No Name"
                 self.model.follows = data["follows"] as? [String] ?? []
-                self.getFollowList()
-                self.getDisplayPosts(ids: self.model.follows)
+                if !self.model.follows.isEmpty {
+                    self.getFollowList()
+                    self.getDisplayPosts(ids: self.model.follows)
+                }
             } else {
                 print("error")
             }

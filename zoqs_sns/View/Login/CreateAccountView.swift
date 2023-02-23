@@ -114,9 +114,11 @@ struct CreateAccountView: View {
                     HStack(alignment: .center, spacing: 0){
                         Button(action: {
                             if loading {return}
+                            loading = true
                             if nameFeild.count < 3 || nameFeild.count > 11 {
                                 errorMessage = "名前は3字以上10字以内で設定してください。"
                                 isAlert = true
+                                loading = false
                                 return
                             }
                             auth.createAccount(emailFeild, passwordFeild, nameFeild, image, errorResult: { error in
@@ -126,10 +128,11 @@ struct CreateAccountView: View {
                                 } else {
                                     errorMessage = error!
                                     isAlert = true
+                                    loading = false
                                 }
                             })
                         }, label: {
-                            Group{
+                            VStack{
                                 if loading {
                                     LoadingView()
                                         .padding(.horizontal, 8)
@@ -139,13 +142,13 @@ struct CreateAccountView: View {
                                         .foregroundColor(.white)
                                 }
                             }
+                            .frame(height: 40)
+                            .frame(maxWidth: .infinity)
+                            .background(Color(.cyan))
+                            .cornerRadius(10)
                         })
                         .padding(.vertical,10)
                         .padding(.horizontal, 20)
-                        .frame(maxWidth: .infinity)
-                        .background(Color(.cyan))
-                        .cornerRadius(10)
-                        .padding(20)
                     }
                     Button("ログイン画面に戻る"){
                         presentationMode.wrappedValue.dismiss()
