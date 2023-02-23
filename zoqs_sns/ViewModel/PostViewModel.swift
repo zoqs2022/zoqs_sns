@@ -21,26 +21,33 @@ class PostViewModel: ObservableObject {
     func getAllPostList() {
         DatabaseHelper().getPostList(result: { posts in
             self.posts = []
-            var i = 0
             for (key,value) in posts {
-                let index = i
                 let uid = value["userID"] as! String
                 self.posts.append(PostModel(id: key, text: value["text"] as! String, userID: uid, date: (value["date"] as! Timestamp).dateValue(), userName: "", userImage: nil, postImage: nil))
                 DatabaseHelper().getUserName(userID: uid, result: { name in
-                    self.posts[index].userName = name
+                    if let i = self.posts.firstIndex(where: { $0.id == key}) {
+                        self.posts[i].userName = name
+                    }
                 })
                 DatabaseHelper().getImageData(userID: uid, result: { data in
                     if let data = data {
-                        self.posts[index].userImage = UIImage(data: data)
+                        if let i = self.posts.firstIndex(where: { $0.id == key}) {
+                            self.posts[i].userImage = UIImage(data: data)
+                        }
                     }
                 })
                 DatabaseHelper().getPostImage(id: key, result: { data in
                     if let data = data {
-                        self.posts[index].postImage = UIImage(data: data)
+                        if let i = self.posts.firstIndex(where: { $0.id == key}) {
+                            self.posts[i].postImage = UIImage(data: data)
+                        }
                     }
                 })
-                i = i + 1
             }
+            // 日付でソートする
+            self.posts = self.posts.sorted(by: {
+                $0.date.compare($1.date) == .orderedDescending
+            })
         })
     }
 }

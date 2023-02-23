@@ -23,7 +23,7 @@ struct SNS: View {
                                 Text(post.userName ?? "")
                                     .fontWeight(.bold)
                             }
-                            Text(String(post.date.DateToString(format: "yyyy/MM/dd hh:mm:ss"))).foregroundColor(.gray)
+                            Text(String(post.date.DateToString(format: "yyyy/MM/dd HH:mm:ss"))).foregroundColor(.gray)
                             Text(post.text)
 //                            if let image = post.postImage {
 //                                Image(uiImage: image)
