@@ -95,7 +95,7 @@ struct PostView: View {
                             .strokeBorder().foregroundColor(.gray)
                             .background(Color.clear)
                         TextEditor(text: $text)
-                            .padding(10)
+                            .padding(9)
                             .foregroundColor(.black)
                             .font(.system(size: 16))
                             .onChange(of: text) { value in
