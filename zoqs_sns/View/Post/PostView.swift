@@ -159,6 +159,7 @@ struct PostView: View {
                         .disabled(!isActiveButton)
                     }
                     .padding()
+                    Spacer().frame(height: 40)
                 }//scrollview
             }
             .onTapGesture {
