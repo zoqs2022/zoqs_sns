@@ -47,7 +47,7 @@ struct PostView: View {
             
             //backgroundcolor
             LinearGradient(gradient: Gradient(colors: [.mint, .cyan, .blue]), startPoint: .top, endPoint: .bottom)
-//                .ignoresSafeArea()
+                .ignoresSafeArea(edges: [.top])
             //メイン
             ScrollView{
                 VStack {
@@ -68,7 +68,7 @@ struct PostView: View {
                             }
                         }
                         .frame(width: 80, height: 80, alignment: .center)
-                        .background(Color.cyan)
+                        .background(Color(.cyan))
                         .cornerRadius(20)
                         .overlay(
                             RoundedRectangle(cornerRadius: 20)

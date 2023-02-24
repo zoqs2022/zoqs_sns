@@ -55,7 +55,7 @@ struct MainView: View {
                 
                 NavigationStack{
                     PostView(myDataViewModel: myDataViewModel)
-                        .navigationBarTitle(Text("SNS"), displayMode: .inline)
+//                        .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .onTapGesture {
                             if self.xOffset == .zero {
                                 self.xOffset = self.defaultOffset
