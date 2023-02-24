@@ -10,7 +10,6 @@ import SwiftUI
 struct ProfileView: View {
     var basicProfile: BasicProfile
     @ObservedObject var myDataViewModel: MyDataViewModel
-    
     @StateObject var profileViewModel = ProfileViewModel(model: ProfileModel())
     
     var body: some View {
@@ -23,10 +22,9 @@ struct ProfileView: View {
                         HStack{
                             Text(basicProfile.name).bold()
                             Spacer()
-                            HStack(alignment: .center, spacing: 0){
-                            }
-                            .background(Color(.tertiaryLabel))
-                            .cornerRadius(8)
+                            
+                            FollowButtonView(myDataViewModel: myDataViewModel, basicProfile: basicProfile, fontSize: 16)
+                            
                         }.padding(.leading, 24)
                         
                         Spacer()

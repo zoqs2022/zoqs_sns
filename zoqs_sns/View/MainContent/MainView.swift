@@ -15,7 +15,7 @@ class TabSelectViewModel: ObservableObject {
 struct MainView: View {
     @StateObject var router = RouterNavigationPath()
     @ObservedObject var myDataViewModel: MyDataViewModel
-    @StateObject var postViewModel = PostViewModel(model: [PostModel()])
+//    @StateObject var postViewModel = PostViewModel(model: [PostModel()])
     
     @Binding var isActive: Bool
     @Binding var xOffset: CGFloat
@@ -27,26 +27,25 @@ struct MainView: View {
         VStack{
             TabView(selection: $tabSelectViewModel.selectionType){
                 NavigationStack{
-                    ScrollView (.vertical, showsIndicators: false) {
-                        SNS(postViewModel: postViewModel)
-                            .navigationBarTitle(Text("SNS"), displayMode: .inline)
-                            .navigationBarItems(
-                                leading: VStack{
-                                    PhotoCircleView(image: myDataViewModel.model.image, diameter: 30)
-                                },
-                                trailing: HStack{
-                                    Image(systemName: "sparkles")
-                                }
-                                .padding(.bottom, 10)
-                            )
-                            .onTapGesture {
-                                if self.xOffset == .zero {
-                                    self.xOffset = self.defaultOffset
-                                } else {
-                                    self.xOffset = self.defaultOffset
-                                }
+                    HomeView(myDataViewModel: myDataViewModel)
+                        .navigationBarTitle(Text("SNS"), displayMode: .inline)
+                        .navigationBarItems(
+                            leading: VStack{
+                                PhotoCircleView(image: myDataViewModel.model.image, diameter: 30)
+                            },
+                            trailing: HStack{
+                                Image(systemName: "sparkles")
                             }
-                    }
+                            .padding(.bottom, 10)
+                        )
+                        .onTapGesture {
+                            if self.xOffset == .zero {
+                                self.xOffset = self.defaultOffset
+                            } else {
+                                self.xOffset = self.defaultOffset
+                            }
+                        }
+                    
                 }
                 .tabItem{
                     Image(systemName: "message")
@@ -55,7 +54,7 @@ struct MainView: View {
                 .tag("SNS")
                 
                 NavigationStack{
-                    NIKKI(myDataViewModel: myDataViewModel)
+                    PostView(myDataViewModel: myDataViewModel)
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .onTapGesture {
                             if self.xOffset == .zero {
@@ -71,7 +70,7 @@ struct MainView: View {
                 }
                 .tag("NIKKI")
                 
-                DAYS(myDataViewModel: myDataViewModel)
+                CalendarView(myDataViewModel: myDataViewModel)
                     .onTapGesture {
                         if self.xOffset == .zero {
                             self.xOffset = self.defaultOffset
@@ -86,7 +85,7 @@ struct MainView: View {
                     .tag("DAYS")
                 
                 NavigationStack(path: $router.path) {
-                    PHOTO(myDataViewModel: myDataViewModel)
+                    MyDataView(myDataViewModel: myDataViewModel)
                         .navigationDestination(for: Route.self) { route in
                             switch route {
                             case let .userList(userList):
@@ -128,9 +127,9 @@ struct MainView: View {
                 }
             }
         }
-        .onAppear() {
-            self.postViewModel.getAllPostList()
-        }
+//        .onAppear() {
+//            self.postViewModel.getAllPostList(ids: myDataViewModel.model.follows)
+//        }
     }
 }
 

@@ -16,10 +16,22 @@ struct MyDataModel {
     var followUserList: [UserListData] = []
     var followers: [String] = []
     var followerUserList: [UserListData] = []
+    var myPosts: [PostData] = []
+    var displayPosts: [PostModel] = []
 }
 
 struct UserListData: Hashable {
     var id: String = ""
     var name: String = ""
+    var image: UIImage?
+}
+
+struct PostData {
+    var id: String = ""
+    var date: Date!
+    var text: String = ""
+    var feeling: Int = 0
+    var emotion: Int = 0
+    var with: Int = 0
     var image: UIImage?
 }

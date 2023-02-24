@@ -7,14 +7,8 @@
 
 import Foundation
 import SwiftUI
-
-let postsMock: [PostModel] = [
-    PostModel(id: "0", text: "aaaa", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: "2022-01-01"),
-    PostModel(id: "1", text: "bbbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: "2022-01-02"),
-    PostModel(id: "2", text: "cccc", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: "2022-01-03"),
-    PostModel(id: "3", text: "dddd", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: "2022-01-04"),
-    PostModel(id: "4", text: "eeee", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: "2022-01-05"),
-]
+import Firebase
+import FirebaseFirestore
 
 
 class PostViewModel: ObservableObject {
@@ -24,21 +18,49 @@ class PostViewModel: ObservableObject {
         self.posts = model
     }
     
-    func getAllPostList() {
-        DatabaseHelper().getPostList(result: { posts in
-            self.posts = posts
-            posts.enumerated().forEach {
-                let index = $0.0
-                let uid = $0.1.userID
-                DatabaseHelper().getUserName(userID: uid, result: { name in
-                    self.posts[index].userName = name
-                })
-                DatabaseHelper().getImageData(userID: uid, result: { data in
+    func getAllPostList(ids: [String]) {
+        DatabaseHelper().getPostList(ids: ids,result: { posts in
+            self.posts = []
+            var userIds: [String] = []
+            for (key,value) in posts {
+                let uid = value["userID"] as! String
+                userIds.append(uid)
+                self.posts.append(PostModel(id: key, text: value["text"] as! String, userID: uid, date: (value["date"] as! Timestamp).dateValue(), userName: "", userImage: nil, postImage: nil))
+                DatabaseHelper().getPostImage(id: key, result: { data in
                     if let data = data {
-                        self.posts[index].userImage = UIImage(data: data)
+                        if let i = self.posts.firstIndex(where: { $0.id == key}) {
+                            self.posts[i].postImage = UIImage(data: data)
+                        }
                     }
                 })
             }
+            // 日付でソートする
+            self.posts = self.posts.sorted(by: {
+                $0.date.compare($1.date) == .orderedDescending
+            })
+            let uniqueUserIds = Array(Set(userIds))
+            uniqueUserIds.forEach({ uid in
+                DatabaseHelper().getUserName(userID: uid, result: { name in
+                    var i = 0
+                    while i != -1 {
+                        i = self.posts.firstIndex(where: { ($0.userID == uid) && ($0.userName == "")}) ?? -1
+                        if i != -1 {
+                            self.posts[i].userName = name
+                        }
+                    }
+                })
+                DatabaseHelper().getImageData(userID: uid, result: { data in
+                    if let data = data {
+                        var i = 0
+                        while i != -1 {
+                            i = self.posts.firstIndex(where: { ($0.userID == uid) && ($0.userImage == nil)}) ?? -1
+                            if i != -1 {
+                                self.posts[i].userImage = UIImage(data: data)
+                            }
+                        }
+                    }
+                })
+            })
         })
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 import FirebaseCore
 
 //firebaseの接続　初期化コード
