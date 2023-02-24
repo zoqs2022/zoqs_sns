@@ -16,6 +16,7 @@ struct PhotoCircleView: View {
             if let uiImage = image {
                 Image(uiImage: uiImage)
                     .resizable()
+                    .scaledToFill()
                     .frame(width: diameter, height: diameter, alignment: .center)
                     .clipShape(Circle())
             } else {

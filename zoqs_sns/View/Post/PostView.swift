@@ -10,7 +10,10 @@ import FirebaseFirestore
 
 struct PostView: View {
     @ObservedObject var myDataViewModel: MyDataViewModel
+    @FocusState var focus:Bool
     
+    private static let placeholder = "自由に入力してください"
+    @State private var placeholderText = placeholder
     @State var text: String = ""
     @State var feeling: Int = 0
     @State var with: Int = 0
@@ -25,6 +28,11 @@ struct PostView: View {
     var isActiveButton: Bool {
         get{
             return text != ""
+        }
+    }
+    var ActiveButtonOpacity: Double {
+        get{
+            return isActiveButton ? 1.0 : 0.3
         }
     }
     
@@ -47,35 +55,69 @@ struct PostView: View {
                         .font(.system(size:30,weight: .heavy))
                         .foregroundColor(.white)
                         .padding(.top, 8)
-                    
+                    HStack{
+                        VStack{
+                            Button(action: {
+                                showingImagePicker = true
+                            }) {
+                                Image(systemName: "photo")
+                                    .resizable()
+                                    .scaledToFit()//縦横比維持
+                                    .frame(width: 50)
+                                    .foregroundColor(Color.white)
+                            }
+                        }
+                        .frame(width: 80, height: 80, alignment: .center)
+                        .background(Color.cyan)
+                        .cornerRadius(20)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color.white, lineWidth: 3)
+                        )
+                        .sheet(isPresented: $showingImagePicker) {
+                            ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
+                        }
+                        if let uiImage = image {
+                            VStack{
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFit()//縦横比維持
+                                    .frame(height: 120)
+                                    .cornerRadius(20)
+                            }
+                            .padding(16)
+                        }
+                    }.frame(height: 140)
+                
+                    // 入力
+                    ZStack(alignment: .topLeading) {
+                        RoundedRectangle(cornerRadius: 20.0)
+                            .strokeBorder().foregroundColor(.gray)
+                            .background(Color.clear)
+                        TextEditor(text: $text)
+                            .padding(10)
+                            .foregroundColor(.black)
+                            .font(.system(size: 16))
+                            .onChange(of: text) { value in
+                                if text.isEmpty {
+                                    placeholderText = Self.placeholder
+                                } else {
+                                    placeholderText = ""
+                                }
+                            }
+                            .focused(self.$focus)
+                        Text(placeholderText)
+                            .padding(16)
+                            .font(.system(size: 16))
+                            .foregroundColor(.gray)
+                    }
+                    .frame(width: ScreenWidth, height: 120)
+                    .background(Color.white)
+                    .cornerRadius(20)
+                    .padding(.horizontal)
+                        
                     //feeling入力画面
                     ButtonIcon(feeling: $feeling, emotion: $emotion, with: $with)
-                    
-                    
-                    // 入力
-                    TextEditor(text: $text)
-                        .frame(width: ScreenWidth, height: 150)
-                        .padding()
-                        .autocapitalization(.none)
-                        
-                    
-                    
-                    HStack{
-                        Button(action: {
-                            showingImagePicker = true
-                        }) {
-                            Image(systemName: "photo")
-                                .resizable()
-                                .scaledToFit()//縦横比維持
-                                .frame(width: 30)
-                                .background(Color.white)
-                        }
-                    }
-                    .padding(4)
-                    .cornerRadius(4)
-                    .sheet(isPresented: $showingImagePicker) {
-                        ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
-                    }
                     
                     VStack{
                         Button(action: {
@@ -86,6 +128,7 @@ struct PostView: View {
                                     errorMessage = err
                                     isAlert = true
                                 } else {
+                                    image = nil
                                     text = ""
                                     feeling = 0
                                     emotion = 0
@@ -98,21 +141,28 @@ struct PostView: View {
                                 loading = false
                             })
                         }, label: {
-                            Group{
+                            VStack{
                                 if loading {
                                     LoadingView()
+                                        .padding(.horizontal, 8)
                                 } else {
-                                    Text("投稿する").font(.title2).padding().padding().shadow(radius: 20)
+                                    Text("投稿する")
+                                        .font(.title2)
+                                        .foregroundColor(.white)
                                 }
                             }
+                            .frame(width: ScreenWidth,height: 40)
+                            .background(Color(.cyan))
+                            .cornerRadius(20)
+                            .opacity(ActiveButtonOpacity)
                         })
-    //                    .disabled(!isActiveButton)
+                        .disabled(!isActiveButton)
                     }
-                    .frame(width: 160,height: 40)
-                    .background(Color.white)
-                    .cornerRadius(20)
-                    .padding(.bottom, 24)
+                    .padding()
                 }//scrollview
+            }
+            .onTapGesture {
+                self.focus = false
             }
             if isSuccessed {
                 VStack(alignment: .center){
@@ -233,12 +283,8 @@ struct ButtonIcon : View {
 
 
 
-
-
-
-
-//struct NIKKI_Previews: PreviewProvider {
-//    static var previews: some View {
-//        NIKKI()
-//    }
-//}
+struct PostView_Previews: PreviewProvider {
+    static var previews: some View {
+        PostView(myDataViewModel: MyDataViewModel(model: MyDataModel()))
+    }
+}
