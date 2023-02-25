@@ -197,27 +197,33 @@ struct DatabaseHelper {
         }
     }
     
-    func createRoom(userID:String){
-        db.collection("room").addDocument(data: ["user":[userID,uid]])
+    func createRoom(userID:String, result:@escaping(String?) -> Void){
+        var ref: DocumentReference? = nil
+        ref = db.collection("room").addDocument(data: ["users":[userID,uid]]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+                result(nil)
+            } else {
+                result(ref?.documentID)
+            }
+        }
     }
     
     func sendChatMessage(roomID:String,text:String){
         db.collection("room").document(roomID).collection("chat").addDocument(data: ["userID":uid,"text":text,"time":time(nil)])
     }
     
-    func chatDataListener(roomID:String,result:@escaping([ChatText]) -> Void){
-        db.collection("room").document(roomID).collection("chat").order(by: "time").addSnapshotListener({
-            (querySnapshot, error) in
-            if error == nil{
-                var chatList:[ChatText] = []
-                for doc in querySnapshot!.documents{
-                    let data = doc.data()
-                    guard let text = data["text"] as! String? else { break }
-                    guard let userID = data["userID"] as! String? else { break }
-                    chatList.append(ChatText(text: text, userID: userID, date: Date()))
+    func chatDataListener(roomID:String,result:@escaping([String:[String: Any]]) -> Void){
+        var chats: [String:[String: Any]] = [:]
+        db.collection("room").document(roomID).collection("chat").order(by: "date").addSnapshotListener({ (querySnapshot, error) in
+            if let err = error {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    chats[document.documentID] = document.data()
                 }
-                result(chatList)
             }
+            result(chats)
         })
     }
     
@@ -239,8 +245,8 @@ struct DatabaseHelper {
 
 struct ChatText: Identifiable {
     var id = UUID()
-    let text:String
-    let userID:String
-    let date: Date
+    var text:String = ""
+    var userID:String = ""
+    var date: Date = Date()
 }
 

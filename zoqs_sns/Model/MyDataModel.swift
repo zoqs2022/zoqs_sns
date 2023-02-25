@@ -19,6 +19,7 @@ struct MyDataModel {
     var myPosts: [PostData] = []
     var displayPosts: [PostModel] = []
     var roomList: [ChatRoom] = []
+    var chats: [String:[ChatText]] = [:]
 }
 
 struct UserListData: Hashable {

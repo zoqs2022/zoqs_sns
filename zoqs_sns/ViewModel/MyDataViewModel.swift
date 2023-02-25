@@ -208,6 +208,7 @@ class MyDataViewModel: ObservableObject {
     
     func getMyRoomList() {
         DatabaseHelper().getMyRoomList(result: { rooms in
+            self.model.roomList = []
             for (key,value) in rooms {
                 guard let users = value["users"] as? [String] else { return }
                 if users.count != 2 { return }
@@ -218,6 +219,7 @@ class MyDataViewModel: ObservableObject {
                     userID = users[0]
                 }
                 self.model.roomList.append(ChatRoom(roomID: key, userID: userID))
+                self.getRealTimeChatData()
                 DatabaseHelper().getUserName(userID: userID, result: { name in
                     guard let index = self.model.roomList.firstIndex(where: { ($0.userID == userID)}) else { return }
                     self.model.roomList[index].userName = name
@@ -229,6 +231,32 @@ class MyDataViewModel: ObservableObject {
                     }
                 })
             }
+        })
+    }
+    
+    func createChatRoom(id: String, result:@escaping(String?) -> Void) {
+        DatabaseHelper().createRoom(userID: id, result: { id in
+            if let id = id {
+                result(id)
+            } else {
+                result(nil)
+            }
+        })
+    }
+    
+    func getRealTimeChatData() {
+        self.model.roomList.forEach({ room in
+            DatabaseHelper().chatDataListener(roomID: room.roomID, result: { chats in
+                self.model.chats[room.roomID] = []
+                var chatTexts: [ChatText] = []
+                for (_, value) in chats {
+                    guard let text = value["text"] as! String? else { return }
+                    guard let userID = value["userID"] as! String? else { return }
+                    let date = (value["date"] as! Timestamp).dateValue() 
+                    chatTexts.append(.init(text: text, userID: userID, date: date))
+                }
+                self.model.chats[room.roomID] = chatTexts
+            })
         })
     }
 }

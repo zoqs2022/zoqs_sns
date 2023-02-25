@@ -17,15 +17,29 @@ let chatMock: [ChatText] = [
     .init(text: "aaaaabbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
 ]
 
+struct RoomIdAndProfile: Hashable {
+    var roomID = ""
+    var id: String = ""
+    var name: String = ""
+    var image: UIImage?
+}
 
 struct ChatRowView: View {
     @ObservedObject var myDataViewModel: MyDataViewModel
+//    @StateObject var chatViewModel = ChatViewModel(model: ChatModel())
     var otherBasicProfile: BasicProfile
+    var roomID: String
+    
+    init(myDataViewModel: MyDataViewModel, roomIdAndProfile: RoomIdAndProfile) {
+        self.myDataViewModel = myDataViewModel
+        self.otherBasicProfile = .init(id: roomIdAndProfile.id, name: roomIdAndProfile.name, image: roomIdAndProfile.image)
+        self.roomID = roomIdAndProfile.roomID
+    }
     
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
-                ForEach(chatMock) { chatText in
+                ForEach(self.myDataViewModel.model.chats[roomID] ?? []) { chatText in
                     GroupChatRow(myDataViewModel: myDataViewModel, chatText: chatText, otherBasicProfile: otherBasicProfile )
                 }
             }
@@ -104,7 +118,7 @@ struct ChatBaloonMy: View {
                 .padding(.vertical, 4)
                 .foregroundColor(.black)
                 .background(Color(.cyan))
-                .cornerRadius(20)
+                .cornerRadius(12)
         }
         .frame(maxWidth: 200, alignment: .trailing)
     }
@@ -123,6 +137,6 @@ private func timestamp(date: Date) -> some View {
 
 struct ChatRowView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatRowView(myDataViewModel: MyDataViewModel(model: MyDataModel()), otherBasicProfile: .init(id: "jpUqvLIs7RhT9WtIfx33knfbYym1", name: "fffff", image: nil))
+        ChatRowView(myDataViewModel: MyDataViewModel(model: MyDataModel()), roomIdAndProfile: .init(roomID: "",id: "jpUqvLIs7RhT9WtIfx33knfbYym1", name: "fffff", image: nil))
     }
 }

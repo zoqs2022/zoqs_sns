@@ -14,16 +14,19 @@ struct ChatRoomListView: View {
         VStack{
             List {
                 ForEach(Array(myDataViewModel.model.roomList.enumerated()), id: \.offset) { (index: Int, room: ChatRoom) in
-                    NavigationLink(value: ChatRoute.basicProfile(.init(id: room.userID, name: room.userName, image: room.userImage))){
-                        VStack {
-                            Text(room.userName)
+                    NavigationLink(value: ChatRoute.roomIdAndProfile(.init(roomID: room.roomID, id: room.userID, name: room.userName, image: room.userImage))){
+                        VStack{
+                            HStack(alignment: .center) {
+                                PhotoCircleView(image: room.userImage, diameter: 40)
+                                VStack(alignment: .leading) {
+                                    Text("\(room.userName)")
+                                        .fontWeight(.bold)
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
-        .onAppear(){
-            print("TTTTT", myDataViewModel.model.roomList)
         }
     }
 }

@@ -25,6 +25,7 @@ struct followSwich {
 struct UserListView: View {
     let userList: [UserListData]
     @ObservedObject var myDataViewModel: MyDataViewModel
+    @ObservedObject var router: RouterNavigationPath
     
     var body: some View {
         VStack{

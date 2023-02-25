@@ -31,8 +31,8 @@ struct MainView: View {
                             switch route {
                             case .roomList:
                                 ChatRoomListView(myDataViewModel: myDataViewModel)
-                            case let .basicProfile(basicProfile):
-                                ChatRowView(myDataViewModel: myDataViewModel, otherBasicProfile: basicProfile)
+                            case let .roomIdAndProfile(roomIdAndProfile):
+                                ChatRowView(myDataViewModel: myDataViewModel, roomIdAndProfile: roomIdAndProfile)
                             }
                         }
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
@@ -90,13 +90,15 @@ struct MainView: View {
                     .tag("DAYS")
                 
                 NavigationStack(path: $router.path) {
-                    MyDataView(myDataViewModel: myDataViewModel)
+                    MyDataView(myDataViewModel: myDataViewModel, router: router)
                         .navigationDestination(for: Route.self) { route in
                             switch route {
                             case let .userList(userList):
-                                UserListView(userList: userList, myDataViewModel: myDataViewModel)
+                                UserListView(userList: userList, myDataViewModel: myDataViewModel, router: router)
                             case let .basicProfile(basicProfile):
-                                ProfileView(basicProfile: basicProfile, myDataViewModel: myDataViewModel)
+                                ProfileView(basicProfile: basicProfile, myDataViewModel: myDataViewModel, router: router)
+                            case let .roomIdAndProfile(roomIdAndProfile):
+                                ChatRowView(myDataViewModel: myDataViewModel, roomIdAndProfile: roomIdAndProfile)
                             }
                         }
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
