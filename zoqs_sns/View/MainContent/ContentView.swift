@@ -66,6 +66,7 @@ struct ContentView: View {
                     myDataViewModel.getBasicData()
                     myDataViewModel.getImageData()
                     myDataViewModel.getPosts(id: myDataViewModel.uid)
+                    myDataViewModel.getMyRoomList()
                 }
         }
     }

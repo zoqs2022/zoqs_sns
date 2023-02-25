@@ -214,43 +214,33 @@ struct DatabaseHelper {
                     let data = doc.data()
                     guard let text = data["text"] as! String? else { break }
                     guard let userID = data["userID"] as! String? else { break }
-                    chatList.append(ChatText(text: text, userID: userID))
+                    chatList.append(ChatText(text: text, userID: userID, date: Date()))
                 }
                 result(chatList)
             }
         })
     }
     
-    func getMyRoomList(result:@escaping([ChatRoom]) -> Void){
-        db.collection("room").whereField("user", arrayContains: uid).addSnapshotListener({
-            (querySnapshot, error) in
-            var roomList:[ChatRoom] = []
-            if error == nil {
-                for doc in querySnapshot!.documents {
-                    let data = doc.data()
-                    guard let users = data["user"] as? [String] else { return }
-                    if users.count != 2 { return }
-                    var user = ""
-                    if users[0] == self.uid {
-                        user = users[1]
-                    } else {
-                        user = users[0]
-                    }
-                    roomList.append(ChatRoom(roomID:doc.documentID, userID: user))
+    func getMyRoomList(result:@escaping([String:[String: Any]]) -> Void){
+        var rooms: [String:[String: Any]] = [:]
+        db.collection("room").whereField("users", arrayContains: uid).addSnapshotListener({ (querySnapshot, error) in
+            if let err = error {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    rooms[document.documentID] = document.data()
                 }
-                result(roomList)
             }
+            result(rooms)
         })
     }
 }
 
-struct ChatRoom {
-    let roomID:String
-    let userID:String
-}
 
-struct ChatText {
+struct ChatText: Identifiable {
+    var id = UUID()
     let text:String
     let userID:String
+    let date: Date
 }
 

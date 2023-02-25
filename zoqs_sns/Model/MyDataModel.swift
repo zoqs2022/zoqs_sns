@@ -18,6 +18,7 @@ struct MyDataModel {
     var followerUserList: [UserListData] = []
     var myPosts: [PostData] = []
     var displayPosts: [PostModel] = []
+    var roomList: [ChatRoom] = []
 }
 
 struct UserListData: Hashable {
@@ -34,4 +35,11 @@ struct PostData {
     var emotion: Int = 0
     var with: Int = 0
     var image: UIImage?
+}
+
+struct ChatRoom {
+    let roomID:String
+    let userID:String
+    var userName: String = ""
+    var userImage: UIImage?
 }

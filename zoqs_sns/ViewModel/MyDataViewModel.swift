@@ -205,4 +205,30 @@ class MyDataViewModel: ObservableObject {
             })
         })
     }
+    
+    func getMyRoomList() {
+        DatabaseHelper().getMyRoomList(result: { rooms in
+            for (key,value) in rooms {
+                guard let users = value["users"] as? [String] else { return }
+                if users.count != 2 { return }
+                var userID = ""
+                if users[0] == self.uid {
+                    userID = users[1]
+                } else {
+                    userID = users[0]
+                }
+                self.model.roomList.append(ChatRoom(roomID: key, userID: userID))
+                DatabaseHelper().getUserName(userID: userID, result: { name in
+                    guard let index = self.model.roomList.firstIndex(where: { ($0.userID == userID)}) else { return }
+                    self.model.roomList[index].userName = name
+                })
+                DatabaseHelper().getImageData(userID: userID, result: { data in
+                    if let data = data {
+                        guard let index = self.model.roomList.firstIndex(where: { ($0.userID == userID)}) else { return }
+                        self.model.roomList[index].userImage = UIImage(data: data)
+                    }
+                })
+            }
+        })
+    }
 }

@@ -26,3 +26,8 @@ enum Route: Hashable {
     case userList([UserListData])
     case basicProfile(BasicProfile)
 }
+
+enum ChatRoute: Hashable {
+    case roomList
+    case basicProfile(BasicProfile)
+}
