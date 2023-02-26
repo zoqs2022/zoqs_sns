@@ -205,4 +205,68 @@ class MyDataViewModel: ObservableObject {
             })
         })
     }
+    
+    func getMyRoomList() {
+        DatabaseHelper().getMyRoomList(result: { rooms in
+            self.model.roomList = []
+            for (key,value) in rooms {
+                guard let users = value["users"] as? [String] else { return }
+                let createdAt = (value["createdAt"] as! Timestamp).dateValue()  
+                if users.count != 2 { return }
+                var userID = ""
+                if users[0] == self.uid {
+                    userID = users[1]
+                } else {
+                    userID = users[0]
+                }
+                self.model.roomList.append(ChatRoom(roomID: key, userID: userID, createdAt: createdAt))
+                self.getRealTimeChatData()
+                DatabaseHelper().getUserName(userID: userID, result: { name in
+                    guard let index = self.model.roomList.firstIndex(where: { ($0.userID == userID)}) else { return }
+                    self.model.roomList[index].userName = name
+                })
+                DatabaseHelper().getImageData(userID: userID, result: { data in
+                    if let data = data {
+                        guard let index = self.model.roomList.firstIndex(where: { ($0.userID == userID)}) else { return }
+                        self.model.roomList[index].userImage = UIImage(data: data)
+                    }
+                })
+            }
+        })
+    }
+    
+    func createChatRoom(id: String, result:@escaping(String?) -> Void) {
+        DatabaseHelper().createRoom(userID: id, result: { id in
+            if let id = id {
+                result(id)
+            } else {
+                result(nil)
+            }
+        })
+    }
+    
+    func getRealTimeChatData() {
+        self.model.roomList.forEach({ room in
+            DatabaseHelper().chatDataListener(roomID: room.roomID, result: { chats in
+                self.model.chats[room.roomID] = []
+                var chatTexts: [ChatText] = []
+                for (_, value) in chats {
+                    guard let text = value["text"] as! String? else { return }
+                    guard let userID = value["userID"] as! String? else { return }
+                    let date = (value["date"] as! Timestamp).dateValue() 
+                    chatTexts.append(.init(text: text, userID: userID, date: date))
+                }
+                self.model.chats[room.roomID] = chatTexts.sorted(by: {
+                    $0.date.compare($1.date) == .orderedAscending
+                })
+                self.model.roomList = self.model.roomList.sorted(by: {
+                    (self.model.chats[$0.roomID]?.last?.date ?? $0.createdAt).compare(self.model.chats[$1.roomID]?.last?.date ?? $1.createdAt) == .orderedDescending
+                })
+            })
+        })
+    }
+    
+    func sendChatMessage(roomID: String, text: String){
+        DatabaseHelper().sendChatMessage(roomID: roomID, text: text)
+    }
 }

@@ -27,6 +27,10 @@
 		21526CFE294DB3EB00F41B2E /* zoqs_snsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21526CFD294DB3EB00F41B2E /* zoqs_snsUITests.swift */; };
 		21526D00294DB3EB00F41B2E /* zoqs_snsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21526CFF294DB3EB00F41B2E /* zoqs_snsUITestsLaunchTests.swift */; };
 		2170DC8F29A098D600AE3631 /* NavigationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170DC8E29A098D600AE3631 /* NavigationViewModel.swift */; };
+		219FB87B29A9C14F00EA0130 /* ChatRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219FB87A29A9C14F00EA0130 /* ChatRoomListView.swift */; };
+		219FB87D29A9C24800EA0130 /* ChatRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219FB87C29A9C24800EA0130 /* ChatRowView.swift */; };
+		219FB87F29AA723F00EA0130 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219FB87E29AA723F00EA0130 /* ChatViewModel.swift */; };
+		219FB88129AA7CC600EA0130 /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219FB88029AA7CC600EA0130 /* ChatModel.swift */; };
 		21AF04192952015400B8E556 /* DateExtensionFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21AF04182952015400B8E556 /* DateExtensionFile.swift */; };
 		21AF041A2952029800B8E556 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14C2991294DCFC9000DCBB7 /* CalendarView.swift */; };
 		21B32CBB29730A470077CC58 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B32CBA29730A470077CC58 /* ImagePicker.swift */; };
@@ -92,6 +96,10 @@
 		21526CFD294DB3EB00F41B2E /* zoqs_snsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = zoqs_snsUITests.swift; sourceTree = "<group>"; };
 		21526CFF294DB3EB00F41B2E /* zoqs_snsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = zoqs_snsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		2170DC8E29A098D600AE3631 /* NavigationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewModel.swift; sourceTree = "<group>"; };
+		219FB87A29A9C14F00EA0130 /* ChatRoomListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomListView.swift; sourceTree = "<group>"; };
+		219FB87C29A9C24800EA0130 /* ChatRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRowView.swift; sourceTree = "<group>"; };
+		219FB87E29AA723F00EA0130 /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
+		219FB88029AA7CC600EA0130 /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		21AF04182952015400B8E556 /* DateExtensionFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensionFile.swift; sourceTree = "<group>"; };
 		21B32CBA29730A470077CC58 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		21B32CBC2973DCB20077CC58 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
@@ -234,11 +242,21 @@
 			path = zoqs_snsUITests;
 			sourceTree = "<group>";
 		};
+		219FB87929A9C12C00EA0130 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				219FB87A29A9C14F00EA0130 /* ChatRoomListView.swift */,
+				219FB87C29A9C24800EA0130 /* ChatRowView.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
 		21C18C6329746963008D4AC2 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				210B997C2990A82C0079660E /* MainContent */,
 				210B997B2990A7CE0079660E /* Component */,
+				219FB87929A9C12C00EA0130 /* Chat */,
 				21C18C6829746BDF008D4AC2 /* Login */,
 				21C18C6729746B5B008D4AC2 /* SNS */,
 				21C18C6629746B0B008D4AC2 /* Post */,
@@ -298,6 +316,7 @@
 				21C18C6129744A34008D4AC2 /* MyDataModel.swift */,
 				210B9977298F88190079660E /* PostModel.swift */,
 				21D6C8312993E7C5008941A1 /* ProfileModel.swift */,
+				219FB88029AA7CC600EA0130 /* ChatModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -310,6 +329,7 @@
 				210B9975298F87C60079660E /* PostViewModel.swift */,
 				21D6C82F2993E7AE008941A1 /* ProfileVeiwModel.swift */,
 				2170DC8E29A098D600AE3631 /* NavigationViewModel.swift */,
+				219FB87E29AA723F00EA0130 /* ChatViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -479,10 +499,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				2110E7162972935300D55754 /* CreateAccountView.swift in Sources */,
+				219FB87B29A9C14F00EA0130 /* ChatRoomListView.swift in Sources */,
 				210B9978298F88190079660E /* PostModel.swift in Sources */,
 				2170DC8F29A098D600AE3631 /* NavigationViewModel.swift in Sources */,
 				21AF041A2952029800B8E556 /* CalendarView.swift in Sources */,
 				2110E70B29726BB600D55754 /* DatabaseHelper.swift in Sources */,
+				219FB87F29AA723F00EA0130 /* ChatViewModel.swift in Sources */,
 				E14C2990294DCF63000DCBB7 /* PostView.swift in Sources */,
 				E1756D1D294DC96600C1D624 /* HomeView.swift in Sources */,
 				2145DCC029A4C48F00470E0D /* FollowButtonView.swift in Sources */,
@@ -503,7 +525,9 @@
 				21B32CBD2973DCB20077CC58 /* EditProfileView.swift in Sources */,
 				21D6C8302993E7AE008941A1 /* ProfileVeiwModel.swift in Sources */,
 				21526CE3294DB3EA00F41B2E /* zoqs_snsApp.swift in Sources */,
+				219FB88129AA7CC600EA0130 /* ChatModel.swift in Sources */,
 				210B997A299003260079660E /* PhotoCircleView.swift in Sources */,
+				219FB87D29A9C24800EA0130 /* ChatRowView.swift in Sources */,
 				21D6C82E2993E5A9008941A1 /* ProfileView.swift in Sources */,
 				210B9976298F87C60079660E /* PostViewModel.swift in Sources */,
 			);

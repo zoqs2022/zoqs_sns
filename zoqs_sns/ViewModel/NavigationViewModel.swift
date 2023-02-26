@@ -20,9 +20,19 @@ final class RouterNavigationPath: ObservableObject {
             self.path.removeLast()
         }
     }
+    
+    func toChatPage(roomIdAndProfile: RoomIdAndProfile) {
+        path.append(.roomIdAndProfile(roomIdAndProfile))
+    }
 }
 
 enum Route: Hashable {
     case userList([UserListData])
     case basicProfile(BasicProfile)
+    case roomIdAndProfile(RoomIdAndProfile)
+}
+
+enum ChatRoute: Hashable {
+    case roomList
+    case roomIdAndProfile(RoomIdAndProfile)
 }

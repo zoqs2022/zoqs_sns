@@ -15,7 +15,6 @@ class TabSelectViewModel: ObservableObject {
 struct MainView: View {
     @StateObject var router = RouterNavigationPath()
     @ObservedObject var myDataViewModel: MyDataViewModel
-//    @StateObject var postViewModel = PostViewModel(model: [PostModel()])
     
     @Binding var isActive: Bool
     @Binding var xOffset: CGFloat
@@ -28,15 +27,22 @@ struct MainView: View {
             TabView(selection: $tabSelectViewModel.selectionType){
                 NavigationStack{
                     HomeView(myDataViewModel: myDataViewModel)
+                        .navigationDestination(for: ChatRoute.self) { route in
+                            switch route {
+                            case .roomList:
+                                ChatRoomListView(myDataViewModel: myDataViewModel)
+                            case let .roomIdAndProfile(roomIdAndProfile):
+                                ChatRowView(myDataViewModel: myDataViewModel, roomIdAndProfile: roomIdAndProfile)
+                            }
+                        }
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .navigationBarItems(
                             leading: VStack{
                                 PhotoCircleView(image: myDataViewModel.model.image, diameter: 30)
                             },
-                            trailing: HStack{
+                            trailing: NavigationLink(value: ChatRoute.roomList){
                                 Image(systemName: "sparkles")
                             }
-                            .padding(.bottom, 10)
                         )
                         .onTapGesture {
                             if self.xOffset == .zero {
@@ -55,7 +61,6 @@ struct MainView: View {
                 
                 NavigationStack{
                     PostView(myDataViewModel: myDataViewModel)
-                        .navigationBarTitle(Text("SNS"), displayMode: .inline)
                         .onTapGesture {
                             if self.xOffset == .zero {
                                 self.xOffset = self.defaultOffset
@@ -85,13 +90,15 @@ struct MainView: View {
                     .tag("DAYS")
                 
                 NavigationStack(path: $router.path) {
-                    MyDataView(myDataViewModel: myDataViewModel)
+                    MyDataView(myDataViewModel: myDataViewModel, router: router)
                         .navigationDestination(for: Route.self) { route in
                             switch route {
                             case let .userList(userList):
-                                UserListView(userList: userList, myDataViewModel: myDataViewModel)
+                                UserListView(userList: userList, myDataViewModel: myDataViewModel, router: router)
                             case let .basicProfile(basicProfile):
-                                ProfileView(basicProfile: basicProfile, myDataViewModel: myDataViewModel)
+                                ProfileView(basicProfile: basicProfile, myDataViewModel: myDataViewModel, router: router)
+                            case let .roomIdAndProfile(roomIdAndProfile):
+                                ChatRowView(myDataViewModel: myDataViewModel, roomIdAndProfile: roomIdAndProfile)
                             }
                         }
                         .navigationBarTitle(Text("SNS"), displayMode: .inline)
@@ -127,9 +134,6 @@ struct MainView: View {
                 }
             }
         }
-//        .onAppear() {
-//            self.postViewModel.getAllPostList(ids: myDataViewModel.model.follows)
-//        }
     }
 }
 

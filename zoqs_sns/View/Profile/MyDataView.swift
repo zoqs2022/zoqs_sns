@@ -34,6 +34,7 @@ let sampleData: [SampleData] = [
 
 struct MyDataView: View {
     @ObservedObject var myDataViewModel: MyDataViewModel
+    @ObservedObject var router: RouterNavigationPath
     
     @State private var image: UIImage?
     @State var showingImagePicker = false

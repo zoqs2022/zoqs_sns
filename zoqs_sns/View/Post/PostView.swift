@@ -47,7 +47,7 @@ struct PostView: View {
             
             //backgroundcolor
             LinearGradient(gradient: Gradient(colors: [.mint, .cyan, .blue]), startPoint: .top, endPoint: .bottom)
-//                .ignoresSafeArea()
+                .ignoresSafeArea(edges: [.top])
             //メイン
             ScrollView{
                 VStack {
@@ -68,7 +68,7 @@ struct PostView: View {
                             }
                         }
                         .frame(width: 80, height: 80, alignment: .center)
-                        .background(Color.cyan)
+                        .background(Color(.cyan))
                         .cornerRadius(20)
                         .overlay(
                             RoundedRectangle(cornerRadius: 20)
@@ -95,7 +95,7 @@ struct PostView: View {
                             .strokeBorder().foregroundColor(.gray)
                             .background(Color.clear)
                         TextEditor(text: $text)
-                            .padding(10)
+                            .padding(9)
                             .foregroundColor(.black)
                             .font(.system(size: 16))
                             .onChange(of: text) { value in
@@ -159,6 +159,7 @@ struct PostView: View {
                         .disabled(!isActiveButton)
                     }
                     .padding()
+                    Spacer().frame(height: 40)
                 }//scrollview
             }
             .onTapGesture {
