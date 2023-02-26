@@ -21,7 +21,18 @@ struct ChatRoomListView: View {
                                 VStack(alignment: .leading) {
                                     Text("\(room.userName)")
                                         .fontWeight(.bold)
+                                    Text("\(myDataViewModel.model.chats[room.roomID]?.last?.text ?? "")")
+                                        .font(.system(size: 16))
+                                        .lineLimit(1)
                                 }
+                                Spacer()
+                                VStack(alignment: .trailing) {
+                                    if let date = myDataViewModel.model.chats[room.roomID]?.last?.date  {
+                                        timestamp(date: date)
+                                            .multilineTextAlignment(.trailing)
+                                    }
+                                }
+                                .frame(alignment: .trailing)
                             }
                         }
                     }
@@ -29,6 +40,17 @@ struct ChatRoomListView: View {
             }
         }
     }
+}
+
+private func timestamp(date: Date) -> some View {
+    Text(
+        """
+        \(date.DateToString(format: "MM/dd"))
+        \(date.DateToString(format: "HH:mm"))
+        """
+    )
+    .font(.caption)
+    .foregroundColor(Color.gray)
 }
 
 //struct ChatListView_Previews: PreviewProvider {

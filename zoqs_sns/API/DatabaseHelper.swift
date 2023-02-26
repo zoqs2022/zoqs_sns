@@ -199,7 +199,7 @@ struct DatabaseHelper {
     
     func createRoom(userID:String, result:@escaping(String?) -> Void){
         var ref: DocumentReference? = nil
-        ref = db.collection("room").addDocument(data: ["users":[userID,uid]]) { err in
+        ref = db.collection("room").addDocument(data: ["users":[userID,uid], "createdAt": Timestamp()]) { err in
             if let err = err {
                 print("Error adding document: \(err)")
                 result(nil)
@@ -210,7 +210,7 @@ struct DatabaseHelper {
     }
     
     func sendChatMessage(roomID:String,text:String){
-        db.collection("room").document(roomID).collection("chat").addDocument(data: ["userID":uid,"text":text,"time":time(nil)])
+        db.collection("room").document(roomID).collection("chat").addDocument(data: ["userID":uid,"text":text,"date": Timestamp()])
     }
     
     func chatDataListener(roomID:String,result:@escaping([String:[String: Any]]) -> Void){

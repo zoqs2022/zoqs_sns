@@ -43,4 +43,5 @@ struct ChatRoom {
     let userID:String
     var userName: String = ""
     var userImage: UIImage?
+    let createdAt: Date 
 }

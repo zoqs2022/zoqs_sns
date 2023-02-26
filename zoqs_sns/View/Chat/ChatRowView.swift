@@ -15,6 +15,18 @@ let chatMock: [ChatText] = [
     .init(text: "aaaaaaaa", userID: "jpUqvLIs7RhT9WtIfx33knfbYym1", date: Date()),
     .init(text: "aaaaaaaa", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
     .init(text: "aaaaabbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
+    .init(text: "aaaaabbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
+    .init(text: "aaaaabbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
+    .init(text: "aaaaabbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
+    .init(text: "aaaaabbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
+    .init(text: "aaaaabbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
+    .init(text: "aaaaabbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
+    .init(text: "aaaaabbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
+    .init(text: "aaaaabbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
+    .init(text: "aaaaabbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
+    .init(text: "aaaaabbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
+    .init(text: "aaaaabbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
+    .init(text: "aaaaabbb", userID: "5Y7MTVmyiiRSoHMVxx63SomCVe72", date: Date()),
 ]
 
 struct RoomIdAndProfile: Hashable {
@@ -24,11 +36,26 @@ struct RoomIdAndProfile: Hashable {
     var image: UIImage?
 }
 
+class ScrollViewController: ObservableObject {
+    @Published var scrollID: Int = 0
+
+    func toBotton() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.scrollID = 999
+        }
+    }
+    func resetOffset() {
+        self.scrollID = 0
+    }
+}
+
 struct ChatRowView: View {
     @ObservedObject var myDataViewModel: MyDataViewModel
-//    @StateObject var chatViewModel = ChatViewModel(model: ChatModel())
     var otherBasicProfile: BasicProfile
     var roomID: String
+    @State private var text = ""
+    @FocusState var focus:Bool
+    @StateObject var scrollViewController = ScrollViewController()
     
     init(myDataViewModel: MyDataViewModel, roomIdAndProfile: RoomIdAndProfile) {
         self.myDataViewModel = myDataViewModel
@@ -37,13 +64,60 @@ struct ChatRowView: View {
     }
     
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 16) {
-                ForEach(self.myDataViewModel.model.chats[roomID] ?? []) { chatText in
-                    GroupChatRow(myDataViewModel: myDataViewModel, chatText: chatText, otherBasicProfile: otherBasicProfile )
+        VStack(){
+            ScrollViewReader { proxy in
+                ScrollView {
+                    LazyVStack(spacing: 16) {
+                        ForEach(self.myDataViewModel.model.chats[roomID] ?? []) { chatText in
+                            GroupChatRow(myDataViewModel: myDataViewModel, chatText: chatText, otherBasicProfile: otherBasicProfile )
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .id(999)
+                }
+                .onTapGesture {
+                    self.focus = false
+                    scrollViewController.resetOffset()
+                }
+                .onAppear(){
+                    withAnimation {
+                        proxy.scrollTo(999)
+                    }
+                }
+                .onChange(of: scrollViewController.scrollID) { id in
+                    withAnimation {
+                        proxy.scrollTo(id)
+                    }
                 }
             }
-            .padding(.horizontal, 16)
+            
+            HStack{
+                TextField("メッセージを入力", text: $text)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.cyan, lineWidth: 1.0)
+                    )
+                    .padding(.leading,20)
+                    .padding(.vertical, 10)
+                    .autocapitalization(.none)
+                    .focused(self.$focus)
+                    .onTapGesture{
+                        self.scrollViewController.toBotton()
+                    }
+                Button(action: {
+                    myDataViewModel.sendChatMessage(roomID: roomID, text: text)
+                    text = ""
+                    self.focus = false
+                }) {
+                    Image(systemName: "paperplane.fill")
+                        .foregroundColor(Color(.cyan))
+                        .font(.system(size: 24))
+                    
+                }
+                .padding(.trailing, 20)
+            }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
     }
 }
