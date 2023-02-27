@@ -60,7 +60,7 @@ struct ProfileView: View {
                         let room = myDataViewModel.model.roomList.first(where: {$0.userID == profileViewModel.model.id})
                         if let room = room {
                             loading = false
-                            router.toChatPage(roomIdAndProfile: .init(roomID: room.roomID, id: profileViewModel.model.id, name: profileViewModel.model.name, image: profileViewModel.model.image))
+                            router.toChatPage(roomIdAndProfile: .init(roomID: room.roomID, id: basicProfile.id, name: basicProfile.name, image: basicProfile.image))
                         } else {
                             myDataViewModel.createChatRoom(id: profileViewModel.model.id, result: { id in
                                 loading = false
