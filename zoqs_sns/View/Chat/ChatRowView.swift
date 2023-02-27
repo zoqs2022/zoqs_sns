@@ -157,7 +157,7 @@ struct ChatBaloonOther: View {
 //            } label: {
 //                PhotoCircleView(diameter: 40)
 //            }
-            PhotoCircleView(diameter: 40)
+            PhotoCircleView(image: basicProfile.image,diameter: 32)
 
             VStack(alignment: .leading, spacing: 2) {
                 HStack(alignment: .bottom) {
