@@ -77,18 +77,25 @@ struct ChatRowView: View {
                 }
                 .onTapGesture {
                     self.focus = false
-                    scrollViewController.resetOffset()
                 }
                 .onAppear(){
                     withAnimation {
                         proxy.scrollTo(999)
                     }
                 }
-                .onChange(of: scrollViewController.scrollID) { id in
-                    withAnimation {
-                        proxy.scrollTo(id)
+                .onChange(of: focus) { _ in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
+                        withAnimation {
+                            proxy.scrollTo(999)
+                        }
                     }
                 }
+                .onChange(of: self.myDataViewModel.model.chats[roomID]?.count) { _ in
+                    withAnimation {
+                        proxy.scrollTo(999)
+                    }
+                }
+                
             }
             
             HStack{
@@ -102,9 +109,6 @@ struct ChatRowView: View {
                     .padding(.vertical, 10)
                     .autocapitalization(.none)
                     .focused(self.$focus)
-                    .onTapGesture{
-                        self.scrollViewController.toBotton()
-                    }
                 Button(action: {
                     myDataViewModel.sendChatMessage(roomID: roomID, text: text)
                     text = ""
