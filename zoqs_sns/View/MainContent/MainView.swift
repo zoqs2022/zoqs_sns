@@ -14,6 +14,7 @@ class TabSelectViewModel: ObservableObject {
 
 struct MainView: View {
     @StateObject var router = RouterNavigationPath()
+    @StateObject var chatRouter = RouterNavigationPath()
     @ObservedObject var myDataViewModel: MyDataViewModel
     
     @Binding var isActive: Bool
@@ -25,12 +26,16 @@ struct MainView: View {
     var body: some View {
         VStack{
             TabView(selection: $tabSelectViewModel.selectionType){
-                NavigationStack{
+                NavigationStack(path: $chatRouter.path) {
                     HomeView(myDataViewModel: myDataViewModel)
-                        .navigationDestination(for: ChatRoute.self) { route in
+                        .navigationDestination(for: Route.self) { route in
                             switch route {
                             case .roomList:
                                 ChatRoomListView(myDataViewModel: myDataViewModel)
+                            case let .userList(userList):
+                                UserListView(userList: userList, myDataViewModel: myDataViewModel, router: chatRouter)
+                            case let .basicProfile(basicProfile):
+                                ProfileView(basicProfile: basicProfile, myDataViewModel: myDataViewModel, router: chatRouter)
                             case let .roomIdAndProfile(roomIdAndProfile):
                                 ChatRowView(myDataViewModel: myDataViewModel, roomIdAndProfile: roomIdAndProfile)
                             }
@@ -40,7 +45,7 @@ struct MainView: View {
                             leading: VStack{
                                 PhotoCircleView(image: myDataViewModel.model.image, diameter: 30)
                             },
-                            trailing: NavigationLink(value: ChatRoute.roomList){
+                            trailing: NavigationLink(value: Route.roomList){
                                 Image(systemName: "sparkles")
                             }
                         )
@@ -93,6 +98,8 @@ struct MainView: View {
                     MyDataView(myDataViewModel: myDataViewModel, router: router)
                         .navigationDestination(for: Route.self) { route in
                             switch route {
+                            case .roomList:
+                                ChatRoomListView(myDataViewModel: myDataViewModel)
                             case let .userList(userList):
                                 UserListView(userList: userList, myDataViewModel: myDataViewModel, router: router)
                             case let .basicProfile(basicProfile):
@@ -108,9 +115,6 @@ struct MainView: View {
                                 isActive = false
                             }
                         )
-//                        .onChange(of: router.path) {
-//                            print("FFFFFFF",$0)
-//                        }
                     // onTapGestureはこの位置でないとnavigationviewが正常に動作しない
                         .onTapGesture {
                             if self.xOffset == .zero {
@@ -131,6 +135,9 @@ struct MainView: View {
             .onReceive(tabSelectViewModel.$selectionType) { selection in
                 if selection == "PHOTO" {
                     router.gotoHomePage()
+                }
+                if selection == "SNS" {
+                    chatRouter.gotoHomePage()
                 }
             }
         }

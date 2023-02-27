@@ -152,12 +152,14 @@ struct ChatBaloonOther: View {
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             // プロフィールアイコン
+            NavigationLink(value: Route.basicProfile(basicProfile)){
+                PhotoCircleView(image: basicProfile.image,diameter: 32)
+            }
 //            NavigationLink {
 //                ProfileView(basicProfile: basicProfile, myDataViewModel: myDataViewModel)
 //            } label: {
 //                PhotoCircleView(diameter: 40)
 //            }
-            PhotoCircleView(image: basicProfile.image,diameter: 32)
 
             VStack(alignment: .leading, spacing: 2) {
                 HStack(alignment: .bottom) {
