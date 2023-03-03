@@ -92,7 +92,6 @@ struct MyDataView: View {
                     }.frame(height: 80)
                 }.frame(maxWidth: .infinity, alignment: .leading).padding(24)
                 
-            
                 //インスタのストーリーみたいなやつ
                 Story(focusDate: $focusDate)
                 
@@ -104,7 +103,6 @@ struct MyDataView: View {
                 
                 //〇〇ランキング
                 Ranking()
-                
                 
             }
             .sheet(isPresented: $toEditProfile) {
@@ -122,13 +120,15 @@ struct MyDataView: View {
 struct Story : View {
     
     @Binding var focusDate:Int
+    let imageName:[String] = ["flower","ikuta","diaryicon","testImage","testImage2"]
+    @State private var tempNumber:[Int] = [0,1,2,3,4] //表示する写真をランダムで変更するための変数
     
     var body: some View {
         //インスタのストーリーみたいなやつ
         ScrollView(.horizontal){
             HStack{
-                ForEach(1..<10){ index in
-                    Image("flower")
+                ForEach(0..<5){ index in
+                    Image(imageName[tempNumber[index]])
                         .resizable()//.scaledToFit()
                         .overlay(
                             Circle().stroke(LinearGradient(gradient: Gradient(colors: [.cyan, .purple, .blue]), startPoint: .bottomLeading, endPoint: .topTrailing), lineWidth: 5))
@@ -139,7 +139,15 @@ struct Story : View {
                         }
                 }
             }
-        }
+        }.onAppear(){
+            // 5.0秒おきに{}内を繰り返す 表示する写真をランダムで変更する
+            Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) {timer in
+                for i in 0..<5 {
+                    tempNumber[i] = Int.random(in: 0..<5)
+                }
+                
+            }
+        }//onAppear
     }
 }
 
@@ -179,38 +187,10 @@ struct Memory : View {
         ZStack{
             LinearGradient(gradient: Gradient(colors: [.cyan.opacity(0.3), .cyan]), startPoint: .top, endPoint: .bottom)
             VStack(){
-                VStack{//日付と日記
-                    Text("Memory in  Jan 15 2023").font(.title2).fontWeight(.bold).padding()
-                    
-                    VStack{
-                        NikkiPage()
-//                        Image("flower")
-//                            .resizable()
-//                            .scaledToFit()//縦横比維持
-//                            .frame(width: 200)
-                    }
-                }
-                
-                HStack(alignment: .top){//メタ情報
-                    VStack(alignment: .leading){
-                        Text("with").font(.headline)
-                        Text("at").font(.headline)
-                        Text("play music").font(.headline)
-                        Text("contact").font(.headline)
-                        Text("sns").font(.headline)
-                        Text("tag").font(.headline)
-                        
-                    }
-                    VStack(alignment: .leading){
-                        Text("alone")
-                        Text("ドイツ")
-                        Text("Norwegian Wood")
-                        Text("連絡を取った人のリスト")
-                        Text("他のsnsの投稿を見れる")
-                        Text("#〇〇、#〇〇、#〇〇")
-                    }
-                }.padding().frame(width: 350).background(Color.white).cornerRadius(20).padding()
-            }//日記表示全体のvstack,textとif
+                Text("Memory in  Jan 15 2023").font(.title2).fontWeight(.bold).padding()
+                NikkiPage()
+                NikkiInfo()
+            }//日記表示全体のvstack
         }//背景色と日記のzstak
     }
 }
@@ -296,5 +276,43 @@ struct NikkiPage : View {
                 .scaledToFit()
                 .frame(width: 60)
         }
+    }
+}
+
+
+struct NikkiInfo :View {
+    var body: some View {
+        
+        VStack{
+            HStack{
+                Spacer()
+                Text("emotion")
+                Image(systemName: "face.smiling")
+                Spacer()
+                Text("feeling")
+                Image(systemName: "face.smiling")
+                Spacer()
+                Text("with")
+                Image(systemName: "face.smiling")
+                Spacer()
+            }.padding().background(Color.cyan.opacity(0.3))
+            HStack(alignment: .top){//メタ情報
+                VStack(alignment: .leading){
+                    Text("at").font(.headline)
+                    Text("play music").font(.headline)
+                    Text("contact").font(.headline)
+                    Text("sns").font(.headline)
+                    Text("tag").font(.headline)
+                    
+                }
+                VStack(alignment: .leading){
+                    Text("ドイツ")
+                    Text("Norwegian Wood")
+                    Text("連絡を取った人のリスト")
+                    Text("他のsnsの投稿を見れる")
+                    Text("#〇〇、#〇〇、#〇〇")
+                }
+            }
+        }.frame(width: 350).background(Color.white).cornerRadius(20).padding()
     }
 }

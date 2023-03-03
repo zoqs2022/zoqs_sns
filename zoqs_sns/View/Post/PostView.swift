@@ -146,7 +146,7 @@ struct PostView: View {
                                     LoadingView()
                                         .padding(.horizontal, 8)
                                 } else {
-                                    Text("投稿する")
+                                    Text("記録する")
                                         .font(.title2)
                                         .foregroundColor(.white)
                                 }
@@ -167,7 +167,7 @@ struct PostView: View {
             }
             if isSuccessed {
                 VStack(alignment: .center){
-                    Text("投稿しました")
+                    Text("記録しました")
                         .font(.system(size: 20))
                         .foregroundColor(.white)
                         .bold()
