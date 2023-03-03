@@ -54,6 +54,7 @@
 		E112183129528B69004192EE /* FirebaseFunctionsCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = E112183029528B69004192EE /* FirebaseFunctionsCombine-Community */; };
 		E14C2990294DCF63000DCBB7 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14C298F294DCF63000DCBB7 /* PostView.swift */; };
 		E14C2994294DD1C5000DCBB7 /* MyDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14C2993294DD1C5000DCBB7 /* MyDataView.swift */; };
+		E16E97A229B175720045897A /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16E97A129B175720045897A /* test.swift */; };
 		E1756D1D294DC96600C1D624 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1756D1C294DC96600C1D624 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
@@ -115,6 +116,7 @@
 		E14C298F294DCF63000DCBB7 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		E14C2991294DCFC9000DCBB7 /* CalendarView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; usesTabs = 0; wrapsLines = 0; };
 		E14C2993294DD1C5000DCBB7 /* MyDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDataView.swift; sourceTree = "<group>"; };
+		E16E97A129B175720045897A /* test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		E1756D1C294DC96600C1D624 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -272,6 +274,7 @@
 				E14C2993294DD1C5000DCBB7 /* MyDataView.swift */,
 				21B32CBC2973DCB20077CC58 /* EditProfileView.swift */,
 				21D6C82D2993E5A9008941A1 /* ProfileView.swift */,
+				E16E97A129B175720045897A /* test.swift */,
 				214E85792993EADA00E97DA1 /* UserListView.swift */,
 			);
 			path = Profile;
@@ -508,6 +511,7 @@
 				E14C2990294DCF63000DCBB7 /* PostView.swift in Sources */,
 				E1756D1D294DC96600C1D624 /* HomeView.swift in Sources */,
 				2145DCC029A4C48F00470E0D /* FollowButtonView.swift in Sources */,
+				E16E97A229B175720045897A /* test.swift in Sources */,
 				214E857A2993EADA00E97DA1 /* UserListView.swift in Sources */,
 				2117828B29A1EF8D00545908 /* LoadingView.swift in Sources */,
 				21AF04192952015400B8E556 /* DateExtensionFile.swift in Sources */,

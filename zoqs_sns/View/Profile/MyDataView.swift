@@ -44,6 +44,7 @@ struct MyDataView: View {
     var body: some View {
         ScrollView{
             VStack{
+                //一番上のプロフィールのところ
                 HStack(){
                     // 丸い写真のやつ
                     PhotoCircleView(image: myDataViewModel.model.image, diameter: 80)
@@ -91,8 +92,7 @@ struct MyDataView: View {
                     }.frame(height: 80)
                 }.frame(maxWidth: .infinity, alignment: .leading).padding(24)
                 
-                
-                
+            
                 //インスタのストーリーみたいなやつ
                 Story(focusDate: $focusDate)
                 
@@ -180,16 +180,15 @@ struct Memory : View {
             LinearGradient(gradient: Gradient(colors: [.cyan.opacity(0.3), .cyan]), startPoint: .top, endPoint: .bottom)
             VStack(){
                 VStack{//日付と日記
-                    Text("Memory in   \(focusDate) photo").font(.title2).fontWeight(.bold).padding()
+                    Text("Memory in  Jan 15 2023").font(.title2).fontWeight(.bold).padding()
                     
                     VStack{
-                        Text("日記の表示")
-                        Image("flower")
-                            .resizable()
-                            .scaledToFit()//縦横比維持
-                            .frame(width: 200)
+                        NikkiPage()
+//                        Image("flower")
+//                            .resizable()
+//                            .scaledToFit()//縦横比維持
+//                            .frame(width: 200)
                     }
-                    
                 }
                 
                 HStack(alignment: .top){//メタ情報
@@ -199,6 +198,7 @@ struct Memory : View {
                         Text("play music").font(.headline)
                         Text("contact").font(.headline)
                         Text("sns").font(.headline)
+                        Text("tag").font(.headline)
                         
                     }
                     VStack(alignment: .leading){
@@ -207,9 +207,9 @@ struct Memory : View {
                         Text("Norwegian Wood")
                         Text("連絡を取った人のリスト")
                         Text("他のsnsの投稿を見れる")
-                        
+                        Text("#〇〇、#〇〇、#〇〇")
                     }
-                }.padding()
+                }.padding().frame(width: 350).background(Color.white).cornerRadius(20).padding()
             }//日記表示全体のvstack,textとif
         }//背景色と日記のzstak
     }
@@ -263,5 +263,38 @@ struct Ranking : View {
         }//zstack
         
         
+    }
+}
+
+
+
+struct NikkiPage : View {
+    var body: some View {
+        ZStack(alignment: .topLeading){
+            ZStack{
+                //中の四角
+                RoundedRectangle(cornerRadius: 30)
+                    .fill(Color.white)
+                //縁取りの四角
+                RoundedRectangle(cornerRadius: 30)
+                    .stroke()
+                    .foregroundColor(Color.blue)
+                //文字の線
+                VStack{
+                    ForEach(0..<10){index in
+                        Path { path in
+                            path.move(to: CGPoint(x: 20, y: 15))
+                            path.addLine(to: CGPoint(x: 330, y: 15))
+                        }
+                        .stroke(style: StrokeStyle(dash: [4, 4]))
+                        .fill(Color.black)
+                    }
+                }
+            }.frame(width: 350, height: 250)
+            Image("diaryicon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 60)
+        }
     }
 }

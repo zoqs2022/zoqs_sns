@@ -8,7 +8,7 @@
 import SwiftUI
 
 class TabSelectViewModel: ObservableObject {
-    @Published var selectionType = "SNS"
+    @Published var selectionType = "PHOTO"
 }
 
 
@@ -25,6 +25,73 @@ struct MainView: View {
     var body: some View {
         VStack{
             TabView(selection: $tabSelectViewModel.selectionType){
+                NavigationStack(path: $router.path) {
+                    MyDataView(myDataViewModel: myDataViewModel, router: router)
+                        .navigationDestination(for: Route.self) { route in
+                            switch route {
+                            case let .userList(userList):
+                                UserListView(userList: userList, myDataViewModel: myDataViewModel, router: router)
+                            case let .basicProfile(basicProfile):
+                                ProfileView(basicProfile: basicProfile, myDataViewModel: myDataViewModel, router: router)
+                            case let .roomIdAndProfile(roomIdAndProfile):
+                                ChatRowView(myDataViewModel: myDataViewModel, roomIdAndProfile: roomIdAndProfile)
+                            }
+                        }
+                        .navigationBarTitle(Text("SNS"), displayMode: .inline)
+                        .navigationBarItems(
+                            trailing: Button("ログアウト"){
+                                AuthHelper().signout()
+                                isActive = false
+                            }
+                        )
+                    //                        .onChange(of: router.path) {
+                    //                            print("FFFFFFF",$0)
+                    //                        }
+                    // onTapGestureはこの位置でないとnavigationviewが正常に動作しない
+                        .onTapGesture {
+                            if self.xOffset == .zero {
+                                self.xOffset = self.defaultOffset
+                            } else {
+                                self.xOffset = self.defaultOffset
+                            }
+                        }
+                }
+                .tabItem{
+                    Image(systemName: "photo.fill")
+                    Text("アルバム")
+                }
+                .tag("PHOTO")
+                
+                CalendarView(myDataViewModel: myDataViewModel)
+                    .onTapGesture {
+                        if self.xOffset == .zero {
+                            self.xOffset = self.defaultOffset
+                        } else {
+                            self.xOffset = self.defaultOffset
+                        }
+                    }
+                    .tabItem{
+                        Image(systemName: "30.square.fill")
+                        Text("カレンダー")
+                    }
+                    .tag("DAYS")
+                
+                NavigationStack{
+                    PostView(myDataViewModel: myDataViewModel)
+                        .onTapGesture {
+                            if self.xOffset == .zero {
+                                self.xOffset = self.defaultOffset
+                            } else {
+                                self.xOffset = self.defaultOffset
+                            }
+                        }
+                }
+                .tabItem{
+                    Image(systemName: "pencil")
+                    Text("投稿")
+                }
+                .tag("NIKKI")
+                
                 NavigationStack{
                     HomeView(myDataViewModel: myDataViewModel)
                         .navigationDestination(for: ChatRoute.self) { route in
@@ -51,7 +118,6 @@ struct MainView: View {
                                 self.xOffset = self.defaultOffset
                             }
                         }
-                    
                 }
                 .tabItem{
                     Image(systemName: "message")
@@ -59,72 +125,6 @@ struct MainView: View {
                 }
                 .tag("SNS")
                 
-                NavigationStack{
-                    PostView(myDataViewModel: myDataViewModel)
-                        .onTapGesture {
-                            if self.xOffset == .zero {
-                                self.xOffset = self.defaultOffset
-                            } else {
-                                self.xOffset = self.defaultOffset
-                            }
-                        }
-                }
-                .tabItem{
-                    Image(systemName: "pencil")
-                    Text("投稿")
-                }
-                .tag("NIKKI")
-                
-                CalendarView(myDataViewModel: myDataViewModel)
-                    .onTapGesture {
-                        if self.xOffset == .zero {
-                            self.xOffset = self.defaultOffset
-                        } else {
-                            self.xOffset = self.defaultOffset
-                        }
-                    }
-                    .tabItem{
-                        Image(systemName: "30.square.fill")
-                        Text("カレンダー")
-                    }
-                    .tag("DAYS")
-                
-                NavigationStack(path: $router.path) {
-                    MyDataView(myDataViewModel: myDataViewModel, router: router)
-                        .navigationDestination(for: Route.self) { route in
-                            switch route {
-                            case let .userList(userList):
-                                UserListView(userList: userList, myDataViewModel: myDataViewModel, router: router)
-                            case let .basicProfile(basicProfile):
-                                ProfileView(basicProfile: basicProfile, myDataViewModel: myDataViewModel, router: router)
-                            case let .roomIdAndProfile(roomIdAndProfile):
-                                ChatRowView(myDataViewModel: myDataViewModel, roomIdAndProfile: roomIdAndProfile)
-                            }
-                        }
-                        .navigationBarTitle(Text("SNS"), displayMode: .inline)
-                        .navigationBarItems(
-                            trailing: Button("ログアウト"){
-                                AuthHelper().signout()
-                                isActive = false
-                            }
-                        )
-//                        .onChange(of: router.path) {
-//                            print("FFFFFFF",$0)
-//                        }
-                    // onTapGestureはこの位置でないとnavigationviewが正常に動作しない
-                        .onTapGesture {
-                            if self.xOffset == .zero {
-                                self.xOffset = self.defaultOffset
-                            } else {
-                                self.xOffset = self.defaultOffset
-                            }
-                        }
-                }
-                .tabItem{
-                    Image(systemName: "photo.fill")
-                    Text("アルバム")
-                }
-                .tag("PHOTO")
             }
             .accentColor(.blue)
             
