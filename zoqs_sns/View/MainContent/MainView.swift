@@ -62,6 +62,20 @@ struct MainView: View {
                 }
                 .tag("PHOTO")
                 
+                CalendarView(myDataViewModel: myDataViewModel)
+                    .onTapGesture {
+                        if self.xOffset == .zero {
+                            self.xOffset = self.defaultOffset
+                        } else {
+                            self.xOffset = self.defaultOffset
+                        }
+                    }
+                    .tabItem{
+                        Image(systemName: "30.square.fill")
+                        Text("カレンダー")
+                    }
+                    .tag("DAYS")
+                
                 NavigationStack{
                     PostView(myDataViewModel: myDataViewModel)
                         .onTapGesture {
@@ -77,20 +91,6 @@ struct MainView: View {
                     Text("投稿")
                 }
                 .tag("NIKKI")
-                
-                CalendarView(myDataViewModel: myDataViewModel)
-                    .onTapGesture {
-                        if self.xOffset == .zero {
-                            self.xOffset = self.defaultOffset
-                        } else {
-                            self.xOffset = self.defaultOffset
-                        }
-                    }
-                    .tabItem{
-                        Image(systemName: "30.square.fill")
-                        Text("カレンダー")
-                    }
-                    .tag("DAYS")
                 
                 NavigationStack(path: $chatRouter.path) {
                     HomeView(myDataViewModel: myDataViewModel)
