@@ -137,6 +137,7 @@ struct Story : View {
                         .onTapGesture {
                             focusDate = index
                         }
+                        .shadow(radius: 5)
                 }
             }
         }.onAppear(){
@@ -275,7 +276,8 @@ struct NikkiPage : View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 60)
-        }
+                .shadow(radius: 5)
+        }.shadow(radius: 10)
     }
 }
 
@@ -297,20 +299,26 @@ struct NikkiInfo :View {
                 Spacer()
             }.padding().background(Color.cyan.opacity(0.3))
             HStack(alignment: .top){//メタ情報
+                VStack(alignment: .center){
+                    Image(systemName: "tag")
+                    Image(systemName:"location")
+                    Image(systemName: "music.note.list")
+                    Image(systemName: "message")
+                    Image(systemName: "person.line.dotted.person")
+                }
                 VStack(alignment: .leading){
+                    Text("tag").font(.headline)
                     Text("at").font(.headline)
                     Text("play music").font(.headline)
                     Text("contact").font(.headline)
                     Text("sns").font(.headline)
-                    Text("tag").font(.headline)
-                    
                 }
                 VStack(alignment: .leading){
+                    Text("#〇〇、#〇〇、#〇〇")
                     Text("ドイツ")
                     Text("Norwegian Wood")
                     Text("連絡を取った人のリスト")
                     Text("他のsnsの投稿を見れる")
-                    Text("#〇〇、#〇〇、#〇〇")
                 }
             }
         }.frame(width: 350).background(Color.white).cornerRadius(20).padding()
