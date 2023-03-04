@@ -27,12 +27,8 @@ final class RouterNavigationPath: ObservableObject {
 }
 
 enum Route: Hashable {
+    case roomList
     case userList([UserListData])
     case basicProfile(BasicProfile)
-    case roomIdAndProfile(RoomIdAndProfile)
-}
-
-enum ChatRoute: Hashable {
-    case roomList
     case roomIdAndProfile(RoomIdAndProfile)
 }
